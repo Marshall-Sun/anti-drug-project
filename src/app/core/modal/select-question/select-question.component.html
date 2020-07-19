@@ -1,0 +1,91 @@
+<div class="modal-content">
+  <div style="display: flex; flex-direction: row; justify-content: flex-start">
+    <input nz-input type="text" placeholder="关键字" style="width: 20%; margin-right: 5%;" [(ngModel)]="keyword">
+    <button nz-button nzType="primary" (click)="search()">搜索</button>
+  </div>
+  <nz-table *ngIf="displayData && displayData.length > 0" #rowSelectionTable
+            [nzData]="displayData"
+            [nzLoading]="loading"
+            [nzPageSize]="pageSize"
+            [nzPageIndex]="pageIndex"
+            [nzTotal]="total"
+            (nzPageIndexChange)="searchData()">
+    <thead>
+    <tr>
+      <th *ngIf="type !== 'swap'" nzShowCheckbox
+          [(nzChecked)]="isAllDisplayDataChecked"
+          [nzIndeterminate]="isIndeterminate"
+          (nzCheckedChange)="checkAll($event)"></th>
+      <th>题干</th>
+      <th>类型</th>
+      <th>分值</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of rowSelectionTable.data">
+      <td *ngIf="type !== 'swap'" nzShowCheckbox
+          [(nzChecked)]="mapOfCheckedId[data.questionId]"
+          (nzCheckedChange)="refreshStatus()"></td>
+      <td><div style="padding-top: 1em;" [innerHTML]="data.stem"></div></td>
+      <td>{{ questionsType[data.type] }}</td>
+      <td>{{data.score | number: '.2-2'}}分</td>
+      <td>
+        <i class="more-operation" nz-popover nzTitle="可执行操作" [nzContent]="operationTemplate" nzTrigger="hover" nz-icon nzType="more" nzTheme="outline" nzPlacement="bottom"></i>
+      </td>
+      <ng-template #operationTemplate>
+        <div class="user-management-operation">
+          <div>
+            <span (click)="createTplModal(tplTitle, tplContent, tplFooter, data.id)"><i nz-icon nzType="eye" nzTheme="outline"></i>预览</span>
+          </div>
+          <div>
+            <span *ngIf="type == 'swap'" (click)="swap(data)"><i nz-icon nzType="swap" nzTheme="outline"></i>替换</span>
+          </div>
+          <div>
+            <span *ngIf="type == 'add'" (click)="add(data)"><i nz-icon nzType="plus" nzTheme="outline"></i>新增</span>
+          </div>
+        </div>
+      </ng-template>
+    </tr>
+    </tbody>
+  </nz-table>
+
+
+  <nz-empty *ngIf="displayData.length == 0"
+    [nzNotFoundContent]="contentTpl">
+    <ng-template #contentTpl>
+      <span>暂无可选题目<a (click)="navigateTo('/client/course/' + courseId + '/question')">创建题目</a></span>
+    </ng-template>
+  </nz-empty>
+</div>
+
+
+<ng-template #tplTitle>
+  <span>题目预览</span>
+</ng-template>
+<ng-template #tplContent>
+  <div nz-row>
+    <div nz-col nzSpan="2">
+      <nz-tag [nzColor]="'blue'">{{detail.score}}分</nz-tag>
+    </div>
+    <div nz-col nzSpan="22">
+      <span  [innerHTML] ="detail.stem" ></span>
+
+      <div class="choiceView">
+        <div *ngFor="let meta of questionList; let j = index" class="questionChoice">
+          <span>{{characterList[j]}}</span>、<span style="display: inline-block" [innerHTML]="meta"></span>
+        </div>
+      </div>
+
+      <nz-divider></nz-divider>
+      <div >正确答案是:<span *ngFor="let answer of answerList" style="margin-right: 5px;">{{getAnswer(answer)}}</span></div>
+      <div style="background: #f4f4f4; padding: 2% 5%; margin-top: 20px;" *ngIf="detail.analysis=='' || detail.analysis == null">无解析</div>
+      <div style="background: #f4f4f4; padding: 2% 5%;margin-top: 20px; " *ngIf="detail.analysis!='' && detail.analysis !== null">{{detail.analysis}}</div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #tplFooter>
+  <button nz-button nzType="primary" (click)="destroyTplModal()" [nzLoading]="tplModalButtonLoading">
+    关闭
+  </button>
+</ng-template>

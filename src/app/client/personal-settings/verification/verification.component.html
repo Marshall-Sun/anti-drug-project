@@ -1,15 +1,17 @@
 <h1>实名认证</h1>
 <nz-divider></nz-divider>
-<nz-alert nzType="warning" nzMessage="提示" nzDescription="为保护您的帐号安全、获得更好的服务，请尽快完成实名认证。" nzShowIcon nzCloseable>
+<nz-alert nzType={{verificationStatus.nzType}} nzMessage={{verificationStatus.nzMessage}} nzDescription={{verificationStatus.nzDescription}} nzShowIcon nzCloseable>
 </nz-alert>
-<form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+<!--<form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm()">-->
+<form nz-form [nzLayout]="'inline'" [formGroup]="validateForm">
   <div nz-row>
     <div nz-col [nzSpan]="12">
       <nz-form-item>
         <nz-form-label nzRequired><span>真实姓名</span></nz-form-label>
         <div>
           <nz-form-control [nzErrorTip]="nameErrorTpl">
-            <input type="text" nz-input formControlName="trueName">
+<!--            <input type="text" nz-input formControlName="trueName" [disabled]="nameNonEditable">-->
+            <input type="text" nz-input formControlName="trueName" [ngModel]="verifiedName" [disabled]="nameNonEditable">
             <ng-template #nameErrorTpl let-control>
               <ng-container *ngIf="control.hasError('required')">
                 请输入真实姓名
@@ -28,7 +30,7 @@
         <nz-form-label nzRequired><span>身份证号</span></nz-form-label>
         <div>
           <nz-form-control [nzErrorTip]="errorTpl">
-            <input type="text" nz-input formControlName="id">
+            <input type="text" nz-input formControlName="id" [disabled]="nameNonEditable">
             <ng-template #errorTpl let-control>
               <ng-container *ngIf="control.hasError('required')">
                 请输入身份证号
@@ -46,8 +48,9 @@
     <div nz-col [nzSpan]="12">
       <nz-form-item>
         <nz-form-control nzErrorTip="请上传身份证正面照">
-          <nz-upload class="avatar-uploader" nzAction="/material/uploadUserFaceIdCard?userId=1"
-            nzListType="picture-card" [nzShowUploadList]="false" [nzCustomRequest]="faceimgReq">
+          <nz-upload class="avatar-uploader" nzAction="/material/uploadUserFaceIdCard?userId={{userID}}"
+            nzListType="picture-card" [nzShowUploadList]="false"
+            [nzCustomRequest]="faceimgReq" [nzDisabled]="nameNonEditable">
             <div class="card-upload">
               <ng-container *ngIf="!faceimg">
                 <i [nzType]="'idcard'" nz-icon class="card-icon"></i>
@@ -64,8 +67,9 @@
     <div nz-col [nzSpan]="12">
       <nz-form-item>
         <nz-form-control nzErrorTip="请上传身份证背面照">
-          <nz-upload class="avatar-uploader" nzAction="/material/uploadUserBackIdCard?userId=1"
-            nzListType="picture-card" [nzShowUploadList]="false" [nzCustomRequest]="backimgReq">
+          <nz-upload class="avatar-uploader" nzAction="/material/uploadUserBackIdCard?userId={{userID}}"
+            nzListType="picture-card" [nzShowUploadList]="false"
+            [nzCustomRequest]="backimgReq" [nzDisabled]="nameNonEditable">
             <div class="card-upload">
               <ng-container *ngIf="!backimg">
                 <i [nzType]="'idcard'" nz-icon class="card-icon"></i>
@@ -93,7 +97,7 @@
   <div style="margin: 20px 0px">
     <nz-form-item>
       <nz-form-control>
-        <button nz-button nzType="primary">提交</button>
+        <button nz-button nzType="primary"(click)="submitForm()">提交</button>
       </nz-form-control>
     </nz-form-item>
   </div>

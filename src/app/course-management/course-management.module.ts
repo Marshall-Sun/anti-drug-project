@@ -38,6 +38,7 @@ import { HaveMarkedComponent } from './paper-marking/have-marked/have-marked.com
 import { NotMarkedComponent } from './paper-marking/not-marked/not-marked.component';
 import { PaperListComponent } from './paper-marking/paper-list/paper-list.component';
 import { PaperMarkingTabComponent } from './paper-marking/paper-marking-tab/paper-marking-tab.component';
+import { TestPaperEditComponent } from './test-paper/test-paper-edit/test-paper-edit.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,7 @@ import { PaperMarkingTabComponent } from './paper-marking/paper-marking-tab/pape
     JudgementComponent, CompletionComponent, MaterialComponent,  QuestionCreateComponent, TeachingPlanManagementComponent,
     PaperMarkingComponent, TestResultTableComponent, StudentManagementComponent, StudentManagementTabComponent, FormalStudentTableComponent,
     InformalStudentTableComponent, StudentInvolveRecordComponent, StudentExitRecordComponent, TeacherManagementComponent, PlanSettingComponent, TeachingPlanPageComponent,
-    HaveMarkedComponent,NotMarkedComponent,PaperListComponent,PaperMarkingTabComponent],
+    HaveMarkedComponent,NotMarkedComponent,PaperListComponent,PaperMarkingTabComponent,TestPaperEditComponent],
   imports: [
     ShareModule,
     RouterModule,

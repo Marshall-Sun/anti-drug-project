@@ -2,7 +2,7 @@
     <nz-content class="container-content">
         <nz-layout>
             <nz-header class="nz-header_inner">
-                <app-classinf-header [joinINf]="joinINf" [user]="user" [classid]="classid" (joinClass)="reloadData()" (exitClass)="reloadData()"></app-classinf-header>
+                <app-classinf-header [joinINf]="joinINf" [userId]="userId" [classid]="classid" (joinClass)="reloadData()" (exitClass)="reloadData()"></app-classinf-header>
 
             </nz-header>
             <nz-divider nzType="vertical"></nz-divider>
@@ -29,17 +29,17 @@
                                     <app-classinf-courses [classid]="classid"></app-classinf-courses>
                                 </nz-tab>
                                 <nz-tab nzTitle="评价">
-                                    <app-classinf-comment [classid]="classid"></app-classinf-comment>
+                                    <app-classinf-comment [userId]="userId" [classid]="classid"></app-classinf-comment>
                                 </nz-tab>
                                 <nz-tab nzTitle="话题" *ngIf="joinINf!=null&&joinINf.join==true">
-                                    <app-classinf-topic [classid]="classid">
+                                    <app-classinf-topic [userId]="userId" [classid]="classid">
                                     </app-classinf-topic>
                                 </nz-tab>
                                 <nz-tab nzTitle="笔记" *ngIf="joinINf!=null&&joinINf.join==true">
                                     <app-classinf-notes [classid]="classid"></app-classinf-notes>
                                 </nz-tab>
                                 <nz-tab nzTitle="师资">
-                                    <app-classinf-teachers [classid]="classid"></app-classinf-teachers>
+                                    <app-classinf-teachers [userId]="userId" [classid]="classid"></app-classinf-teachers>
                                 </nz-tab>
                             </nz-tabset>
                         </nz-content>
@@ -47,12 +47,12 @@
                 </nz-content>
                 <nz-sider [nzWidth]="280">
                     <nz-layout>
-                        <nz-content *ngIf="user.isJoin==true" class="nz-content_inner2">
+                        <!-- <nz-content *ngIf="joinINf!=null&&joinINf.join==true" class="nz-content_inner2">
                             <app-signin></app-signin>
-                        </nz-content>
-                        <app-classinf-headmaster [classid]="classid"></app-classinf-headmaster>
+                        </nz-content> -->
+                        <app-classinf-headmaster [userId]="userId" [classid]="classid"></app-classinf-headmaster>
                         <!--courseinf-studentlist-->
-                        <app-classinf-studentlist [classid]="classid"></app-classinf-studentlist>
+                        <app-classinf-studentlist [userId]="userId" [classid]="classid"></app-classinf-studentlist>
                         <app-courseinf-studentdynamics-modal [class_or_course_id]="classid" [type]="class">
                         </app-courseinf-studentdynamics-modal>
                     </nz-layout>

@@ -73,17 +73,37 @@ export class UserManagementService {
   }
 
   updatePassword(password: string, userId: string): Observable<any> {
-    return this._http.put(`/user/updateUserPassword`, {
-      password: password,
+    return this._http.put(`/user/updateUserPasswordbyAdmin`, {
+      newPassword: password,
       userId: userId
     });
   }
 
-  createNewUser(username: string, password: string, roleString: string): Observable<any> {
-    return this._http.post(`/user/xxx`, {
-      username: username,
+  updateNewPassword(newPassword: string, oldPassword: string, userId: string): Observable<any> {
+    return this._http.put(`/user/updateUserPassword`, {
+      newPassword: newPassword,
+      oldPassword: oldPassword,
+      userId: userId
+    });
+  }
+
+  setSecureQuestion(securityQuestionCode: string, securityAnswer: string, userId: string): Observable<any> {
+    return this._http.put(`/user/setUserSecureQuestion`, {
+      securityquestioncode: securityQuestionCode,
+      securityanswer: securityAnswer,
+      userid: userId
+    });
+  }
+
+  getSecureQuestionStatus(userId: string): Observable<any> {
+    return this._http.get(`/user/getSecureQuestionStatus?userId=${userId}`)
+  }
+
+  createNewUser(username: string, password: string, roleList: any): Observable<any> {
+    return this._http.post(`/login/doRegisterByAdmin`, {
+      userName: username,
       password: password,
-      newRole: roleString
+      roleList: roleList
     });
   }
 

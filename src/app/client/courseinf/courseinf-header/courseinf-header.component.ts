@@ -7,11 +7,11 @@ import { Router } from '@angular/router';
   selector: 'app-courseinf-header',
   templateUrl: './courseinf-header.component.html',
   styleUrls: ['./courseinf-header.component.less'],
-  inputs: ["courseid", "user", "teachplanId","joinINf"],
-  outputs: ["joinCourse", "exitCourse","changePlan"]
+  inputs: ["courseid", "userId", "teachplanId", "joinINf"],
+  outputs: ["joinCourse", "exitCourse", "changePlan"]
 })
 export class CourseinfHeaderComponent implements OnInit {
-  userid = "1";
+  userId = "1";
   courseid = "0";
   teachplanId = "0";
   currentcourse = {
@@ -39,11 +39,11 @@ export class CourseinfHeaderComponent implements OnInit {
     //承诺服务
     commitmentservice: [false, true, true, true],
     serializemode: "none",
-    title:"无",
+    title: "无",
   };
   user: any;
-  joinINf:any;
-  currentplan:any;
+  joinINf: any;
+  currentplan: any;
 
   iscollect = true;//之后放在user里
 
@@ -65,7 +65,7 @@ export class CourseinfHeaderComponent implements OnInit {
 
 
   //临时计划
-  teacherplans:any;
+  teacherplans: any;
 
   constructor(private notification: NzNotificationService, private courseinfservice: CourseInfService,
     private testuserservice: TestuserService, private route: Router) {
@@ -77,7 +77,7 @@ export class CourseinfHeaderComponent implements OnInit {
   ngOnInit() {
     //仅测试用
     this.user = this.testuserservice.user;
-    
+
 
     this.courseinfservice.getCourse(this.courseid).subscribe((res: any) => {
       this.setcurrentcourse(res);
@@ -100,7 +100,7 @@ export class CourseinfHeaderComponent implements OnInit {
         { nzDuration: 100 }
       )
     });
-    
+
   }
 
   setcurrentcourse(res: any) {
@@ -157,30 +157,39 @@ export class CourseinfHeaderComponent implements OnInit {
 
   //加入课程
   joincourse_submit() {
-    this.courseinfservice.joinCourse(this.userid,this.courseid,this.teachplanId).subscribe((res: any) => {
-      this.notification.create(
-        'success',
-        '提交成功！',
-        `提交成功`)
+    if (this.userId != null) {
+      this.courseinfservice.joinCourse(this.userId, this.courseid, this.teachplanId).subscribe((res: any) => {
+        this.notification.create(
+          'success',
+          '提交成功！',
+          `提交成功`)
         this.joinCourse.emit();
-    }, error => {
+      }, error => {
+        this.notification.create(
+          'error',
+          '错误！',
+          `${error}`,
+          { nzDuration: 100 }
+        )
+      });
+      this.joinCourse.emit("");
+    }else{
       this.notification.create(
         'error',
         '错误！',
-        `${error}`,
-        { nzDuration: 100 }
+        `请先登录`
       )
-    });
-    this.joinCourse.emit("");
+    }
+
   }
   //退出学习
   exitlearn_submit() {
-    this.courseinfservice.exitCourse(this.userid,this.courseid,this.teachplanId).subscribe((res: any) => {
+    this.courseinfservice.exitCourse(this.userId, this.courseid, this.teachplanId).subscribe((res: any) => {
       this.notification.create(
         'success',
         '提交成功！',
         `提交成功`)
-        this.exitCourse.emit("");
+      this.exitCourse.emit("");
     }, error => {
       this.notification.create(
         'error',
@@ -192,7 +201,15 @@ export class CourseinfHeaderComponent implements OnInit {
 
   //收藏
   collect_submit() {
-    this.courseinfservice.collect_submit(this.teachplanId,parseInt(this.courseid),1).subscribe((res: any) => {
+    if(this.userId==null){
+      this.notification.create(
+        'error',
+        '错误！',
+        `请先登录`
+      )
+      return;
+    }
+    this.courseinfservice.collect_submit(this.teachplanId, parseInt(this.courseid), 1).subscribe((res: any) => {
       this.exitCourse.emit();//事件exitCourse事件仅用来更新数据，无实际意义
       this.notification.create(
         'success',
@@ -210,7 +227,7 @@ export class CourseinfHeaderComponent implements OnInit {
 
   //取消收藏
   uncollect_submit() {
-    this.courseinfservice.Uncollect_submit(this.teachplanId,this.courseid,"1").subscribe((res: any) => {
+    this.courseinfservice.Uncollect_submit(this.teachplanId, this.courseid, "1").subscribe((res: any) => {
       this.exitCourse.emit();//事件exitCourse事件仅用来更新数据，无实际意义
       this.notification.create(
         'success',
@@ -226,11 +243,11 @@ export class CourseinfHeaderComponent implements OnInit {
     });
   }
 
-  initteachplan(id: string){
-    if(id=="0"||id == undefined){
+  initteachplan(id: string) {
+    if (id == "0" || id == undefined) {
       this.teacherplans[0].color = '#458B74';
       this.currentplan = this.teacherplans[0];
-    }else{
+    } else {
       for (let temp of this.teacherplans) {
         if (temp.id == id) {
           this.currentplan = temp;

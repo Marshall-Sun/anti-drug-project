@@ -10,7 +10,7 @@
           <img class="img-info" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
           <div class="text-info">
             <div class="info-header">
-              <div class="course-title" nz-tooltip [nzTitle]="data.title" (click)="navigatTo('client/classinf/'+ data.id)">{{data.title}}</div>
+              <div class="course-title" nz-tooltip [nzTitle]="data.title">{{data.title}}</div>
               <nz-tag style="margin-left: 15px" [nzColor]="choiceColor(data.status)"> {{data.status == 'published'? '已发布': (data.status == 'closed'? '已关闭': '未发布')}}</nz-tag>
               <span class="empty-space" ></span>
               <div class="setting" (click)="navigatTo('client/classroom/'+ data.id+ '/manage' )">

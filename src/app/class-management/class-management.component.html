@@ -4,7 +4,7 @@
       <img class="header-image" [src]="classroom?.smallpicture">
       <div class="header-info">
         <div>{{classroom?.title}}<nz-tag style="margin-left: 5px;" [nzColor]="'#108ee9'">{{classroom?.status}}</nz-tag></div>
-        <button nzSize="small" nz-button nzType="primary">返回班级主页</button>
+        <button nzSize="small" nz-button nzType="primary" (click)="navigatTo('/client/classinf/' + classroomId)">返回班级主页</button>
       </div>
     </div>
   </nz-header>

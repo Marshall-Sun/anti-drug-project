@@ -6,10 +6,11 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   selector: 'app-courseinf-topic',
   templateUrl: './courseinf-topic.component.html',
   styleUrls: ['./courseinf-topic.component.less'],
-  inputs: ["topics","courseid", "teachplanId"],
+  inputs: ["userId","topics","courseid", "teachplanId"],
   outputs: ["responseClick"]
 })
 export class CourseinfTopicComponent implements OnInit {
+  userId = null;
   courseid = "0";
   teachplanId = "0";
   //话题
@@ -99,7 +100,7 @@ export class CourseinfTopicComponent implements OnInit {
   //信息提交
   topic_submit() {
     if (this.editorContent != "" && this.editorTitle != "") {
-      this.courseinfservice.write_teaching_plan_topic(this.courseid,this.teachplanId,this.editorContent, this.editorTitle, "1").subscribe((res: any) => {
+      this.courseinfservice.write_teaching_plan_topic(this.courseid,this.teachplanId,this.editorContent, this.editorTitle, this.userId).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
@@ -122,7 +123,7 @@ export class CourseinfTopicComponent implements OnInit {
 
   questoin_submit() {
     if (this.editorContent != "" && this.editorTitle != "") {
-      this.courseinfservice.write_teaching_plan_questoin(this.courseid,this.teachplanId, this.editorContent, this.editorTitle, "1").subscribe((res: any) => {
+      this.courseinfservice.write_teaching_plan_questoin(this.courseid,this.teachplanId, this.editorContent, this.editorTitle, this.userId).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
@@ -147,7 +148,7 @@ export class CourseinfTopicComponent implements OnInit {
 
   //界面跳转-------------------------------------------------------------------------------
   return_topic() {
-    this.courseinfservice.get_teaching_plan_topic(this.courseid, this.currenttopicpage.toString()).subscribe((res: any) => {
+    this.courseinfservice.get_teaching_plan_topic(this.teachplanId, this.currenttopicpage.toString()).subscribe((res: any) => {
       this.setCoursesTopic(res);
     }, error => {
       this.notification.create(
@@ -179,7 +180,7 @@ export class CourseinfTopicComponent implements OnInit {
   changeType_Topic(type: string): void {
     this.topicytpe = type;
     this.currenttopicpage = 1;
-    this.courseinfservice.get_teaching_plan_topic(this.courseid, this.currenttopicpage.toString(),this.topicytpe,this.topicorder).subscribe((res: any) => {
+    this.courseinfservice.get_teaching_plan_topic(this.teachplanId, this.currenttopicpage.toString(),this.topicytpe,this.topicorder).subscribe((res: any) => {
       this.setCoursesTopic(res);
     }, error => {
       this.notification.create(
@@ -194,7 +195,7 @@ export class CourseinfTopicComponent implements OnInit {
   changeOrder_Topic(order: string): void {
     this.topicorder = order;
     this.currenttopicpage = 1;
-    this.courseinfservice.get_teaching_plan_topic(this.courseid, this.currenttopicpage.toString(),this.topicytpe,this.topicorder).subscribe((res: any) => {
+    this.courseinfservice.get_teaching_plan_topic(this.teachplanId, this.currenttopicpage.toString(),this.topicytpe,this.topicorder).subscribe((res: any) => {
       this.setCoursesTopic(res);
     }, error => {
       this.notification.create(
@@ -248,7 +249,7 @@ export class CourseinfTopicComponent implements OnInit {
 
   response_submit() {
     if (this.editorContent != "") {
-      this.courseinfservice.write_teaching_plan_topic_response(this.courseid, this.currenttopicid, this.editorContent, "1").subscribe((res: any) => {
+      this.courseinfservice.write_teaching_plan_topic_response(this.courseid, this.currenttopicid, this.editorContent, this.userId).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',

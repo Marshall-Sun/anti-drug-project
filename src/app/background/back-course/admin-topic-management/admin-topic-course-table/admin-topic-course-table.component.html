@@ -61,8 +61,8 @@
         (nzCheckedChange)="refreshStatus()"
       ></td>
       <td>
-        <span style="color: #108ee9; cursor: pointer; font-size: 16px;" (click)="navigateToTopic(data.id)">{{data.title}}</span>
-        <span [innerHTML]="data.content"></span>
+        <div style="color: #108ee9; cursor: pointer; font-size: 16px;" (click)="navigateToTopic(data.id)">{{data.title}}</div>
+        <div [innerHTML]="data.content"></div>
         <span *ngIf="data.courseSetTitle !== ''"><span (click)="navigateToTopic(data.courseSetId)" style="color: #6dd2ee; cursor: pointer; font-size: 14px;">{{data.courseSetTitle}}</span><span style="font-size: 12px;">></span></span>
         <span *ngIf="data.courseTitle !== ''" (click)="navigateToTopic(data.courseId)" style="color: #6dd2ee; cursor: pointer;">{{data.courseTitle}}</span>
       </td>

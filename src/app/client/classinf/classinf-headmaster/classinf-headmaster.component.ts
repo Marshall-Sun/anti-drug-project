@@ -6,10 +6,11 @@ import { Router } from '@angular/router';
   selector: 'app-classinf-headmaster',
   templateUrl: './classinf-headmaster.component.html',
   styleUrls: ['./classinf-headmaster.component.less'],
-  inputs: ["classid"],
+  inputs: ["classid","userId"],
 })
 export class ClassinfHeadmasterComponent implements OnInit {
   classid = "0";
+  userId= null;
   //班主任
   headmasterdata = [
     { id: "", name: "李丽", positionaltitles: "讲师", autograph: "没有签名", currentlearn: 10, follow: 10, fans: 1, smallavatar: "", isfollowing: false },
@@ -49,14 +50,19 @@ export class ClassinfHeadmasterComponent implements OnInit {
         this.headmasterdata[i].smallavatar = "../../../../assets/img/timg2.jpg";
       }
 
-      this.classinfservice.isfollowing("1", this.headmasterdata[i].id).subscribe((res: any) => {
-        this.setteacherfollowing(res.data, i);
-      }, error => {
-        this.notification.create(
-          'error',
-          '发生错误！',
-          `${error.error}`)
-      })
+      if(this.userId!=null){
+        this.classinfservice.isfollowing(this.userId, this.headmasterdata[i].id).subscribe((res: any) => {
+          this.setteacherfollowing(res.data, i);
+        }, error => {
+          this.notification.create(
+            'error',
+            '发生错误！',
+            `${error.error}`)
+        })
+      }else{
+        this.setteacherfollowing(false, i);
+      }
+
     }
   }
 
@@ -66,8 +72,15 @@ export class ClassinfHeadmasterComponent implements OnInit {
 
   //私信
   showPrivateletterfirm(toid:string): void {
+    if(this.userId==null){
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `请登录`);
+        return;
+    }
     this.privateletter_toid=toid;
-    if(this.privateletter_toid!="1"){
+    if(this.privateletter_toid!=this.userId){
       this.privateletter_toid=toid;
       this.PrivatelettertVisible = true;
     }else {
@@ -86,7 +99,7 @@ export class ClassinfHeadmasterComponent implements OnInit {
 
   handleOk_Privateletter(): void {
     if (this.PrivatelettertTitle != "" && this.PrivateletterContent != "") {
-      this.classinfservice.privateletter_submit("1", this.privateletter_toid,this.PrivatelettertTitle,this.PrivateletterContent).subscribe((res: any) => {
+      this.classinfservice.privateletter_submit(this.userId, this.privateletter_toid,this.PrivatelettertTitle,this.PrivateletterContent).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
@@ -113,8 +126,15 @@ export class ClassinfHeadmasterComponent implements OnInit {
 
   //关注
   follow_submit(toid: string) {
-    if (toid != "1") {
-      this.classinfservice.follow_submit("1", toid).subscribe((res: any) => {
+    if(this.userId==null){
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `请登录`);
+        return;
+    }
+    if (toid != this.userId) {
+      this.classinfservice.follow_submit(this.userId, toid).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
@@ -144,7 +164,7 @@ export class ClassinfHeadmasterComponent implements OnInit {
 
   //取消关注
   del_follow_submit(toid: string) {
-    this.classinfservice.delfollow_submit("1", toid).subscribe((res: any) => {
+    this.classinfservice.delfollow_submit(this.userId, toid).subscribe((res: any) => {
       this.notification.create(
         'success',
         '提交成功！',

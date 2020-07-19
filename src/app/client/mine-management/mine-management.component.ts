@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import { AuthService } from 'src/app/front-desk/auth/auth.service';
 @Component({
   selector: 'app-mine-management',
   templateUrl: './mine-management.component.html',
@@ -10,7 +11,8 @@ export class MineManagementComponent implements OnInit {
   location: Location;
   constructor(
     private routeInfo: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -21,4 +23,7 @@ export class MineManagementComponent implements OnInit {
     this.router.navigateByUrl(url)
   }
 
+  checkIdentity(identity: string): boolean {
+    return this.authService.userIdentityChecker(identity);
+  }
 }

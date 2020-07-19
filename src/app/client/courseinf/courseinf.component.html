@@ -3,7 +3,7 @@
         <nz-layout>
             <nz-header class="nz-header_inner">
                 <!--courseinf-mainheadpage-->
-                <app-courseinf-header #header [joinINf] = "joinINf" [courseid]="courseid" [user]="user"  [teachplanId]="teachplanId"
+                <app-courseinf-header #header [joinINf] = "joinINf" [courseid]="courseid" [userId]="userId"  [teachplanId]="teachplanId"
                  (joinCourse)="updataload()" (exitCourse)="updataload()" (changePlan)="changeteachplan($event)"></app-courseinf-header>
             </nz-header>
             <nz-layout>
@@ -26,10 +26,10 @@
                                     <app-courseinf-introduce [introduces] = "introduces"></app-courseinf-introduce>
                                 </nz-tab>
                                 <nz-tab nzTitle="目录">
-                                    <app-courseinf-courses [courses] = "courses"  [courseid]="courseid" [teachplanId]="teachplanId"></app-courseinf-courses>
+                                    <app-courseinf-courses [courses] = "courses"  [courseid]="courseid" [teachplanId]="teachplanId" [joinINf] = "joinINf"></app-courseinf-courses>
                                 </nz-tab>
                                 <nz-tab *ngIf="joinINf!=null&&joinINf?.join==true" nzTitle="话题">                           
-                                        <app-courseinf-topic [topics]="topics" [courseid]="courseid" [teachplanId]="teachplanId">
+                                        <app-courseinf-topic [userId]="userId" [topics]="topics" [courseid]="courseid" [teachplanId]="teachplanId">
                                         </app-courseinf-topic>                       
                                 </nz-tab>
                                 <nz-tab nzTitle="笔记">
@@ -39,7 +39,7 @@
                                     <app-courseinf-material [courseid]="courseid" [teachplanId]="teachplanId" [materials]="materials"></app-courseinf-material>
                                 </nz-tab>
                                 <nz-tab nzTitle="评价">
-                                    <app-courseinf-comment [courseid]="courseid" [teachplanId]="teachplanId" [comments]="comments"></app-courseinf-comment>   
+                                    <app-courseinf-comment [courseid]="courseid" [teachplanId]="teachplanId" [comments]="comments" [userId]="userId"></app-courseinf-comment>   
                                 </nz-tab>
                             </nz-tabset>
                         </nz-content>
@@ -52,7 +52,7 @@
                 </nz-content>
                 <nz-sider [nzWidth]="280">
                     <nz-layout>
-                        <app-courseinf-teacherlist-modal [teachers]="teachers" [courseid]="courseid" [teachplanId]="teachplanId"></app-courseinf-teacherlist-modal>
+                        <app-courseinf-teacherlist-modal [userId]="userId" [teachers]="teachers" [courseid]="courseid" [teachplanId]="teachplanId"></app-courseinf-teacherlist-modal>
                         <!--courseinf-coursefeatures-->
                         <!--
                         <nz-content class="nz-content_inner">
@@ -61,9 +61,9 @@
                         </nz-content>
                         -->
                         <!--courseinf-studentlist-->
-                        <app-courseinf-newstudents [studentdata]="studentdata" [courseid]="courseid" [teachplanId]="teachplanId"></app-courseinf-newstudents>
-                        <app-courseinf-studentdynamics-modal [class_or_course_id]="courseid" [type]="'course'">
-                        </app-courseinf-studentdynamics-modal>
+                        <app-courseinf-newstudents [userId]="userId" [studentdata]="studentdata" [courseid]="courseid" [teachplanId]="teachplanId"></app-courseinf-newstudents>
+                        <!-- <app-courseinf-studentdynamics-modal [class_or_course_id]="courseid" [type]="'course'">
+                        </app-courseinf-studentdynamics-modal> -->
                     </nz-layout>
                 </nz-sider>
             </nz-layout>

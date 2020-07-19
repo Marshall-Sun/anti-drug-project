@@ -28,17 +28,16 @@
     </thead>
     <tbody>
     <tr *ngFor="let data of classListTable.data">
-      <td style="color: #108ee9; cursor: pointer;" (click)="checkDetail(data.id, noticeDetailTemplate)">{{data.title}}</td>
-      <td>{{data.startTime}}</td>
-      <td>{{data.endTime}}</td>
-      <td>{{data.status}}</td>
-      <td>{{data.publishPeople}}</td>
+      <td style="color: #108ee9; cursor: pointer;" (click)="checkDetail(data, noticeDetailTemplate)">{{data.title}}</td>
+      <td>{{data.createdTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{data.sendedTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{data.published == '1'? '已发布': '未发布'}}</td>
+      <td>{{data.nickname}}</td>
       <td><i class="more-operation" nz-popover nzTitle="可执行操作" [nzContent]="operationTemplate" nzTrigger="hover" nz-icon nzType="more" nzTheme="outline" nzPlacement="bottom"></i></td>
       <ng-template #operationTemplate>
         <div class="user-management-operation">
           <div>
-            <span *ngIf="data.status != '已发布'" (click)="publish(data.id)"><i nz-icon nzType="check" nzTheme="outline"></i>发布</span>
-            <span *ngIf="data.status == '已发布'" (click)="delete(data.id)"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</span>
+            <span (click)="delete(data.id)"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</span>
           </div>
         </div>
       </ng-template>
@@ -49,21 +48,24 @@
   <ng-template #createNoticeModal>
     <form nz-form [formGroup]="newNoticeForm">
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="title">标题</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="title">标题： </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="名称不能为空">
           <input nz-input formControlName="title" id="title" />
         </nz-form-control>
       </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="content">正文： </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="正文不能为空">
+          <quill-editor formControlName="content"></quill-editor>
+        </nz-form-control>
+      </nz-form-item>
     </form>
-    <div class="introduction-edit-area" nz-row>
-      <span style="text-align: right; color: rgba(0, 0, 0, .85);" nz-col nzSpan="6">正文： </span>
-      <quill-editor nz-col nzSpan="14" [(ngModel)]="content"></quill-editor>
-    </div>
   </ng-template>
 
   <ng-template #noticeDetailTemplate>
     <h1>{{title}}</h1>
-    <p style="color: rgba(0, 0, 0, .65); font-size: 14px;">{{time}}</p>
-    <span>{{noticeContent}}</span>
+    <p style="color: rgba(0, 0, 0, .65); font-size: 14px;">发布时间：{{time * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</p>
+    <div [innerHTML]="noticeContent"></div>
   </ng-template>
 </div>

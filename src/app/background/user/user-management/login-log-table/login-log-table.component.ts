@@ -11,7 +11,7 @@ export class LoginLogTableComponent implements OnInit {
 
   selectedKeywordType: string = 'nickname';
   inputValue: string = '';
-  dateRange: string;
+  dateRange = [];
 
   dataList = [];
   displayData = [];

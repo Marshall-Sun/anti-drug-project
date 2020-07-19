@@ -99,6 +99,7 @@ import {PaperMarkingComponent as ClassPaperMarkingComponent} from '../class-mana
 import { HomeworkMarkingComponent } from '../client/mine-management/homework-marking/homework-marking.component';
 import { AuthGuard } from './auth/auth.guard';
 import { PageNotFoundComponent } from '../client/page-not-found/page-not-found.component';
+import { TestPaperEditComponent } from '../course-management/test-paper/test-paper-edit/test-paper-edit.component';
 
 
 
@@ -109,7 +110,7 @@ const routes: Routes = [
     path: 'client', component: FrontDeskComponent, children: [
       { path: '', component: ClientComponent },
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'mine', component:MineManagementComponent, children:[
+      { path: 'mine', component:MineManagementComponent, canActivate: [AuthGuard], children:[
           {path: 'teachingcourse', component:TeachingCourseComponent},
           {path: 'createcourse', component:CreateCourseComponent},
           {path: 'teachingclass', component:TeachingClassComponent},
@@ -129,10 +130,10 @@ const routes: Routes = [
           {path: 'mylivecourse', component:MyLiveCourseComponent}
         ]},
       { path: 'courselist', component: CourselistComponent},
-      { path: 'courseinf/:id', component: CourseinfComponent },
-      { path: 'courseinf/:id/teachplan/:pid', component: CourseinfComponent },
-      { path: 'courseinf/:id/teachplan/:pid/task/:taskId', component: CoursevideoComponent },
-      { path: 'classinf/:id', component: ClassinfComponent },
+      { path: 'courseinf/:id', component: CourseinfComponent, canActivate: [AuthGuard]},
+      { path: 'courseinf/:id/teachplan/:pid', component: CourseinfComponent, canActivate: [AuthGuard] },
+      { path: 'courseinf/:id/teachplan/:pid/task/:taskId', component: CoursevideoComponent, canActivate: [AuthGuard] },
+      { path: 'classinf/:id', component: ClassinfComponent, canActivate: [AuthGuard] },
       { path: 'teacher', component: TeacherComponent},
       { path: 'userpage/:id', component: UserPageComponent},
       { path: 'userpage/:id', component: UserPageComponent,children:[
@@ -143,17 +144,17 @@ const routes: Routes = [
       ]},
       { path: 'classlist', component: ClasslistComponent },
       { path: 'openresource', component: OpenresourceComponent},
-      { path: 'openresourcedetail/:id', component: OpenresourcedetailComponent },
+      { path: 'openresourcedetail/:id', component: OpenresourcedetailComponent, canActivate: [AuthGuard] },
       {path: 'groupmainlist', component: GroupmainlistComponent,
       children:[
           {path: '', component: GroupnowComponent},
           {path: 'groupmainsearch', component: GroupmainsearchComponent}
         ]},
       {path: 'groupcreate', component: GroupcreateComponent, canActivate: [AuthGuard]},
-      {path: 'groupmainlist/:id', component: GrouplistComponent,
+      {path: 'groupmainlist/:id', component: GrouplistComponent, canActivate: [AuthGuard],
        children: [
           {path: '', component: GroupInfoComponent},
-          {path: 'groupthread/grouptopic', component: GrouptopicComponent, canActivate: [AuthGuard]},
+          {path: 'groupthread/grouptopic', component: GrouptopicComponent},
           {path: 'groupsearch', component: GroupsearchComponent},
           {path: 'groupthread/:id', component: GroupthreadComponent},
           {path: 'groupthread/:id/groupthreadedit', component: GroupthreadeditComponent}
@@ -162,7 +163,7 @@ const routes: Routes = [
       { path: 'newslaw', component: NewsLawModalComponent },
       { path: 'newsnews', component: NewsNewsModalComponent},
       { path: 'newscase', component: NewsCaseModalComponent},
-      { path: 'newsdetails/:id', component: NewsDetailsModalComponent},
+      { path: 'newsdetails/:id', component: NewsDetailsModalComponent, canActivate: [AuthGuard]},
       { path: 'newstag/:id', component: NewsTagModalComponent},
       {
         path: 'classroom/:id', component: ClassManagementComponent, children: [
@@ -203,6 +204,7 @@ const routes: Routes = [
           { path: 'file', component: FileComponent },
           { path: 'testpaper', component: TestPaperComponent },
           { path: 'testpapercreate', component: TestPaperCreateComponent },
+          { path: 'testpaperedit/:testPaperId', component: TestPaperEditComponent },
           { path: 'question', component: QuestionComponent },
           {
             path: 'question_create', component: QuestionCreateComponent, children: [

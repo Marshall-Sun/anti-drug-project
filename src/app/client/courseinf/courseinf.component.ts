@@ -12,6 +12,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { TestuserService } from '../../service/teacher-frontend/teacher-frontend.service';
 import { CourseManagementBackHalfService } from 'src/app/service/course-management-back-half/course-management-back-half.service';
 import { CourseManagementService } from 'src/app/service/course-management/course-management.service';
+import { LoginRegisterService } from 'src/app/service/login-register/login-register.service';
 @Component({
   selector: 'app-courseinf',
   templateUrl: './courseinf.component.html',
@@ -21,15 +22,7 @@ export class CourseinfComponent implements OnInit {
   [x: string]: any;
   courseid = '0';
   teachplanId: any = '0';
-
-  //当前用户
-  user = {
-    isJoin: false,
-    iscollection: true,
-    islearned: true,
-    finished: 5,
-    currented: 5,
-  }
+  userId = null;
 
   joinINf = null;
 
@@ -44,6 +37,7 @@ export class CourseinfComponent implements OnInit {
   teachers = null;
   studentdata = null;
 
+
   @ViewChild('header', null) HeaderComponent: any
 
   constructor(private courseservice: CourseService,
@@ -54,51 +48,71 @@ export class CourseinfComponent implements OnInit {
     private notification: NzNotificationService,
     private testuserservice: TestuserService,
     private courseManagement$: CourseManagementBackHalfService,
-    private coursemanagementService: CourseManagementService) {
+    private coursemanagementService: CourseManagementService,
+    private loginService: LoginRegisterService,) {
   }
 
   ngOnInit() {
-
-
+    this.loginService.courseUserID.subscribe(res => {
+      this.userId = window.localStorage.getItem("id");
+      this.updataload();
+      this.reLoadData();
+    })
     //获取当前页id
     this.activateInfo.params.subscribe(
       (params: Params) => {
         this.courseid = params["id"];
         this.teachplanId = params["pid"];
-
-        this.courseinfservice.get_course_isJoin("1", this.courseid).subscribe((res: any) => {
-          this.joinINf = res.data;
-          if (this.joinINf.courseId!=0&&this.teachplanId == undefined) {
-            this.teachplanId = this.joinINf.courseId;
-            this.reLoadData();
-          }else if(this.teachplanId == undefined){
-            this.courseinfservice.get_teaching_plan(this.courseid).subscribe((res: any) => {
-              this.teachplanId =  res.data[0].id;
+        if (this.userId != null) {
+          this.courseinfservice.get_course_isJoin(this.userId, this.courseid).subscribe((res: any) => {
+            this.joinINf = res.data;
+            if (this.joinINf.courseId != 0 && this.teachplanId == undefined) {
+              this.teachplanId = this.joinINf.courseId;
               this.reLoadData();
-            }, error => {
-              this.notification.create(
-                'error',
-                '错误！',
-                `${error}`,
-                { nzDuration: 100 }
-              )
-            });
-          }else if(this.joinINf.courseId!=0&&this.joinINf.courseId != this.teachplanId){
-            this.teachplanId = this.joinINf.courseId;
+            } else if (this.teachplanId == undefined) {
+              this.courseinfservice.get_teaching_plan(this.courseid).subscribe((res: any) => {
+                this.teachplanId = res.data[0].id;
+                this.reLoadData();
+              }, error => {
+                this.notification.create(
+                  'error',
+                  '错误！',
+                  `${error}`,
+                  { nzDuration: 100 }
+                )
+              });
+            } else if (this.joinINf.courseId != 0 && this.joinINf.courseId != this.teachplanId) {
+              this.teachplanId = this.joinINf.courseId;
+              this.reLoadData();
+            } else {
+              this.reLoadData();
+            }
+
+          }, error => {
+            this.joinINf = null;
+            this.notification.create(
+              'error',
+              '错误！',
+              `${error}`,
+              { nzDuration: 100 }
+            )
+          });
+        } else {
+          this.courseinfservice.get_teaching_plan(this.courseid).subscribe((res: any) => {
+            console.log(this.teachplanId)
+            if (this.teachplanId == undefined){
+              this.teachplanId = res.data[0].id;
+            }
             this.reLoadData();
-          }else{
-            this.reLoadData();
-          }
-          
-        }, error => {
-          this.joinINf = null;
-          this.notification.create(
-            'error',
-            '错误！',
-            `${error}`,
-            { nzDuration: 100 }
-          )
-        });
+          }, error => {
+            this.notification.create(
+              'error',
+              '错误！',
+              `${error}`,
+              { nzDuration: 100 }
+            )
+          });
+        }
       }, error => {
         this.notification.create(
           'error',
@@ -108,24 +122,24 @@ export class CourseinfComponent implements OnInit {
 
   }
 
-
-  setuser(res: any) {
-    this.user = res;
-  }
-
   updataload() {
-    this.courseinfservice.get_course_isJoin("1", this.courseid).subscribe((res: any) => {
-      this.joinINf = res.data;
-      //this.reLoadData();
-    }, error => {
+    if(this.userId!=null){
+      this.courseinfservice.get_course_isJoin(this.userId, this.courseid).subscribe((res: any) => {
+        this.joinINf = res.data;
+        //this.reLoadData();
+      }, error => {
+        this.joinINf = null;
+        this.notification.create(
+          'error',
+          '错误！',
+          `${error}`,
+          { nzDuration: 100 }
+        )
+      });
+    }else{
       this.joinINf = null;
-      this.notification.create(
-        'error',
-        '错误！',
-        `${error}`,
-        { nzDuration: 100 }
-      )
-    });
+    }
+
   }
 
   changeteachplan(id: number) {
@@ -139,7 +153,7 @@ export class CourseinfComponent implements OnInit {
   }
 
   preLoadData() {
-    this.coursemanagementService.getMyCourse(this.pageIndex, this.courses.length, "1", "learning").subscribe((res: any) => {
+    this.coursemanagementService.getMyCourse(this.pageIndex, this.courses.length, this.userId, "learning").subscribe((res: any) => {
       this.setCoursesIntroduce(res);
     }, error => {
       this.notification.create(
@@ -175,7 +189,7 @@ export class CourseinfComponent implements OnInit {
       )
     });
 
-    this.courseinfservice.get_teaching_plan_note(this.courseid, "1", this.teachplanId, "New").subscribe((res: any) => {
+    this.courseinfservice.get_teaching_plan_note(this.teachplanId, "1", "0", "New").subscribe((res: any) => {
       this.setCoursesNotes(res);
     }, error => {
       this.notification.create(
@@ -253,8 +267,11 @@ export class CourseinfComponent implements OnInit {
 
   setCoursesCatalog(res: any) {
     if (res.code == 200) {
-      console.log(res.data[Object.keys(res.data)[0]])
-      this.courses = res.data[Object.keys(res.data)[0]];
+      this.courses = [];
+      for (var key in res.data) {
+        this.courses.push(res.data[key])
+      }
+      console.log(this.courses)
     } else {
       this.courses = [];
     }
@@ -347,15 +364,19 @@ export class CourseinfComponent implements OnInit {
       } else if (this.teachers[i].smallAvatar.substr(7, 7) == "edusoho") {
         this.teachers[i].smallAvatar = "../../../../assets/img/timg2.jpg";
       }
+      if(this.userId!=null){
+        this.courseinfservice.isfollowing(this.userId, this.teachers[i].id).subscribe((res: any) => {
+          this.setfollowing_teacher(res.data, i);
+        }, error => {
+          this.notification.create(
+            'error',
+            '发生错误！',
+            `${error.error}`)
+        })
+      }else{
+        this.setfollowing_teacher(false, i);
+      }
 
-      this.courseinfservice.isfollowing("1", this.teachers[i].id).subscribe((res: any) => {
-        this.setfollowing_teacher(res.data, i);
-      }, error => {
-        this.notification.create(
-          'error',
-          '发生错误！',
-          `${error.error}`)
-      })
     }
   }
 
@@ -375,15 +396,19 @@ export class CourseinfComponent implements OnInit {
       } else if (this.studentdata[i].smallAvatar.substr(7, 7) == "edusoho") {
         this.studentdata[i].smallAvatar = "../../../../assets/img/timg2.jpg";
       }
+      if(this.userId!=null){
+        this.courseinfservice.isfollowing(this.userId, this.studentdata[i].id).subscribe((res: any) => {
+          this.setfollowing_student(res.data, i);
+        }, error => {
+          this.notification.create(
+            'error',
+            '发生错误！',
+            `${error.error}`)
+        })
+      }else{
+        this.setfollowing_student(false, i);
+      }
 
-      this.courseinfservice.isfollowing("1", this.studentdata[i].id).subscribe((res: any) => {
-        this.setfollowing_student(res.data, i);
-      }, error => {
-        this.notification.create(
-          'error',
-          '发生错误！',
-          `${error.error}`)
-      })
     }
     //console.log(this.studentdata)
   }

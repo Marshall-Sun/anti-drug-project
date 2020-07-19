@@ -1,6 +1,7 @@
 <h1>安全认证</h1>
 <nz-divider></nz-divider>
-<nz-alert nzType="warning" nzMessage="安全等级:中" nzDescription="可以进一步设置" nzShowIcon>
+<nz-alert nzType={{SecureLevel.alertType}} nzMessage={{SecureLevel.level}}
+          nzDescription={{SecureLevel.secureDescription}} nzShowIcon>
 </nz-alert>
 <div class="main-layout">
   <nz-list [nzDataSource]="list" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
@@ -9,7 +10,9 @@
 
         <ng-template #itemContent>
           <p *ngIf="item.setup" class="is-setup"><i nz-icon nzType="check-circle" nzTheme="fill"></i>已设置</p>
-          <p *ngIf="!item.setup" class="not-setup"><i nz-icon nzType="exclamation-circle" nzTheme="fill"></i>未设置</p>
+          <p *ngIf="!item.setup" [class]="SecureQuestionStatus.securityProblemClass">
+            <i nz-icon [nzType]="SecureQuestionStatus.securityProblemIcon" nzTheme="fill"></i>
+            {{SecureQuestionStatus.isSecurityProblemSetted}}</p>
         </ng-template>
 
         <ng-template #action>

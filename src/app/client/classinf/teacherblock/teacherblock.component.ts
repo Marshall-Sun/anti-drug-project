@@ -5,24 +5,33 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   selector: 'app-teacherblock',
   templateUrl: './teacherblock.component.html',
   styleUrls: ['./teacherblock.component.less'],
-  inputs: ['teacher']
+  inputs: ['teacher', 'userId']
 })
 export class TeacherblockComponent implements OnInit {
   teacher: any;
-
+  userId = null;
   //私信
   PrivatelettertVisible = false;
-  PrivatelettertTitle: string="";
-  PrivateletterContent: string="";
-  constructor(private classinfservice: ClassInfService,private notification: NzNotificationService) { }
+  PrivatelettertTitle: string = "";
+  PrivateletterContent: string = "";
+  PrivateToId = "0";
+  constructor(private classinfservice: ClassInfService, private notification: NzNotificationService) { }
 
   ngOnInit() {
   }
   //私信
-  showPrivateletterfirm(toid:string): void {
-    if (toid != "1") {
+  showPrivateletterfirm(toid: string): void {
+    if (this.userId == null) {
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `请登录`)
+      return;
+    }
+    if (toid != this.userId) {
       this.PrivatelettertVisible = true;
-    }else {
+      this.PrivateToId = toid;
+    } else {
       this.notification.create(
         'error',
         '发生错误！',
@@ -32,11 +41,12 @@ export class TeacherblockComponent implements OnInit {
 
   handleOk_Privateletter(): void {
     if (this.PrivatelettertTitle != "" && this.PrivateletterContent != "") {
-      this.classinfservice.privateletter_submit("1","1",this.PrivatelettertTitle,this.PrivateletterContent).subscribe((res: any) => {
+      this.classinfservice.privateletter_submit(this.userId, this.PrivateToId, this.PrivatelettertTitle, this.PrivateletterContent).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
           `提交成功`)
+        this.PrivateToId = "0";
       }, error => {
         this.notification.create(
           'error',
@@ -64,13 +74,20 @@ export class TeacherblockComponent implements OnInit {
 
   //关注
   follow_submit(toid: string) {
-    if (toid != "1") {
-      this.classinfservice.follow_submit("1", toid).subscribe((res: any) => {
+    if (this.userId == null) {
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `请登录`)
+      return;
+    }
+    if (toid != this.userId) {
+      this.classinfservice.follow_submit(this.userId, toid).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
           `提交成功`)
-          this.teacher.isfollowing = true;
+        this.teacher.isfollowing = true;
       }, error => {
         this.notification.create(
           'error',
@@ -87,12 +104,12 @@ export class TeacherblockComponent implements OnInit {
 
   //取消关注
   del_follow_submit(toid: string) {
-    this.classinfservice.delfollow_submit("1", toid).subscribe((res: any) => {
+    this.classinfservice.delfollow_submit(this.userId, toid).subscribe((res: any) => {
       this.notification.create(
         'success',
         '提交成功！',
         `提交成功`)
-        this.teacher.isfollowing = false;
+      this.teacher.isfollowing = false;
     }, error => {
       this.notification.create(
         'error',

@@ -7,7 +7,7 @@
         <span style="margin: 3px;">任务总数:</span><span class="color-warning">{{tasklist.length}}</span>
       </div>
       <div>
-        <button nz-button nzType="primary" (click)="handleOpen_addtask()"><i nz-icon nzType="plus"
+        <button nz-button nzType="primary" (click)="handleOpen_addtask(0,'lesson')"><i nz-icon nzType="plus"
             nzTheme="outline"></i>添加任务</button>
       </div>
     </div>
@@ -20,33 +20,52 @@
               <nz-collapse-panel [nzHeader]="extraheader" [nzActive]="panel.active" [nzExtra]="extraTpl">
                 <ng-template #extraheader>
                   <!-- You can use stopPropagation if you don't want the panel to toggle -->
-                  <nz-tag *ngIf="panel[0].isOptional==1" [nzColor]="'#87d068'">选修</nz-tag>
-                  <nz-tag *ngIf="panel[0].isOptional==0" [nzColor]="'#F56C6C'">必修</nz-tag>
-                  {{panel[0].title}}
-                  <span *ngIf="panel[0].status!='published'" style="color: orange;">(未发布)</span>
-                  <span *ngIf="panel[0].status=='published'" style="color: #87d068;">(已发布)</span>
+                  <nz-tag *ngIf="getTaskByType(panel,'lesson').isOptional==1" [nzColor]="'#87d068'">选修</nz-tag>
+                  <nz-tag *ngIf="getTaskByType(panel,'lesson').isOptional==0" [nzColor]="'#F56C6C'">必修</nz-tag>
+                  {{getTaskByType(panel,'lesson').title}}
+                  <span *ngIf="getTaskByType(panel,'lesson').status!='published'" style="color: orange;">(未发布)</span>
+                  <span *ngIf="getTaskByType(panel,'lesson').status=='published'" style="color: #87d068;">(已发布)</span>
                 </ng-template>
                 <div nz-row>
-                  <span class="spanblock" nz-col nzSpan="4">预习<i nz-icon nzType="eye" nzTheme="outline"></i></span><span
-                    nz-col nzSpan="1">>></span>
-                  <span class="spanblock" nz-col nzSpan="4">任务学习<i nz-icon nzType="read"
-                      nzTheme="outline"></i></span><span nz-col nzSpan="1">>></span>
-                  <span class="spanblock" nz-col nzSpan="4">练习<i nz-icon nzType="edit"
-                      nzTheme="outline"></i></span><span nz-col nzSpan="1">>></span>
-                  <span class="spanblock" nz-col nzSpan="4">作业<i nz-icon nzType="form"
-                      nzTheme="outline"></i></span><span nz-col nzSpan="1">>></span>
-                  <span class="spanblock" nz-col nzSpan="4">课外<i nz-icon nzType="heat-map" nzTheme="outline"></i></span>
+                  <span *ngIf="getTaskByType(panel,'preparation')==null" class="spanblock" nz-col nzSpan="4" (click)="handleOpen_addtask(getTaskByType(panel,'lesson').sequence,'preparation')">预习<i nz-icon
+                      nzType="eye" nzTheme="outline"></i></span>
+                  <span *ngIf="getTaskByType(panel,'preparation')!=null" class="spanblock2" nz-col nzSpan="4" (click)="editTask(getTaskByType(panel,'preparation'),'preparation')">预习<i nz-icon
+                      nzType="eye" nzTheme="outline"></i></span>
+                  <span nz-col nzSpan="1">>></span>
+                  <span *ngIf="getTaskByType(panel,'lesson')==null" class="spanblock" nz-col nzSpan="4" (click)="handleOpen_addtask(getTaskByType(panel,'lesson').sequence,'lesson')">任务学习<i nz-icon
+                      nzType="read" nzTheme="outline"></i></span>
+                  <span *ngIf="getTaskByType(panel,'lesson')!=null" class="spanblock2" nz-col nzSpan="4" (click)="editTask(getTaskByType(panel,'lesson'),'lesson')">任务学习<i nz-icon
+                      nzType="read" nzTheme="outline"></i></span>
+                  <span nz-col nzSpan="1">>></span>
+                  <span *ngIf="getTaskByType(panel,'exercise')==null" class="spanblock" nz-col nzSpan="4" (click)="handleOpen_addtask(getTaskByType(panel,'lesson').sequence,'exercise')">练习<i nz-icon
+                      nzType="edit" nzTheme="outline"></i></span>
+                  <span *ngIf="getTaskByType(panel,'exercise')!=null" class="spanblock2" nz-col nzSpan="4" (click)="editTask(getTaskByType(panel,'exercise'),'exercise')">练习<i nz-icon
+                      nzType="edit" nzTheme="outline"></i></span>
+                  <span nz-col nzSpan="1">>></span>
+                  <span *ngIf="getTaskByType(panel,'homework')==null" class="spanblock" nz-col nzSpan="4" (click)="handleOpen_addtask(getTaskByType(panel,'lesson').sequence,'homework')">作业<i nz-icon
+                      nzType="form" nzTheme="outline"></i></span>
+                  <span *ngIf="getTaskByType(panel,'homework')!=null" class="spanblock2" nz-col nzSpan="4" (click)="editTask(getTaskByType(panel,'homework'),'homework')">作业<i nz-icon
+                      nzType="form" nzTheme="outline"></i></span>
+                  <span nz-col nzSpan="1">>></span>
+                  <span *ngIf="getTaskByType(panel,'extraClass')==null" class="spanblock" nz-col nzSpan="4" (click)="handleOpen_addtask(getTaskByType(panel,'lesson').sequence,'extraClass')">课外<i nz-icon
+                      nzType="heat-map" nzTheme="outline"></i></span>
+                  <span *ngIf="getTaskByType(panel,'extraClass')!=null" class="spanblock2" nz-col nzSpan="4" (click)="editTask(getTaskByType(panel,'extraClass'),'extraClass')">课外<i nz-icon
+                      nzType="heat-map" nzTheme="outline"></i></span>
                 </div>
-
-
                 <ng-template #extraTpl>
                   <!-- You can use stopPropagation if you don't want the panel to toggle -->
                   <nz-button-group nzSize='small'>
                     <button nz-button><i nz-icon nzType="eye" nzTheme="outline"></i>预览</button>
-                    <button nz-button><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</button>
-                    <button nz-button><i nz-icon nzType="upload" nzTheme="outline"
-                        (click)="publishTask(panel[0].taskId)"></i>发布</button>
-                    <button nz-button><i nz-icon nzType="delete" nzTheme="outline"></i>删除</button>
+                    <button nz-button (click)="editTask(getTaskByType(panel,'lesson'),'lesson')"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</button>
+                    <button *ngIf="getTaskByType(panel,'lesson').status!='published'"
+                      (click)="publishTask(getTaskByType(panel,'lesson').taskId)" nz-button><i nz-icon nzType="upload"
+                        nzTheme="outline"></i>发布</button>
+                    <button *ngIf="getTaskByType(panel,'lesson').status=='published'"
+                      (click)="unpublishTask(getTaskByType(panel,'lesson').taskId)" nz-button><i nz-icon nzType="upload"
+                        nzTheme="outline"></i>取消发布</button>
+                    <button *ngIf="getTaskByType(panel,'lesson').status!='published'"
+                      (click)="deleteTask(getTaskByType(panel,'lesson').taskId)" nz-button><i nz-icon nzType="delete"
+                        nzTheme="outline"></i>删除</button>
                   </nz-button-group>
                 </ng-template>
               </nz-collapse-panel>
@@ -92,7 +111,7 @@
   <nz-divider></nz-divider>
   <div *ngIf="addtask_currentpage==0">
     <div nz-row style="margin-top: 10px;">
-      <nz-card nzHoverable nz-col nzSpan="6" (click)="settask('picture_text')">
+      <nz-card nzHoverable nz-col nzSpan="6" (click)="settask('text')">
         <i nz-icon nzType="picture" nzTheme="outline" style="font-size: 40px;align-content: center;"></i>
         <p style="font-size: 20px;font-weight: 800;color: gray;">图文</p>
       </nz-card>
@@ -112,7 +131,7 @@
         <i nz-icon nzType="message" nzTheme="outline" style="font-size: 40px;align-content: center;"></i>
         <p style="font-size: 20px;font-weight: 800;color: gray;">讨论</p>
       </nz-card> -->
-      <nz-card nzHoverable nz-col nzSpan="6" (click)="settask('test')">
+      <nz-card nzHoverable nz-col nzSpan="6" (click)="settask('testpaper')">
         <i nz-icon nzType="file-text" nzTheme="outline" style="font-size: 40px;align-content: center;"></i>
         <p style="font-size: 20px;font-weight: 800;color: gray;">考试</p>
       </nz-card>
@@ -132,7 +151,7 @@
   </div>
   <div *ngIf="addtask_currentpage==1">
     <!-- 图文、讨论页 -->
-    <div *ngIf="addtssk_currenttype=='picture_text'||addtssk_currenttype=='discuss'">
+    <div *ngIf="addtssk_currenttype=='text'||addtssk_currenttype=='discuss'">
       <form nz-form [formGroup]="pt_Form" nzLayout="vertical">
         <nz-form-item>
           <nz-form-label nzRequired>标题</nz-form-label>
@@ -153,15 +172,16 @@
     <div *ngIf="addtssk_currenttype=='video'||addtssk_currenttype=='voice'||addtssk_currenttype=='download'">
       <div>
         <span class="formTitle">标题</span>
-        <input nz-input placeholder="请输入标题" [(ngModel)]="pt_title" />
+        <input nz-input placeholder="请输入标题" [(ngModel)]="material_title" />
       </div>
       <p class="formTitle">内容</p>
-      <div *ngIf="currentselect==null">
+      <div *ngIf="current_select_material==undefined">
         <div style="margin-top:30px;">
           <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
             <nz-tab nzTitle="上传资料">
-              <nz-upload nzType="drag" [nzLimit]="1" [nzAction]="'/material/uploadNormal?userId=' + userId"
-                [nzCustomRequest]="customReq">
+              <nz-upload nzType="drag" [nzLimit]="1"
+                [nzAction]="'/material/uploadTaskMaterial?courseId=' + teachplanId+'&userId='+userid"
+                (nzChange)="uploadMaterialChange($event)" [nzCustomRequest]="customReq">
                 <p class="ant-upload-drag-icon">
                   <i nz-icon nzType="picture"></i>
                 </p>
@@ -169,98 +189,84 @@
               </nz-upload>
             </nz-tab>
             <nz-tab nzTitle="从资料库中选择">
-              <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixButton">
-                <input type="text" nz-input placeholder="input search text" />
+              <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixButtonBase">
+                <input type="text" nz-input placeholder="input search text" [(ngModel)]="searchKeyword" />
               </nz-input-group>
-              <ng-template #suffixButton>
-                <button nz-button nzType="primary" nzSize="large" nzSearch>Search</button>
+              <ng-template #suffixButtonBase>
+                <button nz-button nzType="primary" nzSize="large" (click)="searchMaterials()">Search</button>
               </ng-template>
               <nz-divider></nz-divider>
-              <nz-table #basicTable [nzData]="soursedata" [nzPageIndex]="soursepage" nzPageSize="5">
+              <nz-table #basicTable nzFrontPagination="false" [nzData]="soursedata">
                 <thead>
                   <tr>
                     <th>名称</th>
                     <th>大小</th>
-                    <th>日期</th>
+                    <th>选择</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of basicTable.data" (click)="selectsource(data)">
-                    <td>{{data.name}}</td>
-                    <td>{{data.date}}</td>
-                    <td>{{data.size}}</td>
-                    <!-- <td>
-                      <a>Action 一 {{data.name}}</a>
-                      <nz-divider nzType="vertical"></nz-divider>
-                      <a>Delete</a>
-                    </td> -->
+                  <tr *ngFor="let data of soursedata">
+                    <td>{{data.filename}}</td>
+                    <td>{{data.createdTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td><button (click)="selectMaterial(data)">选择</button></td>
                   </tr>
                 </tbody>
               </nz-table>
-
+              <nz-pagination nzPageSize="12" [(nzPageIndex)]="soursepage" [nzTotal]="sourcetotalpage"
+                (nzPageIndexChange)="getMaterials()">
+              </nz-pagination>
 
             </nz-tab>
             <nz-tab nzTitle="从课程中选择">
-              <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixButton">
-                <input type="text" nz-input placeholder="input search text" />
-              </nz-input-group>
-              <ng-template #suffixButton>
-                <button nz-button nzType="primary" nzSize="large" nzSearch>Search</button>
-              </ng-template>
               <nz-divider></nz-divider>
-              <nz-table #basicTable [nzData]="soursedata" [nzPageIndex]="soursepage" nzPageSize="5">
-
-                <!-- (nzPageIndexChange) 当前页码改版时的回调函数 (nzPageSizeChange) 页数改变时的回调函数  (nzCheckedChange)	选中的回调-->
+              <nz-table #basicTable nzFrontPagination="false" [nzData]="soursedata_course">
                 <thead>
                   <tr>
                     <th>名称</th>
                     <th>大小</th>
-                    <th>日期</th>
+                    <th>选择</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of basicTable.data" (click)="selectsource(data)">
-                    <td>{{data.name}}</td>
-                    <td>{{data.date}}</td>
-                    <td>{{data.size}}</td>
-                    <!-- <td>
-                      <a>Action 一 {{data.name}}</a>
-                      <nz-divider nzType="vertical"></nz-divider>
-                      <a>Delete</a>
-                    </td> -->
+                  <tr *ngFor="let data of soursedata_course">
+                    <td>{{data.fileName}}</td>
+                    <td>{{data.createdTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td><button (click)="selectMaterial(data)">选择</button></td>
                   </tr>
                 </tbody>
               </nz-table>
+              <nz-pagination nzPageSize="12" [(nzPageIndex)]="soursepage_course" [nzTotal]="sourcetotalpage_course"
+                (nzPageIndexChange)="getCourseFileList()">
+              </nz-pagination>
             </nz-tab>
           </nz-tabset>
         </div>
       </div>
-      <div *ngIf="currentselect!=null">
+      <div *ngIf="current_select_material!=undefined">
         <div style="margin-top:30px;">
-          <span>当前选择{{currentselect.name}}</span>
-          <button nz-button nzType="primary" class=".task-list-header " (click)="selectsource(null)">重新选择
+          <span>当前选择{{current_select_material.filename}}</span>
+          <button nz-button nzType="primary" class=".task-list-header " (click)="selectMaterial(undefined)">重新选择
           </button>
         </div>
       </div>
     </div>
     <!-- 作业、考试页 -->
-    <div *ngIf="addtssk_currenttype=='test'">
+    <div *ngIf="addtssk_currenttype=='testpaper'">
       <form nz-form [formGroup]="testForm">
 
         <nz-form-item>
           <nz-form-label nzSpan="3" nzFor="chapter" nzRequired>标题名称</nz-form-label>
           <nz-form-control nzSpan="21" nzErrorTip="请输入标题名称" nzHasFeedback>
             <nz-input-group>
-              <input formControlName="testTitleName" required type="text" id="testTitleName" nz-input
-                placeholder="输入考试标题名称：" />
+              <input formControlName="title" required type="text" id="title" nz-input placeholder="输入考试标题名称：" />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label nzSpan="3" nzRequired>试卷选择</nz-form-label>
           <nz-form-control nzSpan="21" nzExtra="如果找不到试卷，请先确定该试卷已经发布">
-            <nz-select style="width: 100%" nzMode="multiple" nzPlaceHolder="请选择试卷" id="testPaperChoose"
-              formControlName="testPaperChoose">
+            <nz-select style="width: 100%" nzPlaceHolder="请选择试卷" id="testpaperId" formControlName="testpaperId">
+              <nz-option *ngFor="let item of testpaper" [nzValue]="item.id" [nzLabel]="item.testPaperName"></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>
@@ -268,16 +274,16 @@
           <nz-form-label nzSpan="3" nzFor="chapter">考试时长</nz-form-label>
           <nz-form-control nzSpan="5" nzExtra="0分钟，表示无限制。">
             <nz-input-group nzSuffix="分钟">
-              <nz-input-number id="testTime" formControlName="testTime" nzMin="0" [nzStep]="1"></nz-input-number>
+              <nz-input-number id="limitedTime" formControlName="limitedTime" nzMin="0" [nzStep]="1"></nz-input-number>
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label nzSpan="3">考试次数</nz-form-label>
           <nz-form-control nzSpan="21">
-            <nz-radio-group formControlName="testTimes" id="testTimes">
-              <label nz-radio nzValue="notLimit">不限</label>
-              <label nz-radio nzValue="onlyOnce">单次</label>
+            <nz-radio-group formControlName="doTimes" id="doTimes">
+              <label nz-radio nzValue=0>不限</label>
+              <label nz-radio nzValue=1>单次</label>
             </nz-radio-group>
           </nz-form-control>
         </nz-form-item>
@@ -285,7 +291,8 @@
           <nz-form-label nzSpan="3" nzFor="chapter">重考间隔</nz-form-label>
           <nz-form-control nzSpan="5" nzExtra="0小时，表示无限制。">
             <nz-input-group nzSuffix="小时">
-              <nz-input-number id="testDuring" formControlName="testDuring" nzMin="0" [nzStep]="1"></nz-input-number>
+              <nz-input-number id="reDoInterval" formControlName="reDoInterval" nzMin="0" [nzStep]="1">
+              </nz-input-number>
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
@@ -309,96 +316,90 @@
             </quill-editor>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
+        <nz-form-item *ngIf="isCreateTask">
           <nz-form-label nzSpan="3" nzFor="intro" nzRequired>选择题目</nz-form-label>
           <button nz-button nzType="primary" class=".task-list-header " (click)="handleOpen_addsubject()"><i nz-icon
               nzType="plus" nzTheme="outline"></i>选择题目
           </button>
         </nz-form-item>
-        <nz-form-item>
-          <nz-table #SquestionListTable [nzFrontPagination]="false" >
-          <thead>
-            <tr>
-              <!-- <th nzShowCheckbox [(nzChecked)]="isAllChecked" (nzCheckedChange)="checkAll($event)"></th> -->
-              <th width="10%">选择</th>
-              <th width="35%">题干</th>
-              <th width="15%">类型</th>
-              <th>最后更新</th>
-              <th width="20%">操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of selectedQuestions">
-              <td nzShowCheckbox (nzCheckedChange)="check2(data.id)"></td>
-              <td [innerHTML]="data.stem"></td>
-              <td>{{ questiontypeToChinese[data.type] }}</td>
-              <td>{{ data.updatedTime * 1000 | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-              <td><a nz-popover [nzPopoverTitle]="popoverTitle" [nzPopoverContent]="popoverContent">预览</a>
-                <ng-template #popoverTitle>
-                  <span [innerHTML]="data.stem"></span>
-                </ng-template>
-                <ng-template #popoverContent>
-                  <div class="question-body">
-                    <div>
-                      <nz-tag [nzColor]="'blue'">分值:</nz-tag>{{data.score==null?'无':data.score}}
+        <nz-form-item *ngIf="isCreateTask">
+          <nz-table #SquestionListTable [nzFrontPagination]="false">
+            <thead>
+              <tr>
+                <!-- <th nzShowCheckbox [(nzChecked)]="isAllChecked" (nzCheckedChange)="checkAll($event)"></th> -->
+                <th width="10%">选择</th>
+                <th width="35%">题干</th>
+                <th width="15%">类型</th>
+                <th>最后更新</th>
+                <th width="20%">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of selectedQuestions">
+                <td nzShowCheckbox (nzCheckedChange)="check2(data.id)"></td>
+                <td [innerHTML]="data.stem"></td>
+                <td>{{ questiontypeToChinese[data.type] }}</td>
+                <td>{{ data.updatedTime * 1000 | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td><a nz-popover [nzPopoverTitle]="popoverTitle" [nzPopoverContent]="popoverContent">预览</a>
+                  <ng-template #popoverTitle>
+                    <span [innerHTML]="data.stem"></span>
+                  </ng-template>
+                  <ng-template #popoverContent>
+                    <div class="question-body">
+                      <div>
+                        <nz-tag [nzColor]="'blue'">分值:</nz-tag>{{data.score==null?'无':data.score}}
+                      </div>
                     </div>
-                  </div>
-                  <div class="question-answer">
-                    <nz-tag [nzColor]="'blue'">正确答案:</nz-tag>{{data.answer==null?'无':data.answer}}
-                  </div>
-                  <div class="question-analysis">
-                    <nz-tag [nzColor]="'blue'">解析:</nz-tag> <span>{{data.analysis==null?'无解析':data.analysis}}</span>
-                  </div>
-                </ng-template>
-                <nz-divider nzType="vertical"></nz-divider>
-                <a (click)="confirmDelete(data.id)">删除</a>
-              </td>
-            </tr>
-          </tbody>
-        </nz-table>
+                    <div class="question-answer">
+                      <nz-tag [nzColor]="'blue'">正确答案:</nz-tag>{{data.answer==null?'无':data.answer}}
+                    </div>
+                    <div class="question-analysis">
+                      <nz-tag [nzColor]="'blue'">解析:</nz-tag> <span>{{data.analysis==null?'无解析':data.analysis}}</span>
+                    </div>
+                  </ng-template>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <a (click)="confirmDelete(data.id)">删除</a>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
         </nz-form-item>
       </form>
-      <button nz-button nzType="danger" (click)="confirmDeleteList()"><i nz-icon nzType="delete"
-        nzTheme="outline"></i>删除</button>
+      <button *ngIf="isCreateTask" nz-button nzType="danger" (click)="confirmDeleteList()"><i nz-icon nzType="delete"
+          nzTheme="outline"></i>删除</button>
     </div>
 
   </div>
   <div *ngIf="addtask_currentpage==2">
-    <div *ngIf="addtssk_currenttype=='test'">
-      <form nz-form [formGroup]="testForm">
-        <nz-form-item>
-          <nz-form-label nzSpan="3">完成条件</nz-form-label>
-          <nz-radio-group [(ngModel)]="radioTestValue" [ngModelOptions]="{standalone: true}">
-            <label nz-radio nzValue="分数达标">分数达标</label>
-            <label nz-radio nzValue="提交试卷">提交试卷</label>
-          </nz-radio-group>
-        </nz-form-item>
-        <nz-form-item *ngIf="radioTestValue == '分数达标'">
-          <nz-form-label nzSpan="3" nzFor="chapter">分数</nz-form-label>
-          <nz-form-control nzSpan="5" nzExtra="0分，表示无限制。">
-            <nz-input-group nzSuffix="分">
-              <nz-input-number id="testScoreSet" formControlName="testScoreSet" nzMin="0" [nzStep]="1">
-              </nz-input-number>
-            </nz-input-group>
-          </nz-form-control>
-        </nz-form-item>
-      </form>
+    <div *ngIf="addtssk_currenttype=='testpaper'" style="margin-top: 10px;">
+      完成条件
+      <nz-radio-group [(ngModel)]="radioTestValue">
+        <label nz-radio nzValue="score" nzLabel="分数达标">分数达标</label>
+        <label nz-radio nzValue="submit" nzLabel="提交试卷">提交试卷</label>
+      </nz-radio-group>
+    </div>
+    <div *ngIf="addtssk_currenttype=='testpaper'&&radioTestValue == 'score'" style="margin-top: 10px;">
+      分数("0分，表示无限制。")
+      <nz-input-number [ngModel]="testfinisheScore" nzMin="0" [nzStep]="1">
+      </nz-input-number>
     </div>
 
-    <div *ngIf="addtssk_currenttype=='homework'">
+    <div *ngIf="addtssk_currenttype=='homework'" style="margin-top: 10px;">
       <p>完成条件：提交作业</p>
     </div>
 
     <div>
-      <!--  *ngIf="addtssk_currenttype=='picture_text'||addtssk_currenttype=='video'||addtssk_currenttype=='voice'||addtssk_currenttype=='download'" -->
-      <label nz-checkbox [(ngModel)]="iselective">是否为选修</label>
+      <!--  *ngIf="addtssk_currenttype=='text'||addtssk_currenttype=='video'||addtssk_currenttype=='voice'||addtssk_currenttype=='download'" -->
+      <label nz-checkbox [(ngModel)]="iselective" style="margin-top: 10px;">是否为选修</label>
     </div>
   </div>
 
   <ng-template #modalFooter>
+    <button *ngIf="addtask_currentpage!=0&&!isCreateTask&&currentEditTask.mode!='lesson'" nz-button nzType="primary" class="deleteButton" (click)="deleteChildTask()" nzDanger>删除</button>
     <button *ngIf="addtask_currentpage!=0" nz-button nzType="primary" (click)="lastpage()">上一步</button>
     <button *ngIf="addtask_currentpage==1" nz-button nzType="primary" (click)="nextpage()">下一步</button>
-    <button *ngIf="addtask_currentpage==2" nz-button nzType="primary" (click)="handleOk_addtask()">提交</button>
+    <button *ngIf="isCreateTask&&addtask_currentpage==2" nz-button nzType="primary" (click)="handleOk_addtask()">提交</button>
+    <button *ngIf="!isCreateTask&&addtask_currentpage==2" nz-button nzType="primary" (click)="handleOk_edittask()">提交</button>
     <button nz-button nzType="primary" nzDanger (click)="handleCancel_addtask()">取消</button>
   </ng-template>
 </nz-modal>

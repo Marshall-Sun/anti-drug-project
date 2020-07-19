@@ -19,17 +19,17 @@ export class AdminCourseManagementTableComponent implements OnInit {
       label: '学堂在线',
       children: [
         {
-          value: '7',
+          value: '22',
           label: '小学年级',
           isLeaf: true
         },
         {
-          value: '8',
+          value: '23',
           label: '初中年级',
           isLeaf: true
         },
         {
-          value: '12',
+          value: '24',
           label: '高中年级',
           isLeaf: true
         },

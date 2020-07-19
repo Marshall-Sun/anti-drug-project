@@ -6,11 +6,12 @@ import {Router} from '@angular/router';
   selector: 'app-courseinf-courses',
   templateUrl: './courseinf-courses.component.html',
   styleUrls: ['./courseinf-courses.component.less'],
-  inputs:["courses","courseid","teachplanId"],
+  inputs:["courses","courseid","teachplanId","joinINf"],
 })
 export class CourseinfCoursesComponent implements OnInit {
   courseid="0";
   teachplanId = "0";
+  joinINf = null;
   //课程列表
   courses = [{ title: "任务1: 禁毒历史（下）"}];
 
@@ -24,7 +25,20 @@ export class CourseinfCoursesComponent implements OnInit {
   }
 
   navigateByUrl(url: string) {
-    this.route.navigateByUrl(url)
+    if(this.joinINf==null ||this.joinINf.join==false){
+      alert("请先加入课程");
+    }else{
+      this.route.navigateByUrl(url);
+    }
+  }
+
+  getTaskByType(tasks: any, type: string) {
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].mode == type) {
+        return tasks[i];
+      }
+    }
+    return null;
   }
 
 }

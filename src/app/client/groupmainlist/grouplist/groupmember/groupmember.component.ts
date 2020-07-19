@@ -57,7 +57,9 @@ export class GroupmemberComponent implements OnInit {
       content: ['', Validators.required],
     });
     this.getMember();
-    this.curUserOwnThisGroup = this.authService.userOwnGroupChecker(this.groupId);
+    this.authService.userOwnGroupChecker(this.groupId).then(res => {
+      this.curUserOwnThisGroup = res;
+    });
   }
 
 

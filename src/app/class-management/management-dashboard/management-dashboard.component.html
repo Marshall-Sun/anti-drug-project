@@ -23,12 +23,12 @@
         <nz-divider></nz-divider>
         <div class="list-block">
           <span class="header">课程数</span>
-          <nz-tag [nzColor]="'#108ee9'"><a href="https://github.com/NG-ZORRO/ng-zorro-antd">{{classroom?.coursenum}}</a></nz-tag>
+          <nz-tag [nzColor]="'#108ee9'"><a (click)="navigateTo('/client/classroom/' + classroomId + '/coursesetting')">{{classroom?.coursenum}}</a></nz-tag>
         </div>
         <nz-divider></nz-divider>
         <div class="list-block">
           <span class="header">任务数</span>
-          <nz-tag>7</nz-tag>
+          <nz-tag>{{classroom?.taskNum}}</nz-tag>
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@
         <nz-divider></nz-divider>
         <div class="list-block">
           <span class="header">学员数</span>
-          <nz-tag [nzColor]="'#108ee9'"><a>{{classroom?.studentnum}}</a></nz-tag>
+          <nz-tag [nzColor]="'#108ee9'"><a (click)="navigateTo('/client/classroom/' + classroomId + '/studentsetting')">{{classroom?.studentnum}}</a></nz-tag>
         </div>
         <nz-divider></nz-divider>
         <div class="list-block">

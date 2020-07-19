@@ -44,6 +44,14 @@ nz-list {
     max-width: 100%;
     min-width: 100%;
   }
+  
+  nz-list-item div.first-row {
+    max-width: 50vw;
+  }
+  
+  nz-list-item div.second-row {
+    max-width: 50vw;
+  }
 }
 
 nz-list-item {
@@ -62,6 +70,14 @@ nz-list-item {
   nz-list {
     width: 49%;
   }
+
+  div.first-row {
+    max-width: 20vw;
+  }
+  
+  div.second-row {
+    max-width: 20vw;
+  }
 }
 
 .time {
@@ -71,7 +87,19 @@ nz-list-item {
 
 .first-row {
   font-size: x-small;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 30vw;
 }
+
+.second-row {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 30vw;
+}
+
 
 .num-row {
   display: flex;

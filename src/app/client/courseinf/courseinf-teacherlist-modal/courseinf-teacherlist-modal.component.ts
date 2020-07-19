@@ -6,9 +6,10 @@ import {Router} from '@angular/router';
   selector: 'app-courseinf-teacherlist-modal',
   templateUrl: './courseinf-teacherlist-modal.component.html',
   styleUrls: ['./courseinf-teacherlist-modal.component.less'],
-  inputs: ["teachers","courseid","teachplanId"],
+  inputs: ["teachers","courseid","teachplanId","userId"],
 })
 export class CourseinfTeacherlistModalComponent implements OnInit {
+  userId = null;
   courseid = "0";
   teachers = [];
   teachplanId = "0";
@@ -35,8 +36,8 @@ export class CourseinfTeacherlistModalComponent implements OnInit {
       } else if (this.teachers[i].smallAvatar.substr(7, 7) == "edusoho") {
         this.teachers[i].smallAvatar = "../../../../assets/img/timg2.jpg";
       }
-
-        this.courseinfservice.isfollowing("1",this.teachers[i].id).subscribe((res: any) => {
+      if(this.userId!=null){
+        this.courseinfservice.isfollowing(this.userId,this.teachers[i].id).subscribe((res: any) => {
           this.setstudentfollowing(res.data,i);
         }, error => {
           this.notification.create(
@@ -44,6 +45,10 @@ export class CourseinfTeacherlistModalComponent implements OnInit {
             '发生错误！',
             `${error.error}`)
         })
+      }else{
+        this.setstudentfollowing(false,i);
+      }
+
     }
   }
 
@@ -52,9 +57,16 @@ export class CourseinfTeacherlistModalComponent implements OnInit {
   }
 
   showPrivateletterfirm(toid:string): void {
+    if(this.userId==null){
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `请登录`)
+        return
+    }
     this.privateletter_toid = toid;
     console.log(toid);
-    if(this.privateletter_toid!="1"){
+    if(this.privateletter_toid!=this.userId){
       this.privateletter_toid=toid;
       this.PrivatelettertVisible = true;
     }else {
@@ -67,7 +79,7 @@ export class CourseinfTeacherlistModalComponent implements OnInit {
 
   handleOk_Privateletter(): void {
     if (this.PrivatelettertTitle != "" && this.PrivateletterContent != "") {
-      this.courseinfservice.privateletter_submit("1",this.privateletter_toid,this.PrivatelettertTitle,this.PrivateletterContent).subscribe((res: any) => {
+      this.courseinfservice.privateletter_submit(this.userId,this.privateletter_toid,this.PrivatelettertTitle,this.PrivateletterContent).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
@@ -100,9 +112,15 @@ export class CourseinfTeacherlistModalComponent implements OnInit {
 
 //关注
 follow_submit(toid:string) {
-
-  if(toid!="1"){
-    this.courseinfservice.follow_submit("1",toid).subscribe((res: any) => {
+  if(this.userId==null){
+    this.notification.create(
+      'error',
+      '发生错误！',
+      `请登录`)
+      return
+  }
+  if(toid!=this.userId){
+    this.courseinfservice.follow_submit(this.userId,toid).subscribe((res: any) => {
       this.notification.create(
         'success',
         '提交成功！',
@@ -134,7 +152,7 @@ follow_submit(toid:string) {
 
 //取消关注
 del_follow_submit(toid:string) {
-  this.courseinfservice.delfollow_submit("1",toid).subscribe((res: any) => {
+  this.courseinfservice.delfollow_submit(this.userId,toid).subscribe((res: any) => {
     this.notification.create(
       'success',
       '提交成功！',

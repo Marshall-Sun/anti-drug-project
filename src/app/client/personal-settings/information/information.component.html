@@ -35,7 +35,7 @@
           <nz-form-label><span>真实姓名</span></nz-form-label>
           <div>
             <nz-form-control>
-              <input type="text" nz-input [(ngModel)]="user.trueName" name="trueName" />
+              <input type="text" nz-input [ngModel]="user.trueName" name="trueName" [disabled]="nameNonEditable"/>
             </nz-form-control>
           </div>
         </nz-form-item>

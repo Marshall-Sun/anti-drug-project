@@ -4,7 +4,7 @@
       <div class="first">
 
           <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
-            <h3>{{RecentThreadList?.threadTitle}}</h3>
+            <h3 style="margin-bottom: 0;">{{RecentThreadList?.threadTitle}}</h3>
             <nz-tag style="font-size: 10px;margin-right: 4px" *ngIf="nzValueZD==0 || RecentThreadList?.isElite == 1" [nzColor]="'#f50'">置顶</nz-tag>
             <nz-tag style="font-size: 10px;margin-right: 4px" *ngIf="nzValueJ==0 || RecentThreadList?.isStick == 1" [nzColor]="'#87d068'">精华</nz-tag>
           </div>
@@ -27,16 +27,15 @@
             <br />
           </div>
 
-          <div style="display:flex; margin-left:2%;margin-right: 2%; margin-top: 2%" [innerHTML]="RecentThreadList?.threadContent">
+          <div style="margin-left:2%;margin-right: 2%; margin-top: 2%" [innerHTML]="RecentThreadList?.threadContent">
           </div>
 
-          <div>
+          <div *ngIf="curUserOwnThisGroup">
             <button style="margin-right: 10px; width: 10%; height: 24px;" nz-button nzType="default" nzSize="small" (click)="oclick()">编辑</button>
-            <button *ngIf="nzValueJ==1"  nzSize="small" style=";margin-right: 10px; width: 10%; height: 24px;" nz-button nzType="primary" (click)="getNzValueJ0()">加精</button>
-            <button *ngIf="nzValueJ==0"  nzSize="small" style="margin-right: 10px; width: 10%; height: 24px;" nz-button nzType="default" (click)="getNzValueJ1()">取消加精</button>
-            <button *ngIf="nzValueZD==1"  nzSize="small" style="margin-right: 10px; width: 10%; height: 24px;" nz-button nzType="danger" (click)="getNzValueZD0()">置顶</button>
-            <button *ngIf="nzValueZD==0" nzSize="small" style="margin-right: 10px; width: 10%; height: 24px;" nz-button nzType="default" (click)="getNzValueZD1()">取消置顶</button>
-
+            <button *ngIf="nzValueJ==1 && RecentThreadList?.isElite == 0"  nzSize="small" style="margin-right: 10px; width: 10%; height: 24px;" nz-button nzType="primary" (click)="getNzValueJ0()">加精</button>
+            <button *ngIf="nzValueJ==0 || RecentThreadList?.isElite == 1"  nzSize="small" style="margin-right: 10px; width: 20%; height: 24px;" nz-button nzType="default" (click)="getNzValueJ1()">取消加精</button>
+            <button *ngIf="nzValueZD==1 && RecentThreadList?.isStick == 0"  nzSize="small" style="margin-right: 10px; width: 10%; height: 24px;" nz-button nzType="danger" (click)="getNzValueZD0()">置顶</button>
+            <button *ngIf="nzValueZD==0 || RecentThreadList?.isStick == 1" nzSize="small" style="margin-right: 10px; width: 20%; height: 24px;" nz-button nzType="default" (click)="getNzValueZD1()">取消置顶</button>
           </div>
       </div>
       <div class="two">

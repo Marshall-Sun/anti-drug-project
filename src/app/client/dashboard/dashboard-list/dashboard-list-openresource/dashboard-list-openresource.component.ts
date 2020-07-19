@@ -11,14 +11,6 @@ import { NzNotificationService } from 'ng-zorro-antd';
 export class DashboardListOpenresourceComponent implements OnInit {
 
   displayData = [];
-  // resourse = {
-  //   picture: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  //   hitNum: 4,
-  //   postNum: 4,
-  //   id: 1,
-  //   title: "禁毒宣传视频",
-  //   description: "",
-  // };
 
   constructor(private router: Router,
     private openService$: OpenresourceService,

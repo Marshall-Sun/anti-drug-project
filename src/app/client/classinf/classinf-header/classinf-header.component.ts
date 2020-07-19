@@ -6,12 +6,12 @@ import {TestuserService} from '../../../service/teacher-frontend/teacher-fronten
   selector: 'app-classinf-header',
   templateUrl: './classinf-header.component.html',
   styleUrls: ['./classinf-header.component.less'],
-  inputs: ["user","classid","joinINf"],
+  inputs: ["userId","classid","joinINf"],
   outputs:["joinClass","exitClass"]
 })
 export class ClassinfHeaderComponent implements OnInit {
   classid = "0"
-  user: any;
+  userId: any;
   currentclass =
     {
       //二维吗
@@ -68,8 +68,6 @@ export class ClassinfHeaderComponent implements OnInit {
         `${error.error}`)
     });
 
-    //仅测试用
-    this.user = this.testuserservice.user;
   }
   
   setcurrentclass(res: any) {
@@ -124,7 +122,14 @@ export class ClassinfHeaderComponent implements OnInit {
 
   //加入班级
   joinclass_submit() {
-    this.classinfservice.joinclass_submit(this.classid, "1").subscribe((res: any) => {
+    if(this.userId==null){
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `请先登录`)
+      return;
+    }
+    this.classinfservice.joinclass_submit(this.classid, this.userId).subscribe((res: any) => {
       this.joinClass.emit();
       this.notification.create(
         'success',
@@ -140,7 +145,7 @@ export class ClassinfHeaderComponent implements OnInit {
 
   //退出学习
   exitlearn_submit() {
-    this.classinfservice.exitlearn_submit(this.classid,"1").subscribe((res: any) => {
+    this.classinfservice.exitlearn_submit(this.classid,this.userId).subscribe((res: any) => {
       this.exitClass.emit();
       this.notification.create(
         'success',

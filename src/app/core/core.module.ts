@@ -35,6 +35,7 @@ import {RouterModule} from '@angular/router';
 import {VideoPlayerComponent} from './video-player/video-player.component'
 import { RegisterModalComponent } from './modal/register-modal/register-modal.component';
 import { FindPasswdModalComponent } from './modal/find-passwd-modal/find-passwd-modal.component';
+import { SelectQuestionComponent } from './modal/select-question/select-question.component';
 
 
 
@@ -67,7 +68,8 @@ import { FindPasswdModalComponent } from './modal/find-passwd-modal/find-passwd-
     FansComponent,
     VideoPlayerComponent,
     RegisterModalComponent,
-    FindPasswdModalComponent
+    FindPasswdModalComponent,
+    SelectQuestionComponent
   ],
   imports: [
     ShareModule,
@@ -104,7 +106,8 @@ import { FindPasswdModalComponent } from './modal/find-passwd-modal/find-passwd-
     FansComponent,
     VideoPlayerComponent,
     RegisterModalComponent,
-    FindPasswdModalComponent
+    FindPasswdModalComponent,
+    SelectQuestionComponent
   ]
 })
 export class CoreModule { }

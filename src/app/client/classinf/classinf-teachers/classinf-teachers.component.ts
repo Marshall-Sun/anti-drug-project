@@ -6,10 +6,11 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   selector: 'app-classinf-teachers',
   templateUrl: './classinf-teachers.component.html',
   styleUrls: ['./classinf-teachers.component.less'],
-  inputs: ["classid"],
+  inputs: ["classid","userId"],
 })
 export class ClassinfTeachersComponent implements OnInit {
   classid = "0";
+  userId = null;
   //师资
   teachersdata = [
     {id:"0", name: "李丽", positionaltitles: "讲师", autograph: "流星划破天空，贯穿虚伪之泪 \n ————————Astar", currentlearn: 10, follow: 10, fans: 10,largeAvatar:"",isfollowing:false },
@@ -47,14 +48,19 @@ export class ClassinfTeachersComponent implements OnInit {
         this.teachersdata[i].largeAvatar = "../../../../assets/img/timg2.jpg";
       }
 
-      this.classinfservice.isfollowing("1", this.teachersdata[i].id).subscribe((res: any) => {
-        this.setteacherfollowing(res.data, i);
-      }, error => {
-        this.notification.create(
-          'error',
-          '发生错误！',
-          `${error.error}`)
-      })
+      if(this.userId!=null){
+        this.classinfservice.isfollowing(this.userId, this.teachersdata[i].id).subscribe((res: any) => {
+          this.setteacherfollowing(res.data, i);
+        }, error => {
+          this.notification.create(
+            'error',
+            '发生错误！',
+            `${error.error}`)
+        })
+      }else{
+        this.setteacherfollowing(false, i);
+      }
+ 
     }
   }
 

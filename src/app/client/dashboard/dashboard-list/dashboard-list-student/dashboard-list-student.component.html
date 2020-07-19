@@ -1,55 +1,53 @@
 <div class="listview">
   &nbsp;&nbsp;
   <h1>学 / 员 / 动 / 态</h1>
-  <h3>参与小组，结交更多同学，关注课程动态。</h3>
+  <h3>参与小组，结交更多同学，关注课程动态</h3>
   <div class="list-row">
     <nz-list
-      [nzDataSource]="studentList"
+      [nzDataSource]="comment"
       nzBordered
       [nzHeader]="'学员评价'"
       [nzRenderItem]="item"
     >
       <ng-template #item let-item>
         <nz-list-item>
-          <nz-avatar
-            nz-popover
-            nzIcon="user"
-            nzSrc="../../../../assets/img/userface-small.jpg"
-            [nzPopoverContent]="usercenter"
-            nzPopoverPlacement="topLeft"
-          ></nz-avatar>
+          <a (click)="navigateByUrl(item.id)">
+            <nz-avatar
+              nzIcon="user"
+              nzSrc="{{item.avatar}}"
+            ></nz-avatar>
+          </a>
           &nbsp;&nbsp;
           <div class="info-column">
             <div class="first-row">
               <nz-rate [ngModel]="item.rating" nzDisabled></nz-rate>
-              {{ item.name }} 发布于 {{ item.course }}
+              {{ item.nickName }} 发布于 {{ item.classroomTitle }}
             </div>
-            <div class="second-row">{{ item.comment }}</div>
+            <div class="second-row">{{ item.content }}</div>
           </div>
-          <span class="time">{{ item.time }}</span>
+          <span class="time">{{ item.createdTime }}</span>
         </nz-list-item>
       </ng-template>
     </nz-list>
 
     <nz-list
-      [nzDataSource]="studentList"
+      [nzDataSource]="dynamic"
       nzBordered
       [nzHeader]="'学员动态'"
       [nzRenderItem]="item1"
     >
       <ng-template #item1 let-item1>
         <nz-list-item>
-          <nz-avatar
-            nz-popover
-            nzIcon="user"
-            nzSrc="../../../../assets/img/userface-small.jpg"
-            [nzPopoverContent]="usercenter"
-            nzPopoverPlacement="topLeft"
-          ></nz-avatar>
+          <a (click)="navigateByUrl(item1.id)">
+            <nz-avatar
+              nzIcon="user"
+              nzSrc="{{item1.avatar}}"
+            ></nz-avatar>
+          </a>
           &nbsp;&nbsp;
           <div class="info-column">
             <div class="first-row">{{ item1.name }}</div>
-            <div class="second-row">开始学习 {{ item1.level }}</div>
+            <div class="second-row">开始学习 {{ item1.course }}</div>
           </div>
           <span class="time">{{ item1.time }}</span>
         </nz-list-item>
@@ -57,34 +55,3 @@
     </nz-list>
   </div>
 </div>
-
-<ng-template #usercenter>
-  <div class="user-center">
-    <nz-avatar
-      class="user-avatar pointer-perform"
-      nzIcon="user"
-      nzSrc="../../../assets/img/userface.jpg"
-      [nzSize]="80"
-    ></nz-avatar>
-    &nbsp;
-    <button nz-button [nzSize]="'large'" nzType="default">关注</button>
-    <br />
-
-    <nz-divider></nz-divider>
-
-    <div class="num-row">
-      <div class="column">
-        <p>2</p>
-        <p>在学</p>
-      </div>
-      <div class="column">
-        <p>3</p>
-        <p>关注</p>
-      </div>
-      <div class="column">
-        <p>5</p>
-        <p>粉丝</p>
-      </div>
-    </div>
-  </div>
-</ng-template>

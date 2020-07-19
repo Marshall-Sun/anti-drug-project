@@ -36,6 +36,7 @@ import {TeachingPlanAddingModalComponent} from './core/modal/teaching-plan-addin
 import { RegisterModalComponent } from './core/modal/register-modal/register-modal.component';
 import { FindPasswdModalComponent } from './core/modal/find-passwd-modal/find-passwd-modal.component';
 import { CommonInterceptor } from './share/common-interceptor.interceptor';
+import { SelectQuestionComponent } from './core/modal/select-question/select-question.component';
 registerLocaleData(zh);
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ registerLocaleData(zh);
     AnnouncementEditModalComponent,
     AddingCourseModalComponent,
     PaperScoreStatisticsComponent,
-    TeachingPlanAddingModalComponent
+    TeachingPlanAddingModalComponent,
+    SelectQuestionComponent
   ],
   bootstrap: [AppComponent]
 })

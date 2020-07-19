@@ -7,11 +7,11 @@
       <nz-list [nzDataSource]="notification" [nzRenderItem]="item" [nzPagination]="pagination" [nzItemLayout]="'horizontal'" [nzLoading]="loading">
         <ng-template #item let-item>
           <nz-list-item>
-            <i nz-icon nzType="notification"  nzTheme="outline"></i>
-            <nz-list-item-meta
-              [nzTitle]="nzTitle"
-              nzDescription="{{item.createdtime*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}"
-            >
+            <nz-badge [nzDot]="!item.isread">
+              <i nz-icon nzType="notification" nzTheme="outline"></i>
+            </nz-badge>
+            <nz-list-item-meta [nzTitle]="nzTitle" (mouseover)="item.needDel=true" (mouseleave)="item.needDel=false"
+                               nzDescription="{{item.createdtime*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}">
               <ng-template #nzTitle>
                 <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='default'" >
                   <div [innerHTML]="decodeUnicode(item.jsonContents.message) " (click)="readNotification(item.id)"></div>
@@ -60,12 +60,27 @@
                 <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='learn-notice'">
                   <span>【课程公告】你正在学习的 <a href="{{item.jsonContents.url}}" (click)="readNotification(item.id)">{{decodeUnicode(item.jsonContents.title)}}</a> 发布了一个新的公告，快去看看吧。</span>
                 </div>
+                <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='user-follow'">
+                  <a (click)="readNotification(item.id)">您被{{dealFollow(item.content)}}关注</a>
+                </div>
+                <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='truename-authenticate'">
+                  <span *ngIf="dealRealNameAuthenticate(item.content)=='reject'">
+                    <a (click)="readNotification(item.id)">实名认证经{{note}}</a>
+                  </span>
+                  <span *ngIf="dealRealNameAuthenticate(item.content)=='through'">
+                    <a (click)="readNotification(item.id)">实名认证以通过</a>
+                  </span>
+                </div>
+                <a style="float: right" *ngIf="item.needDel"
+                   (click)="delNotification(item.id)">删除</a>
               </ng-template>
             </nz-list-item-meta>
           </nz-list-item>
         </ng-template>
         <ng-template #pagination>
-          <nz-pagination [nzPageIndex]="pageIndex"  [nzTotal]="total"  [nzPageSize]="pageSize"  (nzPageIndexChange)="loadData($event)"  ></nz-pagination>
+          <div style="text-align: center">
+            <nz-pagination [nzPageIndex]="pageIndex" [nzTotal]="total" [nzPageSize]="pageSize" (nzPageIndexChange)="loadData($event)"></nz-pagination>
+          </div>
         </ng-template>
       </nz-list>
     </div>

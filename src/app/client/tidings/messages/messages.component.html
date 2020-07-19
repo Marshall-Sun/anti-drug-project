@@ -2,20 +2,23 @@
   <nz-card>
     <div class="card-header">
       <p>私信</p>
-<!--      <a class="write-message">写私信</a>-->
       <button nz-button nzType="primary" (click)="showModal()" class="write-message">
         <span>写私信</span>
       </button>
       <nz-modal [(nzVisible)]="isVisible" nzTitle="写私信" [nzOkLoading] = "isOkLoading" (nzOnCancel)="handleCancel()"
                 (nzOnOk)="handleOk()" nzOkText = "发送" [nzOkDisabled] = "(!inputValue1)||(!inputValue2)">
-<!--        <ng-template #modalFooter>-->
-<!--          <button nz-button nzType="default" (click)="handleCancel()">取消</button>-->
-<!--          <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isOkLoading">发送</button>-->
-<!--        </ng-template>-->
         <nz-comment>
           <nz-comment-content>
             <nz-form-item>
-              <textarea [(ngModel)]="inputValue1" nz-input rows="1" placeholder="收信人用户名"></textarea>
+              <textarea [(ngModel)]="inputValue1" nz-input rows="1"
+                        placeholder="收信人用户名"
+                        (ngModelChange)="onInput()"
+                        [nzAutocomplete]="auto"></textarea>
+              <nz-autocomplete nzBackfill #auto>
+                <nz-auto-option *ngFor="let option of options" [nzValue]="option">
+                  {{ option }}
+                </nz-auto-option>
+              </nz-autocomplete>
             </nz-form-item>
             <nz-form-item>
               <textarea [(ngModel)]="inputValue2" nz-input rows="6" placeholder="想要说的话"></textarea>
@@ -28,28 +31,45 @@
       <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzPagination]="pagination" [nzItemLayout]="'horizontal'" [nzLoading]="loading">
         <ng-template #item let-item>
           <nz-list-item>
-            <nz-avatar nzIcon="user" nzSrc="{{item.fromSmallAvatar}}"
-                       [nzSize]="50">
-            </nz-avatar>
-            <a  (click)="read(item.messageId)" [routerLink]="['/client/tidings/privatechat',item.fromNickName]">
-              <nz-list-item-meta
-                [nzTitle]="nzTitle"
-                nzDescription="{{item.createdTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}"
-              >
-                <ng-template #nzTitle>
-                  <div>
-                    <a [ngStyle]="{'font-weight':item.isRead == '0' ? 'bold':'none'}">{{item.fromNickName}}{{item.content}}</a>
-                  </div>
-                </ng-template>
-              </nz-list-item-meta>
-            </a>
+            <nz-badge [nzDot]="item.isRead==0">
+              <nz-avatar nzIcon="user" nzSrc="{{item.fromSmallAvatar}}" [nzSize]="50"></nz-avatar>
+            </nz-badge>
+            <div (mouseover)="item.needDel=true" (mouseleave)="item.needDel=false">
+              <ng-container *ngIf="userId==item.fromId"></ng-container>
+              <a (click)="read(item.messageId, item.fromId, item.toId)"
+                 [routerLink]="['/client/tidings/privatechat',item.fromNickName]">
+                <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="description" style="width: 780px">
+                  <ng-template #nzTitle>
+                    <div>
+                      <a [ngStyle]="{'font-weight':item.isRead == '0' ? 'bold':'none'}">
+                        <ng-container *ngIf="userNickName==item.fromNickName; then toNickName; else fromNickName"></ng-container>
+                        <ng-template #toNickName>@{{item.toNickName}}: </ng-template>
+                        <ng-template #fromNickName>@{{item.fromNickName}}: </ng-template>
+                        <br>
+                        {{item.content}}
+                      </a>
+                    </div>
+                  </ng-template>
+                  <ng-template #description>
+                    <span>{{item.createdTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                    <span style="float: right">
+                      <span *ngIf="item.needDel">
+                        <a (click)="deleteConversation(item.messageConversationId)">删除</a> |
+                      </span>
+                      <span>共{{item.messageNum}}条</span>
+                    </span>
+                  </ng-template>
+                </nz-list-item-meta>
+              </a>
+            </div>
           </nz-list-item>
         </ng-template>
         <ng-template #pagination>
-          <nz-pagination [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]= "total" (nzPageIndexChange)="loadIndex($event)"></nz-pagination>
+          <div style="text-align: center">
+            <nz-pagination [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]= "total" (nzPageIndexChange)="loadIndex($event)"></nz-pagination>
+          </div>
         </ng-template>
       </nz-list>
-
     </div>
   </nz-card>
 </div>

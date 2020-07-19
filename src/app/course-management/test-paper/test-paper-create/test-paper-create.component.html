@@ -3,97 +3,99 @@
   <nz-divider></nz-divider>
   <nz-breadcrumb>
     <nz-breadcrumb-item>
-      <a (click)="navigateByUrl('/client/course/testpaper')">试卷管理</a>
+      <a (click)="navigateByUrl('/client/course/' + courseId +'/testpaper')">试卷管理</a>
     </nz-breadcrumb-item>
     <nz-breadcrumb-item>
       创建试卷
     </nz-breadcrumb-item>
   </nz-breadcrumb>
   <div class="content">
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <form nz-form [formGroup]="validateForm">
       <nz-form-item>
-        <nz-form-label nzSpan="3" nzRequired nzFor="paperName">试卷名称</nz-form-label>
-        <nz-form-control nzSpan="21" nzErrorTip="请输入试卷名称">
+        <nz-form-label nzSpan="4" nzRequired nzFor="paperName">试卷名称</nz-form-label>
+        <nz-form-control nzSpan="20" nzErrorTip="请输入试卷名称">
           <input type="text" nz-input formControlName="paperName" id="paperName">
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label nzSpan="3">试卷说明</nz-form-label>
-        <nz-form-control nzSpan="21">
-          <quill-editor></quill-editor>
+        <nz-form-label nzSpan="4">试卷说明</nz-form-label>
+        <nz-form-control nzSpan="20">
+          <quill-editor formControlName="desc" [(ngModel)]="desc"></quill-editor>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label nzSpan="3">生成方式</nz-form-label>
-        <nz-form-control nzSpan="21">
-          <nz-radio-group (ngModelChange)="wayChange($event)" [ngModel]="way" name="way"
+        <nz-form-label nzSpan="4">生成方式</nz-form-label>
+        <nz-form-control nzSpan="20">
+          <nz-radio-group (ngModelChange)="wayChange($event)" [(ngModel)]="way" name="way"
             [ngModelOptions]="{standalone: true}">
-            <label nz-radio nzValue="随机生成">随机生成</label>
-            <label nz-radio nzValue="按难易程度">按难易程度</label>
+            <label nz-radio nzValue="rand">随机生成</label>
+            <label nz-radio nzValue="difficulty">按难易程度</label>
           </nz-radio-group>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item *ngIf="sliderVisible">
-        <nz-form-label nzSpan="3">试卷难度</nz-form-label>
-        <nz-form-control nzSpan="21" [nzExtra]="info">
+        <nz-form-label nzSpan="4">试卷难度</nz-form-label>
+        <nz-form-control nzSpan="20" [nzExtra]="info">
           <nz-slider nzRange [(ngModel)]="difficulty" name="difficulty" (ngModelChange)="onChange($event)"
             [ngModelOptions]="{standalone: true}"></nz-slider>
           <ng-template #info>
             <p class="help-info">
               <span>简单{{difficulty[0]}}%</span>
               <span>一般{{difficulty[1]-difficulty[0]}}%</span>
-              <span>困难{{difficulty[1]}}%</span>
+              <span>困难{{100 - difficulty[1]}}%</span>
             </p>
             <span class="color-warning">如果某个难度的题目数不够，将会随机选择题目来补充。</span>
           </ng-template>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzSpan="3">出题范围</nz-form-label>
-        <nz-form-control nzSpan="21">
-          <nz-select style="width: 120px;" nzAllowClear nzPlaceHolder="Choose" (ngModelChange)="courseChange($event)"
-            [(ngModel)]="scope" name="scope" [ngModelOptions]="{standalone: true}">
-            <nz-option nzValue="按课程" nzLabel="按课程"></nz-option>
-            <nz-option nzValue="默认教学计划" nzLabel="默认教学计划"></nz-option>
-          </nz-select>
-          <nz-select style="width: 120px;" nzAllowClear nzPlaceHolder="Choose" *ngIf="selectVisible">
-            <nz-option nzValue="请选择" nzLabel="请选择"></nz-option>
-            <nz-option nzValue="期中测试" nzLabel="期中测试"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
+<!--      <nz-form-item>-->
+<!--        <nz-form-label nzSpan="3">出题范围</nz-form-label>-->
+<!--        <nz-form-control nzSpan="21">-->
+<!--          <nz-select style="width: 120px;" nzAllowClear nzPlaceHolder="Choose" (ngModelChange)="courseChange($event)"-->
+<!--            [(ngModel)]="scope" name="scope" [ngModelOptions]="{standalone: true}">-->
+<!--            <nz-option nzValue="按课程" nzLabel="按课程"></nz-option>-->
+<!--            <nz-option nzValue="默认教学计划" nzLabel="默认教学计划"></nz-option>-->
+<!--          </nz-select>-->
+<!--          <nz-select style="width: 120px;" nzAllowClear nzPlaceHolder="Choose" *ngIf="selectVisible">-->
+<!--            <nz-option nzValue="请选择" nzLabel="请选择"></nz-option>-->
+<!--            <nz-option nzValue="期中测试" nzLabel="期中测试"></nz-option>-->
+<!--          </nz-select>-->
+<!--        </nz-form-control>-->
+<!--      </nz-form-item>-->
       <nz-form-item>
         <nz-form-label nzSpan="3">题目设置</nz-form-label>
         <nz-form-control nzSpan="21" nzErrorTip="请选择题目">
           <ul cdkDropList (cdkDropListDropped)="drop($event)">
-            <li *ngFor="let item of questions" cdkDrag>
+            <li *ngFor="let item of questions index as i" cdkDrag>
               <div nz-row>
                 <i nz-icon nzType="drag" nzTheme="outline" class="move drag-icon"></i><span
                   style="min-width: 85px;display: inline-block;">{{item.name}}</span>
                 <span *ngIf="questionNum[item.type]==0">
-                  <span class="mlm">题目数量:</span><input type="text" nz-input style="width: 60px;"
-                    formControlName="minQuestion" class="not-allowed" disabled="true"><span
-                    style="min-width: 45px;display: inline-block">{{questionNum[item.type]}}</span>
+                  <span class="mlm">题目数量:</span>
+                  <nz-input-number style="width: 60px;" formControlName="minQuestion" class="not-allowed" nzDisabled="true">
+                  </nz-input-number>/<span
+                style="min-width: 45px;display: inline-block">{{questionNum[item.type]}}</span>
                 </span>
 
                 <span *ngIf="questionNum[item.type]!=0">
-                  <span class="mlm">题目数量:</span><input type="text" nz-input style="width: 60px;"
-                    formControlName="minQuestion"><span
+                  <span class="mlm">题目数量:</span><nz-input-number style="width: 60px;"
+                                                                 formControlName="minQuestion" [nzMin]="0" [(ngModel)]="questionsInfo[i].count" [nzMax]="questionNum[item.type]"></nz-input-number>/<span
                     style="min-width: 45px;display: inline-block">{{questionNum[item.type]}}</span>
                 </span>
 
-                <span>题目分值:</span><input type="text" nz-input style="width: 60px;" class="input-width" value="2">
+                <span>题目分值:</span><nz-input-number style="width: 60px;" formControlName="score" [nzMin]="0" [(ngModel)]="questionsInfo[i].score" class="input-width" [nzDisabled]="questionNum[item.type] == 0"></nz-input-number>
                 <div style="display: inline-block">
-                  <nz-form-control nzErrorTip="请输入不大于2的数值">
+                  <nz-form-control>
                     <div *ngIf="item.name=='多选题'" style="display: inline-block;">
                       <span class="mlm">漏选分值:</span>
-                      <input type="text" nz-input style="width: 50px;" class="input-width" value="0"
-                        formControlName="multi_missing">
+                      <nz-input-number style="width: 50px;" class="input-width"
+                                       formControlName="multi_missing" [(ngModel)]="questionsInfo[i].part_score" [nzMin]="0" [nzMax]="questionsInfo[i].score" [nzDisabled]="questionNum[item.type] == 0"></nz-input-number>
                     </div>
                     <div *ngIf="item.name=='不定项选择题'" style="display: inline-block;">
                       <span class="mlm">漏选分值:</span>
-                      <input type="text" nz-input style="width: 50px;" class="input-width" value="0"
-                        formControlName="indifinite_missing">
+                      <nz-input-number style="width: 50px;" class="input-width" [(ngModel)]="questionsInfo[i].part_score" [nzMin]="0"
+                                       [nzMax]="questionsInfo[i].score"
+                                       formControlName="indifinite_missing" [nzDisabled]="questionNum[item.type] == 0"></nz-input-number>
                     </div>
                   </nz-form-control>
                 </div>
@@ -105,8 +107,8 @@
       </nz-form-item>
       <nz-form-item>
         <nz-form-control nzOffset="3">
-          <button nz-button nzType="primary">保存,下一步</button>
-          <button nz-button nzType="link">返回</button>
+          <button nz-button nzType="primary" (click)="submitForm()">保存,下一步</button>
+          <button nz-button nzType="link" (click)="navigateByUrl('/client/course/' + courseId + '/testpaper')">返回</button>
         </nz-form-control>
       </nz-form-item>
     </form>

@@ -14,8 +14,12 @@ export class FrontAvatarComponent implements DoCheck {
 
   ngDoCheck() {
     if (typeof this.nickName != "string") {
-      this.avatar = window.localStorage.getItem("mediumAvatar");
       this.nickName = window.localStorage.getItem("nickName");
+    }
+    if (typeof this.avatar != "string") {
+      this.avatar = window.localStorage.getItem("mediumAvatar");
+    }
+    if (typeof this.userId != "string") {
       this.userId = window.localStorage.getItem("id");
     }
   }

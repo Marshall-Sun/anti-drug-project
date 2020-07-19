@@ -1,7 +1,7 @@
 <div class="listview">
   &nbsp;&nbsp;
   <h1>教 / 学 / 团 / 队</h1>
-  <h3>名师汇集，保证教学质量与学习效果。</h3>
+  <h3>名师汇集，保证教学质量与学习效果</h3>
   <nz-list
     [nzDataSource]="displayData"
     [nzRenderItem]="item"
@@ -10,8 +10,6 @@
     <ng-template #item let-item>
       <nz-list-item>
         <nz-card
-          (mouseover)="show1(item)"
-          (mouseleave)="show2(item)"
           nzHoverable
           [nzCover]="coverTemplate"
         >
@@ -19,24 +17,13 @@
             [nzTitle]="titleTemplate"
             [nzDescription]="descripTemplate"
           ></nz-card-meta>
-          <button
-            nz-button
-            nzType="primary"
-            style="text-align: center"
-            *ngIf="!item.isshow"
-            (click)="follow(item.id)"
-          >
-            关注
-          </button>
-          <!-- <button nz-button nzType="default" style="text-align: center"
-                  (click)="follow(item.id)">已关注</button> -->
         </nz-card>
         <ng-template #coverTemplate>
           <nz-avatar
             (click)="navigateByUrl('/client/userpage/' + item.id)"
             [nzSize]="100"
             nzIcon="user"
-            nzSrc="../../../../assets/img/userface.jpg"
+            nzSrc="{{item.largeAvatar}}"
           ></nz-avatar>
         </ng-template>
         <ng-template #titleTemplate>

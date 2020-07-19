@@ -3,7 +3,7 @@
     <div class="content">
       <div class="left-content">
         <ul nz-menu nzMode="inline">
-          <li nz-menu-group nzTitle="我的教学">
+          <li nz-menu-group nzTitle="我的教学" *ngIf="checkIdentity('ROLE_TEACHER')">
             <ul>
               <li nz-menu-item (click)="navigatTo('client/mine/teachingcourse')" [nzSelected]="location?.pathname.endsWith('teachingcourse')">在教课程</li>
 <!--              <li nz-menu-item (click)="navigatTo('client/mine/teachingclass')" [nzSelected]="location?.pathname.endsWith('teachingclass')">教学课表</li>-->

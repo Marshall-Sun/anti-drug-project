@@ -13,11 +13,11 @@ export class NotificationService {
 
   getNotifications(isread: string , pageIndex: number, pageSize: number, userId: number): Observable<any> {
     return this._http.get(`/user/getNotification?isRead=${isread}&pageNum=${pageIndex}&pageSize=${pageSize}&userId=${userId}`);
-  };
-
+  }
   readNotification(notificationId:number): Observable<any> {
-    return  this._http.put(`/user/readNotification?notificationId=${notificationId}`, {
-
-    });
+    return  this._http.put(`/user/readNotification?notificationId=${notificationId}`, {});
+  }
+  delNotification(notificationId){
+    return this._http.delete(`/user/delNotification?notificationId=${notificationId}`);
   }
 }

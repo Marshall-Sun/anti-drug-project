@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CourseReplyService} from '../../../../service/course-reply/course-reply.service';
 import {NzMessageService, NzModalService, NzNotificationService} from 'ng-zorro-antd';
 import {UserInfoViewModalComponent} from '../../../../core/modal/user-info-view-modal/user-info-view-modal.component';
@@ -7,6 +7,7 @@ import {AdminNoteService} from '../../../../service/admin-note/admin-note.servic
 @Component({
   selector: 'app-admin-note-management-table',
   templateUrl: './admin-note-management-table.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./admin-note-management-table.component.less']
 })
 export class AdminNoteManagementTableComponent implements OnInit {

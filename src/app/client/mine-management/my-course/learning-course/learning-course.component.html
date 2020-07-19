@@ -8,7 +8,7 @@
         </div>
         <div nz-col nzSpan="12">
           <div class="info-header" >
-            <div class="course-title" nz-tooltip [nzTitle]="item.title">{{item.title}}
+            <div class="course-title" nz-tooltip [nzTitle]="item.courseSetTitle">{{item.courseSetTitle}}
               <nz-tag style="margin-left: 15px" [nzColor]="choiceColor(item.serialize)"> {{item.serialize == 'finished'? '已发布': (item.serialize == 'serialize'? '连载中': '连载完成')}}</nz-tag>
             </div><!--课程标题-->
 
@@ -19,7 +19,7 @@
           </div>
         </div>
         <div nz-col nzSpan="6">
-          <button style="margin-right: 2%;" nz-button nzType="primary" (click)="viewCourse('/client/courseinf/' + item.courseSetId + '/task/' + item.lessonId)"  >查看课程</button>
+          <button style="margin-right: 2%;" nz-button nzType="primary" (click)="viewCourse('/client/courseinf/' + item.courseSetId)"  >查看课程</button>
         </div>
         <nz-divider></nz-divider>
       </div>

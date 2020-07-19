@@ -16,7 +16,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let data of recordListTable.data">
-      <td   class="title" (click)="navigatTo('client/course/'+ data.id )"
+      <td   class="title" (click)="navigatTo('client/course/'+ data.coursesetid )"
       >{{data.coursesettitle}}</td>
       <td>{{data.studentnum}}</td>
       <td>{{data.status == 'published'? '已发布': (data.status == 'closed'? '已关闭': '未发布')}}</td>
@@ -26,13 +26,13 @@
 
         <div class="user-management-operation">
           <div>
-            <span class="title" (click)="navigatTo('client/course/'+ data.id + '/base')">管理</span>
+            <span class="title" (click)="navigatTo('client/course/'+ data.coursesetid + '/base')">管理</span>
           </div>
           <div>
-            <span class="title"  (click)="navigatTo('/client/course/'+ data.id +'/teaching_plan')">计划管理</span>
+            <span class="title"  (click)="navigatTo('/client/course/'+ data.coursesetid +'/teaching_plan')">计划管理</span>
           </div>
           <div>
-            <span class="title" (click)="navigatTo('/client/course/'+ data.id +'/file')">文件管理</span>
+            <span class="title" (click)="navigatTo('/client/course/'+ data.coursesetid +'/file')">文件管理</span>
           </div>
         </div>
       </ng-template>

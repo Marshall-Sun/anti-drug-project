@@ -3,6 +3,8 @@ import { Router } from "@angular/router";
 import { NzMessageService, NzModalService } from "ng-zorro-antd";
 import { LoginModalComponent } from "../core/modal/login-modal/login-modal.component";
 import { RegisterModalComponent } from "../core/modal/register-modal/register-modal.component";
+import { AuthService } from "./auth/auth.service";
+import { WebsitesAnnouncementService } from '../service/websites-announcement/websites-announcement.service';
 
 @Component({
   selector: "app-front-desk",
@@ -10,19 +12,28 @@ import { RegisterModalComponent } from "../core/modal/register-modal/register-mo
   styleUrls: ["./front-desk.component.less"],
 })
 export class FrontDeskComponent implements OnInit {
-  isLogin: boolean = true;//typeof window.localStorage.getItem("id") == "string";
+  isLogin: boolean = typeof window.localStorage.getItem("id") == "string";
   isCollapsed: boolean = true;
+  userId: string = '1';
+
+  announcementList = [];
+
+  isHide: boolean = true;
+  isShow: boolean = false;
 
   constructor(
     private router: Router,
     private _modalService: NzModalService,
-    private msg: NzMessageService
+    private msg: NzMessageService,
+    private authService: AuthService,
+    private websiteAnnoucementService$: WebsitesAnnouncementService
   ) {}
 
   ngOnInit() {
     if (this.isLogin) {
       this.checkLoginStatus();
     }
+    this.getNewAnnouncement()
   }
 
   checkLoginStatus() {
@@ -37,6 +48,10 @@ export class FrontDeskComponent implements OnInit {
       window.localStorage.clear();
       this.isLogin = false;
     }
+  }
+
+  checkIdentity(identity: string): boolean {
+    return this.authService.userIdentityChecker(identity);
   }
 
   login() {
@@ -62,6 +77,7 @@ export class FrontDeskComponent implements OnInit {
     if (window.localStorage.getItem("id")) {
       window.localStorage.clear();
       this.isLogin = false;
+      this.navigateByUrl("/client");
       this.msg.success("注销成功");
     }
   }
@@ -74,5 +90,22 @@ export class FrontDeskComponent implements OnInit {
     if (!this.isCollapsed) {
       this.isCollapsed = true;
     }
+  }
+
+  getNewAnnouncement() {
+    this.websiteAnnoucementService$.getActiveAnnoucement().subscribe(result => {
+      this.announcementList = result.data;
+      this.isHide = this.announcementList.length <= 0;
+    })
+  }
+
+
+  cancel() {
+    this.isShow = false;
+    this.isHide = true;
+  }
+
+  close() {
+    this.isShow = false;
   }
 }

@@ -5,7 +5,7 @@
   <nz-tab nzTitle="小组成员">
     <app-groupmember></app-groupmember>
   </nz-tab>
-  <nz-tab nzTitle="小组设置">
+  <nz-tab nzTitle="小组设置" *ngIf="curUserOwnThisGroup">
     <app-groupedit></app-groupedit>
   </nz-tab>
 </nz-tabset>
@@ -16,7 +16,7 @@
   <nz-tab nzTitle="小组成员">
     <app-groupmember></app-groupmember>
   </nz-tab>
-  <nz-tab nzTitle="小组设置">
+  <nz-tab nzTitle="小组设置" *ngIf="curUserOwnThisGroup">
     <app-groupedit></app-groupedit>
   </nz-tab>
 </nz-tabset>

@@ -1,15 +1,22 @@
-<nz-avatar
-  nz-popover
-  nzIcon="notification"
-  [nzPopoverContent]="notification"
-  nzPopoverPlacement="bottomRight"
-  [nzPopoverTrigger]="click"
-></nz-avatar>
+<nz-badge nzDot [nzShowDot]="notificationNum+msgNum!=0">
+  <nz-avatar
+    nz-popover
+    nzIcon="notification"
+    [nzPopoverContent]="notification"
+    nzPopoverPlacement="bottomRight"
+    nzPopoverTrigger="click"
+  ></nz-avatar>
+</nz-badge>
 
 <ng-template #notification class="notification">
   <div class="card-container">
     <nz-tabset nzSize="large" [nzTabPosition]="'top'">
-      <nz-tab [nzTitle]="'通知'">
+      <nz-tab [nzTitle]="notificationTitle">
+        <ng-template #notificationTitle>
+          <nz-badge [nzCount]="notificationNum" [nzOverflowCount]="5">
+            <a class="head-example">通知</a>
+          </nz-badge>
+        </ng-template>
         <nz-list
           [nzDataSource]="notificationData"
           [nzRenderItem]="noitem"
@@ -31,115 +38,76 @@
                 }}"
               >
                 <ng-template #nzTitle1>
-                  <div
-                    [ngStyle]="{
-                      'font-weight': !item.isread ? 'bold' : 'none'
-                    }"
-                    *ngIf="item.type == 'default'"
-                  >
-                    <div
-                      [innerHTML]="decodeUnicode(item.jsonContents.message)"
-                    ></div>
+                  <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='default'"
+                       (click)="readNotification(item.id)">
+                    <div [innerHTML]="decodeUnicode(item.jsonContents.message) "></div>
                   </div>
-                  <div
-                    [ngStyle]="{
-                      'font-weight': !item.isread ? 'bold' : 'none'
-                    }"
-                    *ngIf="item.type == 'thread'"
-                  >
-                    <a>{{ item.jsonContents.threadUserNickname }}</a>
+                  <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='thread'"
+                       (click)="readNotification(item.id)">
+                    <a>{{item.jsonContents.threadUserNickname}}</a>
                     <span>在</span>
-                    <a> {{ decodeUnicode(item.jsonContents.courseTitle) }} </a>
+                    <a> {{decodeUnicode(item.jsonContents.courseTitle)}} </a>
                     <span>发表了问答</span>
-                    <a>“{{ decodeUnicode(item.jsonContents.threadTitle) }}”</a>
+                    <a>“{{decodeUnicode(item.jsonContents.threadTitle)}}”</a>
                   </div>
-                  <div
-                    [ngStyle]="{
-                      'font-weight': !item.isread ? 'bold' : 'none'
-                    }"
-                    *ngIf="item.type == 'questionRemind'"
-                  >
+                  <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='questionRemind'"
+                       (click)="readNotification(item.id)">
                     <span>课程《</span>
-                    <a> {{ decodeUnicode(item.jsonContents.courseTitle) }} </a>
+                    <a> {{decodeUnicode(item.jsonContents.courseTitle)}} </a>
                     <span>》有新问题</span>
-                    <a
-                      >“{{ decodeUnicode(item.jsonContents.questionTitle) }}”</a
-                    >
+                    <a>“{{decodeUnicode(item.jsonContents.questionTitle)}}”</a>
                   </div>
-                  <div
-                    [ngStyle]="{
-                      'font-weight': !item.isread ? 'bold' : 'none'
-                    }"
-                    *ngIf="item.type == 'group-thread'"
-                  >
+                  <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='group-thread'"
+                       (click)="readNotification(item.id)">
                     <span>您的话题</span>
-                    <a>“{{ decodeUnicode(item.jsonContents.title) }}”</a>
-                    <span *ngIf="item.jsonContents.type == 'close'"
-                      >被关闭</span
-                    >
-                    <span *ngIf="item.jsonContents.type == 'modify'"
-                      >被修改</span
-                    >
-                    <span *ngIf="item.jsonContents.type == 'elite'"
-                      >被加精</span
-                    >
-                    <span *ngIf="item.jsonContents.type == 'unelite'"
-                      >被取消加精</span
-                    >
-                    <span *ngIf="item.jsonContents.type == 'top'">被置顶</span>
-                    <span *ngIf="item.jsonContents.type == 'untop'"
-                      >被取消置顶</span
-                    >
-                    <span *ngIf="item.jsonContents.type == 'reply'"
-                      >被回复</span
-                    >
-                    <span *ngIf="item.jsonContents.type == 'delete-post'"
-                      >被删除</span
-                    >
+                    <a>“{{decodeUnicode(item.jsonContents.title)}}”</a>
+                    <span *ngIf="item.jsonContents.type=='close'">被关闭</span>
+                    <span *ngIf="item.jsonContents.type=='modify'">被修改</span>
+                    <span *ngIf="item.jsonContents.type=='elite'">被加精</span>
+                    <span *ngIf="item.jsonContents.type=='unelite'">被取消加精</span>
+                    <span *ngIf="item.jsonContents.type=='top'">被置顶</span>
+                    <span *ngIf="item.jsonContents.type=='untop'">被取消置顶</span>
+                    <span *ngIf="item.jsonContents.type=='reply'">被回复</span>
+                    <span *ngIf="item.jsonContents.type=='delete-post'">被删除</span>
                   </div>
-                  <div
-                    [ngStyle]="{
-                      'font-weight': !item.isread ? 'bold' : 'none'
-                    }"
-                    *ngIf="item.type == 'global'"
-                  >
+                  <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='global'"
+                       (click)="readNotification(item.id)">
                     <span>系统通知：</span>
-                    <a>{{ decodeUnicode(item.jsonContents.title) }}</a>
+                    <a>{{decodeUnicode(item.jsonContents.title)}}</a>
                   </div>
-                  <div
-                    [ngStyle]="{
-                      'font-weight': !item.isread ? 'bold' : 'none'
-                    }"
-                    *ngIf="item.type == 'comment-post'"
-                  >
+                  <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='comment-post'"
+                       (click)="readNotification(item.id)">
                     <span>您在 班级 </span>
-                    <a>{{ decodeUnicode(item.jsonContents.title) }}</a>
-                    <span> 中的评价已被回复，<a>点击查看</a></span>
+                    <a>{{decodeUnicode(item.jsonContents.title)}}</a>
+                    <span> 中的评价已被回复</span>
                   </div>
-                  <div
-                    [ngStyle]="{
-                      'font-weight': !item.isread ? 'bold' : 'none'
-                    }"
-                    *ngIf="item.type == 'thread.post_create'"
-                  >
-                    <a>{{ item.jsonContents.nickname }}</a>
+                  <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='thread.post_create'"
+                       (click)="readNotification(item.id)">
+                    <a>{{item.jsonContents.nickname}}</a>
                     <span>在 话题 </span>
-                    <a>{{ decodeUnicode(item.jsonContents.title) }}</a>
+                    <a>{{decodeUnicode(item.jsonContents.title)}}</a>
                     <span> 回复了你</span>
+                    <div style="border-left: 5px solid #f5f5f5;padding: 5px 15px">{{decodeUnicode(item.jsonContents.content)}}</div>
                   </div>
-                  <div
-                    [ngStyle]="{
-                      'font-weight': !item.isread ? 'bold' : 'none'
-                    }"
-                    *ngIf="item.type == 'learn-notice'"
-                  >
-                    <span
-                      >【课程公告】你正在学习的
-                      <a [href]="item.jsonContents.url">{{
-                        decodeUnicode(item.jsonContents.title)
-                      }}</a>
-                      发布了一个新的公告，快去看看吧。</span
-                    >
+                  <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='learn-notice'"
+                       (click)="readNotification(item.id)">
+                    <span>【课程公告】你正在学习的
+                      <a href="{{item.jsonContents.url}}">
+                        {{decodeUnicode(item.jsonContents.title)}}
+                      </a> 发布了一个新的公告，快去看看吧。</span>
+                  </div>
+                  <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='user-follow'"
+                       (click)="readNotification(item.id)">
+                    <a>您被{{dealFollow(item.content)}}关注</a>
+                  </div>
+                  <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='truename-authenticate'"
+                       (click)="readNotification(item.id)">
+                    <span *ngIf="dealRealNameAuthenticate(item.content)=='reject'">
+                      <a>实名认证经{{note}}</a>
+                    </span>
+                      <span *ngIf="dealRealNameAuthenticate(item.content)=='through'">
+                      <a>实名认证以通过</a>
+                    </span>
                   </div>
                 </ng-template>
               </nz-list-item-meta>
@@ -152,7 +120,12 @@
           >
         </div>
       </nz-tab>
-      <nz-tab [nzTitle]="'私信'">
+      <nz-tab [nzTitle]="msgTitle">
+        <ng-template #msgTitle>
+          <nz-badge [nzCount]="msgNum" [nzOverflowCount]="5">
+            <a class="head-example">私信</a>
+          </nz-badge>
+        </ng-template>
         <nz-list
           [nzDataSource]="sixin"
           [nzRenderItem]="item"
@@ -165,6 +138,7 @@
                 [nzTitle]="nzTitle1"
                 nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
                 nzDescription="{{ item.content }}"
+                (click)="readMsg(item.messageId, item.fromId, item.toId)"
               >
                 <ng-template #nzTitle1>
                   <a>{{ item.fromNickName }}</a>

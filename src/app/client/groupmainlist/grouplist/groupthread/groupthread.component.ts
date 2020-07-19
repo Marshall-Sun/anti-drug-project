@@ -10,6 +10,7 @@ import {GroupmainlistService} from '../../../../service/groupmainlist/groupmainl
 import {GrouphotService} from '../../../../service/grouphot/grouphot.service';
 import {formatDistance} from 'date-fns';
 import {ViewportScroller} from '@angular/common';
+import { AuthService } from 'src/app/front-desk/auth/auth.service';
 
 @Component({
   selector: 'app-groupthread',
@@ -56,6 +57,8 @@ export class GroupthreadComponent implements OnInit {
   replyString: string = '';
   commentValue = this.replyString;
 
+  curUserOwnThisGroup:boolean;
+
   constructor(public router:Router,
               private grouplistService$:GrouplistService,
               private groupnowService$:GroupnowService,
@@ -67,6 +70,7 @@ export class GroupthreadComponent implements OnInit {
               private grouphotService$:GrouphotService,
               private _modal: NzModalService,
               private groupfirstService$: GroupfirstService,
+              private authService: AuthService,
               private vps: ViewportScroller
               ) {
     this.publishReplyForm = this.fb.group({
@@ -79,6 +83,7 @@ export class GroupthreadComponent implements OnInit {
     let pathList = location.pathname.split('/');
     this.groupId = pathList[3];
     this.threadId = pathList[5];
+    this.userId = window.localStorage.getItem("id");
     this.getList();
 
     this.getThreadOwner();
@@ -88,6 +93,9 @@ export class GroupthreadComponent implements OnInit {
       title: ['', Validators.required],
       content: ['', Validators.required],
     })
+    this.authService.userOwnGroupChecker(this.groupId).then(res => {
+      this.curUserOwnThisGroup = res;
+    });
   }
   // 获取评论
   getComments() {
@@ -105,6 +113,11 @@ export class GroupthreadComponent implements OnInit {
   }
   // 删除评论
   deleteComment(commentId: string) {
+    if (!this.authService.userLoginChecker()) {
+      this._notification.error("尚未登录", "");
+      return;
+    }
+
     this.groupeditEditService$.deleteComment(commentId).subscribe(result => {
       this._notification.success('删除成功！', '');
       this.getComments()
@@ -114,6 +127,11 @@ export class GroupthreadComponent implements OnInit {
   }
   //提交评论
   handleSubmit(): void {
+    if (!this.authService.userLoginChecker()) {
+      this._notification.error("尚未登录", "");
+      return;
+    }
+
     let content;
     let comment = {};
     let objecttype = '';

@@ -141,8 +141,98 @@ export class CourseManagementBackHalfService {
   addPlanTask_Homework(hk_form:any): Observable<any> {
     return this._http.post(`/course/createTask_Homework`, hk_form)
   }
+
+  addPlanTask_Video(hk_form:any): Observable<any> {
+    return this._http.post(`/course/createTask_Video`, hk_form)
+  }
+
+  addPlanTask_DownLoad(hk_form:any): Observable<any> {
+    return this._http.post(`/course/createTask_Download`, hk_form)
+  }
+
+  addPlanTask_Test(testform:any): Observable<any> {
+    return this._http.post(`/course/createTask_Testpaper`, testform)
+  }
+
   //排序任务
   sortPlanTask(courseId:string,taskIdArray:any): Observable<any> {
     return this._http.put(`/course/sort?courseId=${courseId}&sortList=${taskIdArray}`, {})
+  }
+
+  deleteTask(taskId : string): Observable<any> {
+    return this._http.delete(`/course/deleteTask?taskId=${taskId}`)
+  }
+
+  deleteSubTask(taskId : string): Observable<any> {
+    return this._http.delete(`/course/deleteSubTask?taskId=${taskId}`)
+  }
+
+  publishTask(taskId: string): Observable<any> {
+    return this._http.put(`/course/publishTask?taskId=${taskId}`, {})
+  }
+
+  unpublishTask(taskId: string): Observable<any> {
+    return this._http.put(`/course/unpublishTask?taskId=${taskId}`, {})
+  }
+
+  getTaskDetail(courseTaskId:any){
+    return this._http.get(`/course/getTaskDetail?courseTaskId=${courseTaskId}`)
+  }
+
+  edit_text(taskId:any,tx_form:any){
+    return this._http.post(`/course/editTask_Text`, {
+      finishDetail:tx_form.finishDetail,
+      isOptional:tx_form.isOptional,
+      taskContent:tx_form.content,
+      taskId:taskId,
+      taskTitle:tx_form.title
+    })
+  }
+
+  edit_homework(taskId:any,hw_form:any){
+    return this._http.post(`/course/editTask_Homework`, {
+      taskDescription:hw_form.content,
+      isOptional:hw_form.isOptional,
+      taskId:taskId,
+      taskTitle:hw_form.title,
+      userId:hw_form.fromUserId
+    })
+  }
+
+  edit_test(taskId:any,test_form:any){
+    return this._http.post(`/course/editTask_Testpaper`, {
+      doTimes:test_form.doTimes,
+      finishScore:test_form.finishScore,
+      finishType:test_form.finishType,
+      isOptional:test_form.isOptional,
+      limitedTime:test_form.limitedTime,
+      reDoInterval:test_form.reDoInterval,
+      taskId:taskId,
+      testpaperId:test_form.testpaperId,
+      title:test_form.title
+    })
+  }
+
+
+  edit_video(taskId:any,vi_form:any){
+    return this._http.post(`/course/editTask_Video`, {
+      fileId:vi_form.fileId,
+      finishdetail:vi_form.finishDetail,
+      finishtype:vi_form.finishType,
+      isOptional:vi_form.isOptional,
+      taskId:taskId,
+      title:vi_form.title
+    })
+  }
+
+  edit_download(taskId:any,ma_form:any){
+    return this._http.post(`/course/editTask_Download`, {
+      fileIdList:ma_form.fileIds,
+      fromCourseId:ma_form.fromCourseId,
+      fromCourseSetId:ma_form.fromCourseSetId,
+      isOptional:ma_form.isOptional,
+      taskId:taskId,
+      title:ma_form.title
+    })
   }
 }

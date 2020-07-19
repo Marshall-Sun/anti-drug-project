@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseInfService } from 'src/app/service/courseinf-frontend/courseinf-frontend.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzMessageService } from 'ng-zorro-antd';
 @Component({
   selector: 'app-courseinf-material',
   templateUrl: './courseinf-material.component.html',
@@ -16,7 +17,8 @@ export class CourseinfMaterialComponent implements OnInit {
   total_material_pages = 1;//总资料页
   current_material_page = 1;//当前资料页
 
-  constructor(private courseinfservice: CourseInfService,private notification: NzNotificationService) { }
+  constructor(private courseinfservice: CourseInfService,private notification: NzNotificationService,
+    private message: NzMessageService,) { }
 
   ngOnInit() {
 
@@ -41,5 +43,11 @@ export class CourseinfMaterialComponent implements OnInit {
     });
     window.scrollTo(0, 0);
   }
+
+  // downloadMaterial(materialitem:any){
+  //   this.message.info('开始下载', { nzDuration: 1000 });
+  //   window.open('http://172.16.10.94:9013/'+materialitem.CourseMaterialV8s[0].fileuri);
+  // }
+  //后端没给正确的link，先不管
 
 }

@@ -13,10 +13,12 @@ import { CourseManagementBackHalfService } from 'src/app/service/course-manageme
 import { ActivatedRoute } from '@angular/router';
 import { NzMessageService, NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import { QuestionCreateService } from 'src/app/service/question-create/question-create.service';
+import { MaterialService } from 'src/app/service/material/material.service';
+import { CourseFileService } from 'src/app/service/course-file/course-file.service';
 enum QUSTIONTYPE {
   single_choice = '单选题',
-  mutiple_choice = '多选题',
-  choice = '不定项选择题',
+  choice = '多选题',
+  uncertain_choice = '不定项选择题',
   determine = '判断题'
 }
 @Component({
@@ -25,6 +27,7 @@ enum QUSTIONTYPE {
   styleUrls: ['./plan-tasks.component.less'],
 })
 export class PlanTasksComponent implements OnInit {
+  userid = undefined;
   courseId: any = 0;
   teachplanId: any = 0;
   tasklist = [];
@@ -38,8 +41,8 @@ export class PlanTasksComponent implements OnInit {
   questiontypeToChinese = QUSTIONTYPE;
   listOfQuestionTypes: any[] = [
     { label: "单选题", value: "single_choice" },
-    { label: "多选题", value: "mutiple_choice" },
-    { label: "不定项选择题", value: "choice" },
+    { label: "多选题", value: "choice" },
+    { label: "不定项选择题", value: "uncertain_choice" },
     { label: "判断题", value: "determine" }
   ]
   selectedQuestions: any;
@@ -56,13 +59,24 @@ export class PlanTasksComponent implements OnInit {
   pt_Form: FormGroup;
 
   //视频/资料类型
+  material_title = "";
+  soursedata: any;
+  sourcetotalpage = 1;
   soursepage = 1;
-  currentselect = null;
-  selectsource(data) {
-    this.currentselect = data;
-  }
+  searchKeyword = "";
+  current_select_material = undefined;
+
+  soursedata_course: any;
+  sourcetotalpage_course = 1;
+  soursepage_course = 1;
+
+  vi_Form: FormGroup;
+  ma_Form: FormGroup;
   //考试类型
   testForm: FormGroup;
+  testpaper: any;
+  radioTestValue = "score";
+  testfinisheScore = 0;
 
   //作业类型
   homeWorkForm: FormGroup;
@@ -74,6 +88,14 @@ export class PlanTasksComponent implements OnInit {
   //完成条件
   iselective = false
 
+  //添加子任务使用
+  addChildTaskSeq = 0;
+  TaskMode = "lesson"
+
+  //编辑任务用
+  isCreateTask = true;
+  currentEditTask: any;
+
   constructor(public fb: FormBuilder,
     private routerInfo: ActivatedRoute,
     private courseManagement$: CourseManagementBackHalfService,
@@ -81,10 +103,13 @@ export class PlanTasksComponent implements OnInit {
     private notification: NzNotificationService,
     private _questionCreateService: QuestionCreateService,
     private modalService: NzModalService,
+    private materialservice: MaterialService,
+    private _courseFileService: CourseFileService,
   ) {
 
   }
   ngOnInit() {
+    this.userid = window.localStorage.getItem("id");
     this.pt_Form = this.fb.group({
       content: [null, [Validators.required]],
       createdUserId: [null],
@@ -93,16 +118,51 @@ export class PlanTasksComponent implements OnInit {
       fromCourseSetId: [null],
       isOptional: [null],
       remark: [null],
+      mode: [null],
       seq: [null],
       title: [null, [Validators.required]]
     });
+    this.vi_Form = this.fb.group({
+      courseType: [null],
+      fileId: [null],
+      finishDetail: [null],
+      finishType: [null],
+      fromCourseId: [null],
+      fromCourseSetId: [null],
+      fromUserId: [null],
+      isOptional: [null],
+      mode: [null],
+      seq: [null],
+      title: [null, [Validators.required]]
+    })
+    this.ma_Form = this.fb.group({
+      courseType: [null],
+      fileIds: [null],
+      fromCourseId: [null],
+      fromCourseSetId: [null],
+      introduction: [null],
+      isOptional: [null],
+      mode: [null],
+      seq: [null],
+      title: [null, [Validators.required]],
+      userId: [null]
+    })
     this.testForm = this.fb.group({
-      testTitleName: [null, [Validators.required]],
-      testPaperChoose: [null],
-      testTime: [null],
-      testTimes: [null],
-      testDuring: [null],
-      testScoreSet: [null],
+      content: [null],
+      createdUserId: [null],
+      doTimes: [null, [Validators.required]],
+      finishScore: 0,
+      finishType: [null],
+      fromCourseId: [null],
+      fromCourseSetId: [null],
+      isOptional: [null],
+      limitedTime: [null, [Validators.required]],
+      mode: [null],
+      reDoInterval: [null, [Validators.required]],
+      remark: [null],
+      seq: [null],
+      testpaperId: [null, [Validators.required]],
+      title: [null, [Validators.required]],
     });
     this.homeWorkForm = this.fb.group({
       content: [null, [Validators.required]],
@@ -113,7 +173,7 @@ export class PlanTasksComponent implements OnInit {
       itemCount: [null],
       itemsDtos: [null],
       limitedTime: [null],
-      mediaType: [null],
+      //mediaType: [null],
       mode: [null],
       remark: [null],
       seq: [null],
@@ -134,6 +194,7 @@ export class PlanTasksComponent implements OnInit {
       this.tasklist.sort(function (a, b) {
         return a[0].sequence - b[0].sequence;
       })
+      console.log(res);
     })
   }
 
@@ -175,28 +236,32 @@ export class PlanTasksComponent implements OnInit {
   //表单控制函数
   //---------------------------------添加章
   //---------------------------------添加任务
-  handleOpen_addtask(): void {
+  handleOpen_addtask(addChildTaskSeq = 0, TaskMode = 'lesson'): void {
     this.addtask_visible = true;
+    this.addChildTaskSeq = addChildTaskSeq;
+    this.TaskMode = TaskMode;
+    this.isCreateTask = true;
     this.initform_addtask();
   }
 
   handleOk_addtask(): void {
     this.addtask_visible = false;
     switch (this.addtssk_currenttype) {
-      case "picture_text": {
+      case "text": {
         var optional = 0;
         if (this.iselective) {
           optional = 1;
         }
         if (this.pt_Form.valid) {
           this.pt_Form.patchValue({
-            createdUserId: 1,
+            createdUserId: this.userid,
             finishDetail: "",
             fromCourseId: parseInt(this.teachplanId),
             fromCourseSetId: parseInt(this.courseId),
             isOptional: optional,
             remark: "",
-            seq: this.tasklist.length + 1,
+            mode: this.TaskMode,
+            seq: this.addChildTaskSeq || this.tasklist.length + 1,
           })
           this.courseManagement$.addPlanTask_Text(this.pt_Form.value).subscribe((res: any) => {
             this.notification.create(
@@ -222,6 +287,20 @@ export class PlanTasksComponent implements OnInit {
         this.createTask_homework();
         break;
       }
+      case "video": {
+        this.createTask_video();
+        break;
+      }
+      case "download": {
+        this.createTask_download();
+        break;
+      }
+      case "testpaper": {
+
+        this.createTask_test();
+        break;
+
+      }
     }
     this.initform_addtask();
   }
@@ -232,34 +311,35 @@ export class PlanTasksComponent implements OnInit {
       optional = 1;
     }
     var questionitems = []
-    for(let i=0;i<this.selectedQuestions.length;i++){
+    for (let i = 0; i < this.selectedQuestions.length; i++) {
       questionitems.push(
         {
-          copyid:0,
-          migrateitemid:0,
-          missscore:0,
-          parentid:0,
-          questionid:this.selectedQuestions[i].id,
-          questiontype:this.selectedQuestions[i].type,
-          score:this.selectedQuestions[i].score,
-          seq:i+1,
-          testid:0,
-          tpye:this.selectedQuestions[i].type,
+          copyid: 0,
+          migrateitemid: 0,
+          missScore: 0,
+          parentid: 0,
+          questionid: this.selectedQuestions[i].id,
+          questiontype: this.selectedQuestions[i].type,
+          score: this.selectedQuestions[i].score,
+          seq: i + 1,
+          testid: 0,
+          type: "homework"
         }
       )
     }
     this.homeWorkForm.patchValue({
       fromCourseId: parseInt(this.teachplanId),
       fromCourseSetId: parseInt(this.courseId),
-      fromUserId: 1,
+      fromUserId: this.userid,
       isOptional: optional,
       itemCount: questionitems.length,
       itemsDtos: questionitems,
       limitedTime: 0,
-      mediaType: "",
-      mode:"",
-      remark:"",
-      seq: this.tasklist.length + 1,
+      //mediaType: "",
+      //mode:"",
+      remark: "",
+      mode: this.TaskMode,
+      seq: this.addChildTaskSeq || this.tasklist.length + 1,
     })
     this.courseManagement$.addPlanTask_Homework(this.homeWorkForm.value).subscribe((res: any) => {
       this.notification.create(
@@ -274,6 +354,105 @@ export class PlanTasksComponent implements OnInit {
         `${error.error}`)
     })
   }
+
+  createTask_video() {
+    var optional = 0;
+    if (this.iselective) {
+      optional = 1;
+    }
+
+    this.vi_Form.patchValue({
+      courseType: "",
+      fileId: this.current_select_material.fileID || this.current_select_material.fileId,
+      finishDetail: "",
+      finishType: "",
+      fromCourseId: parseInt(this.teachplanId),
+      fromCourseSetId: parseInt(this.courseId),
+      fromUserId: this.userid,
+      isOptional: optional,
+      mode: this.TaskMode,
+      seq: this.addChildTaskSeq || this.tasklist.length + 1,
+      title: this.material_title
+    })
+    this.courseManagement$.addPlanTask_Video(this.vi_Form.value).subscribe((res: any) => {
+      this.notification.create(
+        'success',
+        '发送成功',
+        `发送成功`)
+      this.getTaskList();
+    }, error => {
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `${error.error}`)
+    })
+  }
+
+  createTask_download() {
+    var optional = 0;
+    if (this.iselective) {
+      optional = 1;
+    }
+
+    this.ma_Form.patchValue({
+      courseType: "",
+      fileIds: [this.current_select_material.fileID || this.current_select_material.fileId],
+      fromCourseId: parseInt(this.teachplanId),
+      fromCourseSetId: parseInt(this.courseId),
+      introduction: "",
+      isOptional: optional,
+      mode: this.TaskMode,
+      seq: this.addChildTaskSeq || this.tasklist.length + 1,
+      title: this.material_title,
+      userId: this.userid
+    })
+    this.courseManagement$.addPlanTask_DownLoad(this.ma_Form.value).subscribe((res: any) => {
+      this.notification.create(
+        'success',
+        '发送成功',
+        `发送成功`)
+      this.getTaskList();
+    }, error => {
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `${error.error}`)
+    })
+  }
+
+  createTask_test() {
+    var optional = 0;
+    if (this.iselective) {
+      optional = 1;
+    }
+
+    this.testForm.patchValue({
+      finishType: this.radioTestValue,
+      finishScore: this.testfinisheScore,
+      content: "",
+      createdUserId: parseInt(this.userid),
+      fromCourseId: parseInt(this.teachplanId),
+      fromCourseSetId: parseInt(this.courseId),
+      isOptional: optional,
+      remark: "",
+      mode: this.TaskMode,
+      seq: this.addChildTaskSeq || this.tasklist.length + 1,
+    })
+    this.courseManagement$.addPlanTask_Test(this.testForm.value).subscribe((res: any) => {
+      this.notification.create(
+        'success',
+        '发送成功',
+        `发送成功`)
+      this.getTaskList();
+    }, error => {
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `${error.error}`)
+    })
+  }
+
+
 
 
   handleCancel_addtask(): void {
@@ -308,9 +487,39 @@ export class PlanTasksComponent implements OnInit {
       fromCourseSetId: [null],
       isOptional: [null],
       remark: [null],
+      mode: [null],
       seq: [null],
       title: [null, [Validators.required]]
     });
+    this.vi_Form = this.fb.group({
+      courseType: [null],
+      fileId: [null],
+      finishDetail: [null],
+      finishType: [null],
+      fromCourseId: [null],
+      fromCourseSetId: [null],
+      fromUserId: [null],
+      isOptional: [null],
+      mode: [null],
+      seq: [null],
+      title: [null, [Validators.required]]
+    })
+    this.ma_Form = this.fb.group({
+      courseType: [null],
+      fileIds: [null],
+      fromCourseId: [null],
+      fromCourseSetId: [null],
+      introduction: [null],
+      isOptional: [null],
+      mode: [null],
+      seq: [null],
+      title: [null, [Validators.required]],
+      userId: [null]
+    })
+    this.material_title = "";
+    this.current_select_material = undefined;
+    this.sourcetotalpage = 1;
+    this.sourcetotalpage_course = 1;
     this.iselective = false;
     this.selectedQuestions = [];
     this.questionsIds = [];
@@ -324,23 +533,54 @@ export class PlanTasksComponent implements OnInit {
       itemCount: [null],
       itemsDtos: [null],
       limitedTime: [null],
-      mediaType: [null],
+      //mediaType: [null],
       mode: [null],
       remark: [null],
       seq: [null],
       title: [null, [Validators.required]]
     });
+    this.testForm = this.fb.group({
+      content: [null],
+      createdUserId: [null],
+      doTimes: [null, [Validators.required]],
+      finishScore: 0,
+      finishType: [null],
+      fromCourseId: [null],
+      fromCourseSetId: [null],
+      isOptional: [null],
+      limitedTime: [null, [Validators.required]],
+      mode: [null],
+      reDoInterval: [null, [Validators.required]],
+      remark: [null],
+      seq: [null],
+      testpaperId: [null, [Validators.required]],
+      title: [null, [Validators.required]],
+    });
+    this.radioTestValue = "score";
+    this.testfinisheScore = 0;
   }
 
   //1.设置任务类型
   settask(inf: string): void {
     this.addtssk_currenttype = inf;
     this.addtask_currentpage += 1;
+    if (this.addtssk_currenttype == "video" || this.addtssk_currenttype == "download") {
+      this.getMaterials();
+      this.getCourseFileList();
+    }
+    if (this.addtssk_currenttype == 'testpaper') {
+      this.getTestPapers();
+    }
   }
 
   nextpage() {
     if (this.checkContent()) {
       this.addtask_currentpage += 1;
+    } else {
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `请填写表单所有内容`)
     }
 
   }
@@ -365,14 +605,34 @@ export class PlanTasksComponent implements OnInit {
   }
 
   checkContent() {
-    if (this.addtssk_currenttype == "picture_text") {
+    if (this.addtssk_currenttype == "text") {
       if (this.pt_Form.controls['title'].valid && this.pt_Form.controls['content'].valid) {
         return true;
       } else {
         return false;
       }
     } else if (this.addtssk_currenttype == "homework") {
-      if (this.homeWorkForm.controls['title'].valid && this.homeWorkForm.controls['content'].valid && this.selectedQuestions.length > 0) {
+      if(this.isCreateTask){
+        if (this.homeWorkForm.controls['title'].valid && this.homeWorkForm.controls['content'].valid && this.selectedQuestions.length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }else{
+        if (this.homeWorkForm.controls['title'].valid && this.homeWorkForm.controls['content'].valid) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } else if (this.addtssk_currenttype == "video" || this.addtssk_currenttype == "download") {
+      if (this.material_title != "" && this.current_select_material != undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (this.addtssk_currenttype == "testpaper") {
+      if (this.testForm.valid) {
         return true;
       } else {
         return false;
@@ -382,7 +642,31 @@ export class PlanTasksComponent implements OnInit {
   }
 
   publishTask(taskid) {
+    this.courseManagement$.publishTask(taskid).subscribe(res => {
+      this.getTaskList();
+    })
+  }
 
+  unpublishTask(taskid) {
+    this.courseManagement$.unpublishTask(taskid).subscribe(res => {
+      this.getTaskList();
+    })
+  }
+
+  deleteTask(taskid) {
+    this.modalService.confirm({
+      nzTitle: '真的要删除该任务吗?',
+      nzContent: '该任务及其子任务将被删除。',
+      nzOkText: '确定',
+      nzOkType: 'danger',
+      nzOnOk: () => {
+        this.courseManagement$.deleteTask(taskid).subscribe(res => {
+          this.getTaskList();
+        })
+      },
+      nzCancelText: '取消',
+      nzOnCancel: () => console.log('Cancel')
+    });
   }
 
   //题目相关--------------------------------------------------
@@ -474,4 +758,337 @@ export class PlanTasksComponent implements OnInit {
       nzOnCancel: () => console.log('Cancel')
     });
   }
+
+  getMaterials() {
+    var matype = this.addtssk_currenttype == "video" ? "video" : "";
+    this.materialservice.getMyMaterials(
+      this.userid.toString(),
+      this.soursepage.toString(),
+      matype,
+      "",
+      "",
+      "",
+      this.searchKeyword,
+      "",
+      ""
+    ).subscribe((res: any) => {
+      this.soursedata = res.data.data;
+      this.sourcetotalpage = res.data.total;
+    }, error => {
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `${error.error}`)
+    });
+  }
+
+  searchMaterials() {
+    this.soursepage = 1;
+    this.getMaterials();
+  }
+
+  selectMaterial(material) {
+    this.current_select_material = material;
+  }
+
+  uploadMaterialChange(info: any) {
+    if (info.type === 'success') {
+      let file = {
+        filename: info.file.name,
+        fileID: info.file.response.data
+      }
+      this.current_select_material = file;
+    }
+    if (info.type === 'error') {
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `上传失败`)
+    }
+  }
+
+
+  getTestPapers() {
+    this._questionCreateService.getExamListByCourseId(this.courseId).subscribe(result => {
+      //this.total = result.data.total;
+      this.testpaper = result.data.data;
+    }, error1 => {
+      this.notification.error('发生错误！', `${error1.error}`)
+    })
+  }
+
+  getCourseFileList(pageIndex: number = this.soursepage_course, pageSize: number = 12) {
+    this._courseFileService.getCourseFileList(this.courseId, pageIndex, pageSize).subscribe(res => {
+      this.soursedata_course = res.data.data;
+      this.sourcetotalpage_course = res.data.total;
+    })
+  }
+
+
+
+  getTaskByType(tasks: any, type: string) {
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].mode == type) {
+        return tasks[i];
+      }
+    }
+    return null;
+  }
+
+
+  editTask(task: any, mode: string) {
+    this.initform_addtask();
+    this.courseManagement$.getTaskDetail(task.taskId).subscribe((res: any) => {
+      this.currentEditTask = task;
+      let curretntask = res.data;
+      this.isCreateTask = false;
+      this.addtssk_currenttype = task.type;
+      this.addtask_currentpage += 1;
+      if (this.addtssk_currenttype == "video" || this.addtssk_currenttype == "download") {
+        this.getMaterials();
+        this.getCourseFileList();
+      }
+      if (this.addtssk_currenttype == 'testpaper') {
+        this.getTestPapers();
+      }
+
+      switch (this.addtssk_currenttype) {
+        case "text": {
+          this.edit_text(curretntask);
+          break;
+        }
+        case "homework": {
+          this.edit_homework(curretntask);
+          break;
+        }
+        case "video": {
+          this.edit_video(curretntask);
+          break;
+        }
+        case "download": {
+          this.edit_download(curretntask);
+          break;
+        }
+        case "testpaper": {
+          this.edit_test(curretntask);
+          break;
+        }
+      }
+      this.addtask_visible = true;
+      this.addChildTaskSeq = task.sequence;
+      this.TaskMode = mode;
+    }, error => {
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `${error.error}`)
+      return null
+    })
+  }
+
+  edit_text(task: any) {
+    if (task.isOptional == 1) {
+      this.iselective = true;
+    }
+    this.pt_Form.patchValue({
+      content: task.Activity.content,
+      finishDetail: "",
+      isOptional: task.CourseTask.isoptional,
+      title: task.Activity.title
+    });
+  }
+
+  edit_video(task: any) {
+    if (task.isOptional == 1) {
+      this.iselective = true;
+    }
+    this.vi_Form.patchValue({
+      fileId: task.ActivityVideo.mediaid,
+      finishDetail: task.ActivityVideo.finishdetail,
+      finishType: task.ActivityVideo.finishtype,
+      isOptional: task.CourseTask.isoptional,
+      title: task.Activity.title
+    })
+    this.material_title = task.Activity.title;
+    let faleName = task.ActivityVideo.mediauri.split("/")
+    let file = {
+      filename: faleName[faleName.length-1],
+      fileID: task.ActivityVideo.mediaid
+    }
+    this.current_select_material = file;
+  }
+
+  edit_homework(task: any) {
+    if (task.isOptional == 1) {
+      this.iselective = true;
+    }
+    this.homeWorkForm.patchValue({
+      content: task.Activity.content,
+      fromUserId: this.userid,
+      isOptional: task.CourseTask.isoptional,
+      title: task.Activity.title
+    });
+  }
+
+  edit_download(task: any) {
+    if (task.isOptional == 1) {
+      this.iselective = true;
+    }
+    this.ma_Form.patchValue({
+      fileIds: task.ActivityDownload.fileids,
+      fromCourseId: task.CourseTask.courseid,
+      fromCourseSetId: task.CourseTask.fromcoursesetid,
+      isOptional: task.CourseTask.isoptional,
+      title:  task.Activity.title
+    })
+    this.material_title = task.Activity.title;
+    let faleName = task.CourseMaterialV8s[0].title
+    let file = {
+      filename: faleName,
+      fileID: task.ActivityDownload.fileids
+    }
+    this.current_select_material = file;
+  }
+
+  edit_test(task: any) {
+    if (task.isOptional == 1) {
+      this.iselective = true;
+    }
+    this.testForm.patchValue({
+      doTimes:task.ActivityTestpaper.dotimes,
+      finishScore: task.ActivityTestpaper.finishcondition.finishScore,
+      finishType: task.ActivityTestpaper.finishcondition.type,
+      isOptional: task.CourseTask.isoptional,
+      limitedTime: task.ActivityTestpaper.limitedtime,
+      reDoInterval: task.ActivityTestpaper.redointerval,
+      testpaperId: task.ActivityTestpaper.mediaid,
+      title: task.Activity.title,
+    });
+  }
+
+
+  handleOk_edittask(): void {
+    this.addtask_visible = false;
+    var optional = 0;
+    if (this.iselective) {
+      optional = 1;
+    }
+    switch (this.addtssk_currenttype) {
+      case "text": {
+        this.pt_Form.patchValue({
+          isOptional:optional
+        })
+        this.courseManagement$.edit_text(this.currentEditTask.taskId, this.pt_Form.value).subscribe((res: any) => {
+          this.notification.create(
+            'success',
+            '发送成功',
+            `发送成功`)
+          this.getTaskList();
+        }, error => {
+          this.notification.create(
+            'error',
+            '发生错误！',
+            `${error.error}`)
+        })
+        break;
+      }
+      case "homework": {
+        this.homeWorkForm.patchValue({
+          isOptional:optional
+        })
+        this.courseManagement$.edit_homework(this.currentEditTask.taskId, this.homeWorkForm.value).subscribe((res: any) => {
+          this.notification.create(
+            'success',
+            '发送成功',
+            `发送成功`)
+          this.getTaskList();
+        }, error => {
+          this.notification.create(
+            'error',
+            '发生错误！',
+            `${error.error}`)
+        })
+        break;
+      }
+      case "video": {
+        this.vi_Form.patchValue({
+          isOptional:optional,
+          title: this.material_title,
+          fileId: this.current_select_material.fileID || this.current_select_material.fileId
+        })
+        this.courseManagement$.edit_video(this.currentEditTask.taskId, this.vi_Form.value).subscribe((res: any) => {
+          this.notification.create(
+            'success',
+            '发送成功',
+            `发送成功`)
+          this.getTaskList();
+        }, error => {
+          this.notification.create(
+            'error',
+            '发生错误！',
+            `${error.error}`)
+        })
+        break;
+      }
+      case "download": {
+        this.ma_Form.patchValue({
+          isOptional:optional,
+          title: this.material_title,
+          fileIds: [this.current_select_material.fileID || this.current_select_material.fileId]
+        })
+        this.courseManagement$.edit_download(this.currentEditTask.taskId, this.ma_Form.value).subscribe((res: any) => {
+          this.notification.create(
+            'success',
+            '发送成功',
+            `发送成功`)
+          this.getTaskList();
+        }, error => {
+          this.notification.create(
+            'error',
+            '发生错误！',
+            `${error.error}`)
+        })
+        break;
+      }
+      case "testpaper": {
+        this.testForm.patchValue({
+          isOptional:optional
+        })
+        this.courseManagement$.edit_test(this.currentEditTask.taskId, this.testForm.value).subscribe((res: any) => {
+          this.notification.create(
+            'success',
+            '发送成功',
+            `发送成功`)
+          this.getTaskList();
+        }, error => {
+          this.notification.create(
+            'error',
+            '发生错误！',
+            `${error.error}`)
+        })
+        break;
+
+      }
+    }
+    this.initform_addtask();
+  }
+
+  deleteChildTask(){
+    this.modalService.confirm({
+      nzTitle: '真的要删除该任务吗?',
+      nzContent: '该任务将被删除。',
+      nzOkText: '确定',
+      nzOkType: 'danger',
+      nzOnOk: () => {
+        this.courseManagement$.deleteSubTask(this.currentEditTask.taskId).subscribe(res => {
+          this.getTaskList();
+          this.initform_addtask();
+          this.addtask_visible = false;
+        })
+      },
+      nzCancelText: '取消',
+      nzOnCancel: () => console.log('Cancel')
+    });
+  }
+
 }

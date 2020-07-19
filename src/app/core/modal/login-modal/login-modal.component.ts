@@ -38,7 +38,7 @@ export class LoginModalComponent implements OnInit {
     });
   }
 
-  submitLoginForm() {
+  async submitLoginForm() {
     for (const i in this.loginForm.controls) {
       this.loginForm.controls[i].markAsDirty();
       this.loginForm.controls[i].updateValueAndValidity();
@@ -46,71 +46,48 @@ export class LoginModalComponent implements OnInit {
 
     if (this.loginForm.valid) {
       this.isOkLoading = true;
-      this.loginService
-        .postLogin(this.loginForm.value.username, this.loginForm.value.password)
-        .subscribe(
-          (res: any) => {
-            //保存用户基本信息
-            window.localStorage.setItem("id", res);
-            this.userManagementService
-              .getPersonalDetailById(res)
-              .subscribe((data) => {
-                for (let [key, value] of Object.entries(data.data)) {
-                  window.localStorage.setItem(key + "", value + "");
-                }
-              });
+      try {
+        let res: any = await this.loginService.postLogin(
+            this.loginForm.value.username,
+            this.loginForm.value.password
+          ).toPromise();
 
-            //保存用户token
-            this.loginService
-              .getToken(
-                this.loginForm.value.username,
-                this.loginForm.value.password
-              )
-              .subscribe((data: any) => {
-                window.localStorage.setItem("expires_in", data.expires_in);
-                this.loginService.checkToken(data.access_token)
-                .subscribe((access_token: any) => {
-                  for (let [key, value] of Object.entries(access_token)) {
-                    window.localStorage.setItem(key + "", value + "");
-                  }
-                });
-              });
+        //保存用户基本信息
+        window.localStorage.setItem("id", res);
+        let personalDetail: any = await this.userManagementService
+          .getPersonalDetailById(res).toPromise();          
+        for (let [key, value] of Object.entries(personalDetail.data)) {
+          window.localStorage.setItem(key, value + "");
+        }
 
-            //保存用户所在小组id
-            this.myteachingService.getMyJoinGroup(res).subscribe((data) => {
-              let myGroups = "";
-              for (const groupItem of data.data) {
-                myGroups = myGroups + groupItem.id + ";";
-              }
-              window.localStorage.setItem("myGroups", myGroups);
-            });
-            
-            //保存用户所管理小组id
-            this.myteachingService.getMyOwnGroup(res).subscribe((data) => {
-              let myOwnGroups = "";
-              for (const groupItem of data.data) {
-                myOwnGroups = myOwnGroups + groupItem.id + ";";
-              }
-              window.localStorage.setItem("myOwnGroups", myOwnGroups);
-            });
+        //保存用户token
+        let token: any = await this.loginService.getToken(
+            this.loginForm.value.username,
+            this.loginForm.value.password
+          ).toPromise();
+        window.localStorage.setItem("expires_in", token.expires_in);
+        let uncodedToken: any = await this.loginService
+          .checkToken(token.access_token).toPromise();
+        for (let [key, value] of Object.entries(uncodedToken)) {
+          window.localStorage.setItem(key, value + "");
+        }
 
-            this.msg.success("登录成功");
-            this.modal.triggerOk();
-            this.modal.destroy();
-          },
-          (error) => {
-            this.msg.error("登录失败");
-            this.isOkLoading = false;
-            this.dataLogin = error.error;
-            if (this.dataLogin.text == "用户不存在") {
-              this.loginForm.controls.username.setErrors({ confirm: true });
-            } else if (this.dataLogin.text == "密码错误") {
-              this.loginForm.controls.password.setErrors({ confirm: true });
-            } else {
-              console.log(error);
-            }
-          }
-        );
+        this.msg.success("登录成功");
+        this.modal.triggerOk();
+        this.modal.destroy();
+        location.reload();
+      } catch (error) {
+        this.isOkLoading = false;
+        this.dataLogin = error.error;
+        if (this.dataLogin.text == "用户不存在") {
+          this.loginForm.controls.username.setErrors({ confirm: true });
+        } else if (this.dataLogin.text == "密码错误") {
+          this.loginForm.controls.password.setErrors({ confirm: true });
+        } else {
+          this.msg.error("登录失败");
+          console.log(error);
+        }
+      }
     }
   }
 

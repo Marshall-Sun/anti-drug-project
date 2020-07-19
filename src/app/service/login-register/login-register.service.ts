@@ -1,11 +1,14 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: "root",
 })
 export class LoginRegisterService {
   constructor(private http: HttpClient) {}
+
+  courseUserID:BehaviorSubject<any[]> = new BehaviorSubject([]);
 
   postLogin(username: string, password: string) {
     return this.http.post(

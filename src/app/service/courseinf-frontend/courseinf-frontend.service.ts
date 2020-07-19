@@ -343,16 +343,14 @@ export class CourseInfService {
     return this.http.post(uri,
       {
         content: content,
-        courseId: courseid,
-        courseSetId:teachplanid,
+        courseId: teachplanid,
+        courseSetId:courseid,
         parentId:parentId,
         rating: rating.toString(),
         title: title,
         userId: userId
       });
   }
-
-  
   
   get_teaching_plan_topic(teachplanid: string, page: string="1", type: string = "",sort:string = "") {
     const params = new HttpParams()
@@ -370,8 +368,8 @@ export class CourseInfService {
     return this.http.post(uri,
       {
         content: content,
-        courseId: courseid,
-        courseSetId:teachplanID,
+        courseId: teachplanID,
+        courseSetId: courseid,
         taskId: 0,
         title: title,
         userId: userId
@@ -379,12 +377,12 @@ export class CourseInfService {
   }
 
   write_teaching_plan_questoin(courseid: string,teachplanID:string, content: string,title:string, userId: string) {
-    const uri = `course/plan/createCourseQuestion`;
+    const uri = `/course/plan/createCourseQuestion`;
     return this.http.post(uri,
       {
         content: content,
-        courseId: courseid,
-        courseSetId:teachplanID,
+        courseId: teachplanID,
+        courseSetId:courseid,
         taskId: 0,
         title: title,
         userId: userId
