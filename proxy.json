@@ -1,54 +1,66 @@
 {
   "/user": {
-    "target": "http://172.16.10.94:9011",
+    "target": "http://219.216.64.77:9011",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/login": {
-    "target": "http://localhost:9000",
+    "target": "http://172.16.10.94:9005",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/oauth": {
-    "target": "http://localhost:9000",
+    "target": "http://172.16.10.94:9003",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/classroom": {
-    "target": "http://172.16.10.94:9001",
+    "target": "http://219.216.64.77:9001",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/course": {
-    "target": "http://172.16.10.94:9002",
+    "target": "http://219.216.86.249:9002",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/info": {
-    "target": "http://172.16.10.94:8001",
+    "target": "http://219.216.64.77:8001",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/comment": {
+    "target": "http://219.216.64.77:8001",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/groupBack": {
-    "target": "http://172.16.10.94:9010",
+    "target": "http://219.216.64.77:9010",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/groupComment": {
+    "target": "http://219.216.64.77:9010",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/groupGate": {
-    "target": "http://172.16.10.94:9010",
+    "target": "http://219.216.64.77:9010",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/material": {
-    "target": "http://172.16.10.94:9013",
+    "target": "http://219.216.64.77:9013",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
@@ -60,25 +72,31 @@
     "changeOrigin": true
   },
   "/teachingPlan": {
-    "target": "http://172.16.10.94:9002",
+    "target": "http://219.216.64.77:9002",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/video": {
-    "target": "http://172.16.10.94:9013",
+    "target": "http://219.216.64.77:9013",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/office": {
-    "target": "http://172.16.10.94:9013",
+    "target": "http://219.216.64.77:9013",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/other": {
-    "target": "http://172.16.10.94:9013",
+    "target": "http://219.216.64.77:9013",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/system": {
+    "target": "http://172.16.10.94:9004",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
