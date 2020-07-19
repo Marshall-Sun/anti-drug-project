@@ -90,7 +90,7 @@ export class AuthGuard implements CanActivate {
     
     // 页面：小组系列，判断关闭状态
     if (url.indexOf("/groupmainlist") != -1) {
-      var targetUrl = url.split("/");
+      let targetUrl = url.split("/");
       if (parseInt(targetUrl[3]) > 0) {
         let res: any = await this.authService.groupClosedChecker(targetUrl[3]);
         if (res) {
@@ -101,7 +101,8 @@ export class AuthGuard implements CanActivate {
     }
 
     // 页面：小组话题系列，判断关闭状态
-    if (canActivate && targetUrl[4] == "groupthread") {
+    if (canActivate && url.split("/")[4] == "groupthread") {
+      let targetUrl = url.split("/");
       // 页面：创建、编辑小组话题，仅限小组成员访问
       if (url.indexOf("/grouptopic") != -1 || url.indexOf("/groupthreadedit") != -1) {
         let res: any = await this.authService.userInGroupChecker(targetUrl[3]);

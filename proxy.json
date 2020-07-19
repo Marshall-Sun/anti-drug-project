@@ -18,7 +18,7 @@
     "changeOrigin": true
   },
   "/classroom": {
-    "target": "http://202.199.6.199:9001",
+    "target": "http://219.216.64.77:9001",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
