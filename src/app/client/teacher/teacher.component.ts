@@ -10,6 +10,7 @@ import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
   styleUrls: ['./teacher.component.less']
 })
 export class TeacherComponent implements OnInit {
+  fromID:string = window.localStorage.getItem("id");
   displayData: any[] = [];
   loading: boolean;
   total: number;
@@ -33,6 +34,9 @@ export class TeacherComponent implements OnInit {
   }
 
   show1(i) {
+    if(i.id == this.fromID){
+      return;
+    }
     i.isshow = false;
   }
 
@@ -50,7 +54,7 @@ export class TeacherComponent implements OnInit {
       this.displayData.forEach(item => {
         item.isshow = true;
         //验证是否已关注
-        this.followmanagementService.isFollowed('1', item.id).subscribe(res => {
+        this.followmanagementService.isFollowed(this.fromID, item.id).subscribe(res => {
           item.isfollowed=res.data;
         });
       })
@@ -71,25 +75,21 @@ export class TeacherComponent implements OnInit {
     this.router.navigateByUrl(url);
   }
 
-  关注
+  //关注
   follow_submit(item_id: any) {
-    if (item_id != "1") {
-      this.followmanagementService.followUser("1", item_id).subscribe((res: any) => {
-        this.notification.create(
-          'success',
-          '提交成功！',
-          `提交成功`)
-          this.followmanagementService.isFollowed('1', item_id).subscribe(res => {
-            this.displayData.forEach(item => {
-              if(item.id == item_id){
-                item.isfollowed = res.data;
-              }
-            });
-          }, error => {
-          this.notification.create(
-            'error',
-            '发生错误！',
-            `${error.error}`)
+    console.log(this.fromID,item_id);
+    if(this.fromID == item_id){
+      this.message.create('error',"不能关注自己！");
+      return;
+    }
+    this.followmanagementService.followUser(this.fromID,item_id).subscribe(res=>{
+      this.message.create('success',"关注成功！");
+
+      this.followmanagementService.isFollowed(this.fromID, item_id).subscribe(res => {
+        this.displayData.forEach(item => {
+          if(item.id == item_id){
+            item.isfollowed = res.data;
+          }
         });
       }, error => {
         this.notification.create(
@@ -97,23 +97,51 @@ export class TeacherComponent implements OnInit {
           '发生错误！',
           `${error.error}`)
       });
-    } else {
-      this.notification.create(
-        'error',
-        '发生错误！',
-        `不能自己关注自己`)
     }
+    ,error1=>{
+      this.message.create('error',"关注失败！");
+    });
+    // if (item_id != "1") {
+    //   this.followmanagementService.followUser("1", item_id).subscribe((res: any) => {
+    //     this.notification.create(
+    //       'success',
+    //       '提交成功！',
+    //       `提交成功`)
+    //       this.followmanagementService.isFollowed('1', item_id).subscribe(res => {
+    //         this.displayData.forEach(item => {
+    //           if(item.id == item_id){
+    //             item.isfollowed = res.data;
+    //           }
+    //         });
+    //       }, error => {
+    //       this.notification.create(
+    //         'error',
+    //         '发生错误！',
+    //         `${error.error}`)
+    //     });
+    //   }, error => {
+    //     this.notification.create(
+    //       'error',
+    //       '发生错误！',
+    //       `${error.error}`)
+    //   });
+    // } else {
+    //   this.notification.create(
+    //     'error',
+    //     '发生错误！',
+    //     `不能自己关注自己`)
+    // }
   }
 
   //取消关注
   del_follow_submit(item_id: any) {
-    this.followmanagementService.defollow("1", item_id).subscribe((res: any) => {
+    this.followmanagementService.defollow(this.fromID, item_id).subscribe((res: any) => {
       this.notification.create(
         'success',
         '提交成功！',
         `提交成功`)
 
-        this.followmanagementService.isFollowed('1', item_id).subscribe(res => {
+        this.followmanagementService.isFollowed(this.fromID, item_id).subscribe(res => {
           this.displayData.forEach(item => {
             if(item.id == item_id){
               item.isfollowed = res.data;
@@ -134,7 +162,7 @@ export class TeacherComponent implements OnInit {
   }
 
   isFollowed(id: string) {
-    this.followmanagementService.isFollowed('1', id).subscribe(res => {
+    this.followmanagementService.isFollowed(this.fromID, id).subscribe(res => {
       console.log(res.data);
       return res.data
     });

@@ -1,0 +1,136 @@
+<div class="create-page">
+  <h1>编辑试卷</h1>
+  <nz-divider></nz-divider>
+  <nz-breadcrumb>
+    <nz-breadcrumb-item>
+      <a (click)="navigateByUrl('/client/course/' + courseId +'/testpaper')">试卷管理</a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      编辑试卷
+    </nz-breadcrumb-item>
+  </nz-breadcrumb>
+  <div class="content">
+    <nz-divider [nzText]="'编辑试卷信息'"></nz-divider>
+    <form nz-form [formGroup]="validateForm">
+      <nz-form-item>
+        <nz-form-label nzSpan="4" nzRequired nzFor="paperName">试卷名称</nz-form-label>
+        <nz-form-control nzSpan="20" nzErrorTip="请输入试卷名称">
+          <input type="text" nz-input formControlName="paperName" id="paperName">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzSpan="4">试卷说明</nz-form-label>
+        <nz-form-control nzSpan="20">
+          <quill-editor formControlName="desc"></quill-editor>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+    <button nz-button nzType="primary" (click)="modifyPaperInfo()">修改描述</button>
+    <nz-divider [nzText]="'编辑题目'"></nz-divider>
+    <div class="que-table">
+      <div style="width: 100%; display: flex; flex-direction: row; justify-content: flex-end; margin-bottom: 2%;">
+        <nz-select [(ngModel)]="type" style="width: 120px; margin-right: 2%;" (ngModelChange)="changeDisplayData()">
+          <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+        <button nz-button nzType="danger" (click)="openAddModal()"><i nz-icon nzType="plus"></i>新增题目</button>
+      </div>
+
+      <nz-table *ngIf="displayData && displayData.length > 0" #rowSelectionTable
+                [nzData]="displayData"
+                [nzLoading]="loading"
+                [nzShowPagination]="false">
+        <thead>
+        <tr>
+          <th nzShowCheckbox
+              [(nzChecked)]="isAllDisplayDataChecked"
+              [nzIndeterminate]="isIndeterminate"
+              (nzCheckedChange)="checkAll($event)"></th>
+          <th>题号</th>
+          <th>题干</th>
+          <th>类型</th>
+          <th>难度</th>
+          <th>分值</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+          <td nzShowCheckbox
+              [(nzChecked)]="mapOfCheckedId[data.questionId]"
+              (nzCheckedChange)="refreshStatus()"></td>
+          <td>{{ data.seq }}</td>
+          <td><div style="padding-top: 1em;" [innerHTML]="data.stem"></div></td>
+          <td>{{ questionsType[data.questionType] }}</td>
+          <td>{{ difficultLevel[data.difficulty] }}</td>
+          <td><nz-input-number [nzMin]="1" [(ngModel)]="scoreList[data.questionId]"></nz-input-number></td>
+          <td>
+            <i class="more-operation" nz-popover nzTitle="可执行操作" [nzContent]="operationTemplate" nzTrigger="hover" nz-icon nzType="more" nzTheme="outline" nzPlacement="bottom"></i>
+          </td>
+          <ng-template #operationTemplate>
+            <div class="user-management-operation">
+              <div>
+                <span (click)="createTplModal(tplTitle, tplContent, tplFooter, data.questionId)"><i nz-icon nzType="eye" nzTheme="outline"></i>预览</span>
+              </div>
+              <div>
+                <span (click)="delete(data.questionId)"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</span>
+              </div>
+              <div>
+                <span (click)="openSelectModal(data.questionId)"><i nz-icon nzType="swap" nzTheme="outline"></i>替换</span>
+              </div>
+            </div>
+          </ng-template>
+        </tr>
+        </tbody>
+      </nz-table>
+
+      <nz-empty *ngIf="displayData.length == 0"
+                [nzNotFoundContent]="contentTpl">
+        <ng-template #contentTpl>
+          <span>暂无可选题目，请<a (click)="openAddModal()">添加</a></span>
+        </ng-template>
+      </nz-empty>
+    </div>
+    <button style="margin-top: 2%;" nz-button nzType="danger" nzSize="small" (click)="deleteList()"><i nz-icon nzType="delete"
+                                                                          nzTheme="outline"></i>删除</button>
+    <nz-divider></nz-divider>
+    <div>
+      <span>这是一份纯客观题的试卷，达到</span><nz-input-number [(ngModel)]="passedCondition" [nzMin]="0" nzStep="5" [nzMax]="100"></nz-input-number>分（含）可以自动审阅通过考试。
+    </div>
+    <nz-divider></nz-divider>
+    <div>
+      <button nz-button nzType="primary" (click)="submitForm()">保存试卷</button>
+      <button nz-button nzType="link" (click)="navigateByUrl('/client/course/' + courseId + '/testpaper')">返回</button>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #tplTitle>
+  <span>题目预览</span>
+</ng-template>
+<ng-template #tplContent>
+  <div nz-row>
+    <div nz-col nzSpan="2">
+      <nz-tag [nzColor]="'blue'">{{detail.score}}分</nz-tag>
+    </div>
+    <div nz-col nzSpan="22">
+      <span  [innerHTML] ="detail.stem" ></span>
+
+      <div class="choiceView">
+        <div *ngFor="let meta of questionList; let j = index" class="questionChoice">
+          <span>{{characterList[j]}}</span>、<span style="display: inline-block" [innerHTML]="meta"></span>
+        </div>
+      </div>
+
+      <nz-divider></nz-divider>
+      <div >正确答案是:<span *ngFor="let answer of answerList" style="margin-right: 5px;">{{getAnswer(answer)}}</span></div>
+      <div style="background: #f4f4f4; padding: 2% 5%; margin-top: 20px;" *ngIf="detail.analysis=='' || detail.analysis == null">无解析</div>
+      <div style="background: #f4f4f4; padding: 2% 5%;margin-top: 20px; " *ngIf="detail.analysis!='' && detail.analysis !== null">{{detail.analysis}}</div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #tplFooter>
+  <button nz-button nzType="primary" (click)="destroyTplModal()" [nzLoading]="tplModalButtonLoading">
+    关闭
+  </button>
+</ng-template>

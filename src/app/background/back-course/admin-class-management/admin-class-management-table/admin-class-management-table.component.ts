@@ -49,8 +49,6 @@ export class AdminClassManagementTableComponent implements OnInit {
     this.displayData = [];
     this.loading = true;
     this.classManagementService$.getClassroomList(pageIndex, 10, this.filterOptions).subscribe(result => {
-      console.log(this.filterOptions,result);
-      
       this.loading = false;
       this.total = result.data[0].totalNum ? result.data[0].totalNum: 0;
       this.classNum = this.total;

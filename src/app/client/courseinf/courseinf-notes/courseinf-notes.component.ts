@@ -28,7 +28,7 @@ export class CourseinfNotesComponent implements OnInit {
   changeOrder_Note(order: string): void {
     this.noteorder = order;
     this.current_notespage = 1;
-    this.courseinfservice.get_teaching_plan_note(this.courseid, "1",this.teachplanId, this.noteorder).subscribe((res: any)  => {
+    this.courseinfservice.get_teaching_plan_note(this.teachplanId, "1","0", this.noteorder).subscribe((res: any)  => {
       this.setCoursesNotes(res);
     }, error => {
       this.notification.create(
@@ -41,7 +41,7 @@ export class CourseinfNotesComponent implements OnInit {
   }
 
   onPageChange_note(event?: any) {
-    this.courseinfservice.get_teaching_plan_note(this.courseid, this.current_notespage.toString(),this.teachplanId, this.noteorder).subscribe((res: any) => {
+    this.courseinfservice.get_teaching_plan_note(this.teachplanId, this.current_notespage.toString(),"0", this.noteorder).subscribe((res: any) => {
       this.setCoursesNotes(res);
     }, error => {
       this.notification.create(

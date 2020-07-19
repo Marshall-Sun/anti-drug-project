@@ -16,6 +16,7 @@ import {NzMessageService} from 'ng-zorro-antd';
 })
 export class UserPageComponent implements OnInit {
   userID:string=this.actrouter.snapshot.paramMap.get('id');
+  fromID:string = window.localStorage.getItem("id");
   type:string="teacher";
   data: any;
   followed: boolean;
@@ -29,6 +30,7 @@ export class UserPageComponent implements OnInit {
   pageIndex: number=1;
   pageSize:number=8;
   tmp:number;
+  isshow = true;
 
   constructor(
     private route: Router,
@@ -44,7 +46,8 @@ export class UserPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    console.log(this.fromID,this.userID);
+    // console.log(typeof this.userID);
     // this.getType(this.actrouter.params['value']['title']);
     this.usermanagementService.getPersonalDetailById(this.userID)
     .subscribe(res => this.data = res.data);
@@ -59,10 +62,14 @@ export class UserPageComponent implements OnInit {
     .subscribe(res => this.stars = res.data);
     this.groupmanagementService.getGroupList(this.userID)
     .subscribe(res => this.groups = res.data);
-    this.followmanagementService.isFollowed('1',this.userID)
-    .subscribe(res => this.isFollowed = res.data);
-
-
+    this.followmanagementService.isFollowed(this.fromID,this.userID)
+    .subscribe(res => {
+      this.followed = res.data;
+      console.log(this.followed);
+      });
+    if(this.fromID == this.userID){
+      this.isshow = false;
+    }
   }
 
   navigate(url: string) {
@@ -77,43 +84,49 @@ export class UserPageComponent implements OnInit {
   //   }
   // }
   follow(id:string){
-    this.followmanagementService.followUser('1',id).subscribe(res=>{
+    console.log(this.fromID,id);
+    if(this.fromID == id){
+      this.message.create('error',"不能关注自己！");
+      return;
+    }
+    this.followmanagementService.followUser(this.fromID,id).subscribe(res=>{
         this.message.create('success',"关注成功！");
     }
     ,error1=>{
-        this.message.create('error',"关注失败！");          
+        this.message.create('error',"关注失败！");
     });
-    
-}
 
-defollow(id:string){
-  this.followmanagementService.defollow('1',id).subscribe(res=>{
-    this.message.create('success',"已取消关注！");
-}
-,error1=>{
-    this.message.create('error',error1.error);          
-});
-}
+  }
 
-isFollowed(id:string){
-    this.followmanagementService.isFollowed('1',id).subscribe(res=>{
-      this.followed = res.data
-    });
-}
+  defollow(id:string){
+    this.followmanagementService.defollow(this.fromID,id).subscribe(res=>{
+      this.message.create('success',"已取消关注！");
+  }
+  ,error1=>{
+      this.message.create('error',error1.error);
+  });
+  }
 
-searchData1() {
-  this.teachCourses=[];
-  this.tmp=0;
-  this.coursemanagementService.getTeachCourse(this.pageIndex,this.pageSize,this.userID,"ordinary")
-    .subscribe(res => {
-      this.tmp = res.data[0].totalNum;
-      this.teachCourses = res.data;
-    });
-}
+  isFollowed(id:string){
+      this.followmanagementService.isFollowed(this.fromID,id).subscribe(res=>{
+        this.followed = res.data;
+      });
+  }
 
-changePageIndex1(pageindex ) {
-  this.pageIndex = pageindex;
-  this.searchData1();
-}
+  searchData1() {
+    this.teachCourses=[];
+    this.tmp=0;
+    this.coursemanagementService.getTeachCourse(this.pageIndex,this.pageSize,this.userID,"ordinary")
+      .subscribe(res => {
+        this.tmp = res.data[0].totalNum;
+        this.teachCourses = res.data;
+      });
+    // console.log(this.teachCourses[0].pageNum);
+  }
+
+  changePageIndex1(pageindex ) {
+    this.pageIndex = pageindex;
+    this.searchData1();
+  }
 
 }

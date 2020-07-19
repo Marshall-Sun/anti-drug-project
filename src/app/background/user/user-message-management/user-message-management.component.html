@@ -46,7 +46,7 @@
         (nzCheckedChange)="refreshStatus()"
       ></td>
       <td style="cursor: pointer;" (click)="showPersonalInfo(data.fromId)">{{data.fromNickName}}</td>
-      <td style="cursor: pointer;" (click)="showPersonalInfo(data.toId)">{{data.toldNickName}}</td>
+      <td style="cursor: pointer;" (click)="showPersonalInfo(data.toId)">{{data.toNickName}}</td>
       <td class="content-column" (click)="unfoldOrFoldContent(data.messageId)">
         <span class="is-ellipsis" *ngIf="mapOfEllipsis[data.messageId]">{{data.content}}</span>
         <span class="not-ellipsis" *ngIf="!mapOfEllipsis[data.messageId]">{{data.content}}</span>

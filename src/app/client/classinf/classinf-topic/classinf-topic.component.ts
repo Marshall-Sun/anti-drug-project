@@ -6,10 +6,11 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   selector: 'app-classinf-topic',
   templateUrl: './classinf-topic.component.html',
   styleUrls: ['./classinf-topic.component.less'],
-  inputs: ["classid"]
+  inputs: ["classid","userId"]
 })
 export class ClassinfTopicComponent implements OnInit {
   classid = "0";
+  userId = null;
   //话题
   topics = [
     {
@@ -109,7 +110,7 @@ export class ClassinfTopicComponent implements OnInit {
   //信息提交
   topic_submit() {
     if (this.editorTitle != "" && this.editorContent != "") {
-      this.classinfservice.topic_submit(this.classid, this.editorContent, this.editorTitle, "0").subscribe((res: any) => {
+      this.classinfservice.topic_submit(this.classid, this.editorContent, this.editorTitle, this.userId).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
@@ -132,7 +133,7 @@ export class ClassinfTopicComponent implements OnInit {
 
   questoin_submit() {
     if (this.editorTitle != "" && this.editorContent != "") {
-      this.classinfservice.questoin_submit(this.classid, this.editorContent, this.editorTitle, "0").subscribe((res: any) => {
+      this.classinfservice.questoin_submit(this.classid, this.editorContent, this.editorTitle, this.userId).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',

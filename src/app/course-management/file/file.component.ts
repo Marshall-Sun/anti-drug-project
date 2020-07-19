@@ -9,6 +9,8 @@ enum FILETYPE {
   image = '图片',
   video = '视频',
   office = '文档',
+  flash = 'Flash',
+  document = '文档',
   other = '其他'
 }
 @Component({
@@ -110,23 +112,23 @@ export class FileComponent implements OnInit {
     this.uploading = true;
     this.fileList.forEach((file: any) => {
       const formData = new FormData();
-      formData.append('file', file)
+      formData.append('file', file);
       this.http
-        .post(`/material/uploadNormal?courseId=${this.courseId}&userId=1`, formData)
-        .pipe(filter(e => e instanceof HttpResponse))
+        .post(`/material/uploadCourseMaterial?courseId=${this.courseId}&userId=1`, formData)
+        // .pipe(filter(e => e instanceof HttpResponse))
         .subscribe(
-          (res) => { },
-          () => { error = true; }
+          (res) => {
+            this.msg.success('上传成功!');
+            this.fileList = [];
+            this.getCourseFileList();
+            this.uploading = false;
+          },
+          () => {
+            this.msg.error('上传失败!');
+            this.uploading = false;}
         );
     })
-    if (error) {
-      this.msg.error('上传失败!');
-    } else {
-      this.msg.success('上传成功!');
-      this.fileList = [];
-      this.getCourseFileList();
-    }
-    this.uploading = false;
+
   }
 
 }

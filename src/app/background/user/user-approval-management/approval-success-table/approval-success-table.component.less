@@ -1,0 +1,65 @@
+.content {
+  padding: 20px 0;
+}
+.select-control {
+  width: 120px;
+}
+.name-containing-input {
+  width: 225px;
+  margin-left: 10px;
+}
+.filter-time {
+  margin-top: 10px;
+}
+.search-button {
+  margin-left: 10px;
+}
+img {
+  width: 100px;
+  height: 100px;
+}
+@media screen and (max-width: 776px) {
+  .select-control {
+    width: 100%;
+  }
+  .time-area {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  :host ::ng-deep nz-picker, :host ::ng-deep .ant-calendar-picker {
+    width: 100% !important;
+  }
+  nz-divider {
+    display: none;
+  }
+  .name-containing-input {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  .search-button {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+}
+
+@media screen and (max-width: 520px){
+  :host ::ng-deep .ant-table-thead > tr > th, :host ::ng-deep .ant-table-tbody > tr > td {
+    padding: 0;
+  }
+}
+
+
+.more-operation {
+  cursor: pointer;
+}
+
+.approval-operation div > span > i {
+  margin-right: 5px;
+}
+
+.approval-operation > div {
+  cursor: pointer;
+}

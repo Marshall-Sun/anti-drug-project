@@ -86,6 +86,7 @@ export class StudentSettingComponent implements OnInit {
 
   getStudentId(data: any) {
     this.studentId = data.nzValue
+    console.log(this.studentId)
   }
 
 }

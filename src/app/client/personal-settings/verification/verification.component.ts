@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { NzMessageService, UploadXHRArgs, NzNotificationService } from 'ng-zorro-antd';
 import { HttpResponse, HttpClient } from '@angular/common/http';
 import { VerificationService } from 'src/app/service/verification/verification.service';
+import {PersonInfoEditService} from '../../../service/person-info-edit/person-info-edit.service';
 
 @Component({
   selector: 'app-verification',
@@ -10,9 +11,17 @@ import { VerificationService } from 'src/app/service/verification/verification.s
   styleUrls: ['./verification.component.less']
 })
 export class VerificationComponent implements OnInit {
+  userID:string = window.localStorage.getItem("id");
+  verifiedName: string = "";
+  nameNonEditable: string = "false";
   validateForm: FormGroup;
   faceimg: string;
   backimg: string;
+  verificationStatus = {
+    nzType:"warning",
+    nzMessage:"提示",
+    nzDescription:'为保护您的帐号安全、获得更好的服务，请尽快完成实名认证。',
+  }
   constructor(
     private _nzNotificationService: NzNotificationService,
     private _verificationService: VerificationService,
@@ -28,9 +37,34 @@ export class VerificationComponent implements OnInit {
       backimg: [null, [Validators.required]],
       faceimg: [null, [Validators.required]],
     });
+    this.validateForm.value.userid = this.userID;
+    // this.validateForm.value.userid = '16';//认证成功
+    // this.validateForm.value.userid = '2';//认证失败
+    this._verificationService.getUserVerificationStatus(this.validateForm.value.userid).subscribe(result => {
+      // console.log(result);
+      if(result.data == "认证中"){
+        this.verificationStatus.nzDescription = '认证中';
+      }
+      if(result.data.状态 == "认证成功"){
+        this.verificationStatus.nzType = "success";
+        this.verificationStatus.nzMessage = "";
+        this.verificationStatus.nzDescription = '认证成功';
+        this.verifiedName = result.data.真实姓名;
+        this.nameNonEditable = "true";
+      }
+      if(result.data.状态 == "认证失败"){
+        this.verificationStatus.nzType = "error";
+        this.verificationStatus.nzMessage = "认证失败";
+        this.verificationStatus.nzDescription = '失败原因: '+result.data.失败原因;
+      }
+    })
   }
 
   submitForm(): void {
+    if(this.verifiedName != ""){
+      this._nzNotificationService.create('error', '不可重复认证!', ``);
+      return;
+    }
     let check: boolean = true;
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
@@ -40,7 +74,12 @@ export class VerificationComponent implements OnInit {
       }
     }
     if (check) {
-      this._verificationService.setUserApproval(this.validateForm.value).subscribe(result => {
+      this._verificationService.setUserApproval(
+        this.validateForm.value.backimg,
+        this.validateForm.value.faceimg,
+        this.validateForm.value.id,
+        this.validateForm.value.trueName,
+        this.validateForm.value.userid).subscribe(result => {
         this._nzNotificationService.create('success', '提交成功!', ``);
       }, err => {
         this._nzNotificationService.create('error', '提交失败!', ``);
@@ -90,5 +129,4 @@ export class VerificationComponent implements OnInit {
       }
     );
   };
-
 }

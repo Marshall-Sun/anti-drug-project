@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ClientClassManagementService} from '../../service/client-class-management/client-class-management.service';
 import {NzNotificationService} from 'ng-zorro-antd';
 import {Observable} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-management-dashboard',
@@ -22,7 +23,8 @@ export class ManagementDashboardComponent implements OnInit {
 
   constructor(
     private classroomManagement$: ClientClassManagementService,
-    private _notification: NzNotificationService
+    private _notification: NzNotificationService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -62,6 +64,10 @@ export class ManagementDashboardComponent implements OnInit {
         `${error1.error}`
       )
     })
+  }
+
+  navigateTo(url: string) {
+    this.router.navigateByUrl(url)
   }
 
 }

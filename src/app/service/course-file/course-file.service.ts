@@ -23,11 +23,11 @@ export class CourseFileService {
 
   deleteUpload(fileId: number) {
     const api = `/material/deleteUpload?fileId=${fileId}`;
-    return this._http.post(api, {});
+    return this._http.delete(api);
   }
 
   deleteUploadList(fileIds: Array<number>): Observable<any> {
-    const api = `/material/deleteUploadList?fileIds=${fileIds}`
-    return this._http.post(api, {});
+    const api = `/material/deleteUploadList?fileIds=${fileIds}`;
+    return this._http.delete(api);
   }
 }

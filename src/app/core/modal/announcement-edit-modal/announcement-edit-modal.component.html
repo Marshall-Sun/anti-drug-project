@@ -1,8 +1,10 @@
-<div style="margin-bottom: 10px" class="content" nz-row>
-  <span style="text-align: right; color: rgba(0, 0, 0, .85);" nz-col nzSm="6" nzXs="24">公告内容：</span>
-  <quill-editor nz-col nzSpan="14" [(ngModel)]="content"></quill-editor>
-</div>
 <form nz-form [formGroup]="announcementEditForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="content">公告内容</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="发布内容不能为空">
+      <quill-editor formControlName="content"></quill-editor>
+    </nz-form-control>
+  </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="releaseTime">发布时间</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="发布时间不能为空">

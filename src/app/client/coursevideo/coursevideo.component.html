@@ -17,16 +17,45 @@
         <nz-drawer [nzVisible]="catalog_visible" nzPlacement="right" nzClosable="false" nzMask="false"
           [nzBodyStyle]="{ 'padding': '0' ,height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom': '53px' }"
           nzWidth="16%">
-          <ul style="padding: 0px;">
-            <li *ngFor="let task of taskList" [ngClass]="{'liSelected':title == task?.title}">
-              <span nz-col nzSpan="4">
-                <i nz-icon nzType="book" nzTheme="outline"></i>
-              </span>
-              <span nz-col nzSpan="20">
-                {{ task?.title }}
-              </span>
-            </li>
-          </ul>
+          <nz-collapse nzAccordion>
+
+            <ng-container *ngFor="let item of taskList;let i = index;">
+              <nz-collapse-panel *ngIf="getTaskByType(item,'lesson').status=='published'"
+                [nzHeader]="'任务'+i+':'+getTaskByType(item,'lesson').title">
+                <div *ngIf="getTaskByType(item,'preparation')!=null" class="listitem courselink">
+                  <a
+                    (click)="navigateByUrl('/client/courseinf/'+courseid+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'preparation').taskId)"><span>
+                      <nz-tag [nzColor]="'#87d068'">预习</nz-tag>{{getTaskByType(item,'preparation').title}}
+                    </span></a>
+                </div>
+                <div *ngIf="getTaskByType(item,'lesson')!=null" class="listitem courselink">
+                  <a
+                    (click)="navigateByUrl('/client/courseinf/'+courseid+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'lesson').taskId)"><span>
+                      <nz-tag [nzColor]="'#87d068'">任务学习</nz-tag>{{getTaskByType(item,'lesson').title}}
+                    </span></a>
+                </div>
+                <div *ngIf="getTaskByType(item,'exercise')!=null" class="listitem courselink">
+                  <a
+                    (click)="navigateByUrl('/client/courseinf/'+courseid+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'exercise').taskId)"><span>
+                      <nz-tag [nzColor]="'#87d068'">练习</nz-tag>{{getTaskByType(item,'exercise').title}}
+                    </span></a>
+                </div>
+                <div *ngIf="getTaskByType(item,'homework')!=null" class="listitem courselink">
+                  <a
+                    (click)="navigateByUrl('/client/courseinf/'+courseid+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'homework').taskId)"><span>
+                      <nz-tag [nzColor]="'#87d068'">作业</nz-tag>{{getTaskByType(item,'homework').title}}
+                    </span></a>
+                </div>
+                <div *ngIf="getTaskByType(item,'extraClass')!=null" class="listitem courselink">
+                  <a
+                    (click)="navigateByUrl('/client/courseinf/'+courseid+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'extraClass').taskId)"><span>
+                      <nz-tag [nzColor]="'#87d068'">课外</nz-tag>{{getTaskByType(item,'extraClass').title}}
+                    </span></a>
+                </div>
+              </nz-collapse-panel>
+            </ng-container>
+
+          </nz-collapse>
           <div class="footer">
             <button nz-button nzType="primary" nzSize="default" (click)="closeCatalog()" class="ant-btn"
               style="margin-right: 8px;"><span>关闭</span></button>
@@ -140,13 +169,23 @@
 
       </div>
     </nz-breadcrumb>
-    <div *ngIf="false" class="video-content">
+    <div *ngIf="taskType=='video'" class="video-content">
       <app-video-player (outer)="setVideoLearingStatus($event)"></app-video-player>
     </div>
 
-    <div *ngIf="true" class="text-content">
-      <h1>some information</h1>
+    <div *ngIf="taskType=='text'" class="text-content">
+      <h1 style="text-align: center;">{{currentactivity.title}}</h1>
+      <div style="background-color: #E0EEEE;"><span [innerHTML]="currentactivity.content"></span></div>
     </div>
+
+    <div *ngIf="taskType=='download'" class="text-content">
+      <h1 style="text-align: center;">下载资料</h1>
+      <div style="background-color: #E0EEEE;">还没开始下载? <button nz-button nzSize="size" nzType="default"
+          class="cardButton" (click)="downloadMaterial()">
+          点此下载
+        </button></div>
+    </div>
+
 
     <div *ngIf="videoLearingStatus=='doing'||videoLearingStatus=='start'; then thenBlock else elseBlock">
     </div>

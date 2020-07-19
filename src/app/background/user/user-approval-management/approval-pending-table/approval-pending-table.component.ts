@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, TemplateRef} from '@angular/core';
 import {UserApprovalService} from '../../../../service/user-approval/user-approval.service';
-import {NzMessageService} from 'ng-zorro-antd';
+import {NzMessageService, NzModalRef, NzModalService, NzNotificationService} from 'ng-zorro-antd';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -14,7 +14,7 @@ export class ApprovalPendingTableComponent implements OnInit {
   status: number;
 
 
-  selectedNameContaining: string = 'username';
+  selectedNameContaining: string = 'nickname';
   nameContainingKeyword: string = '';
 
   displayData = [];
@@ -27,24 +27,29 @@ export class ApprovalPendingTableComponent implements OnInit {
 
   filterOptions: {};
 
+  previewSrc: string = '';
+
+  reason: string = '';
+
   constructor(
     private userApproval$: UserApprovalService,
     private _message: NzMessageService,
+    private _modal: NzModalService,
+    private notification: NzNotificationService
   ) { }
 
   ngOnInit() {
-    this.searchData();
+    this.userApproval$.changeStatus.subscribe(result => {
+      this.searchData();
+    })
   }
 
   searchData(pageIndex: number = this.pageIndex) {
     this.displayData = [];
-    this.filterOptions = {
-      status: this.status
-    };
     this.loading = true;
-    this.userApproval$.getApprovingList(pageIndex, 10, this.filterOptions).subscribe( result => {
+    this.userApproval$.getApprovingList(pageIndex, 10).subscribe( result => {
       this.loading = false;
-      this.total = result[0].totalApproval;
+      this.total = result[0].totalApproval? result[0].totalApproval: 0;
       this.displayData = result;
     }, error1 => {
       this.loading = false;
@@ -54,6 +59,7 @@ export class ApprovalPendingTableComponent implements OnInit {
 
   filter() {
     let startTime = 0;
+    this.total = 0;
     let endTime = Math.floor(new Date().getTime() / 1000);
     if (this.dateRange.length == 2) {
       startTime = Math.floor(new Date(this.dateRange[0]).getTime() / 1000);
@@ -70,17 +76,53 @@ export class ApprovalPendingTableComponent implements OnInit {
     };
     this.userApproval$.filterApprovingList(this.pageIndex, 10, this.filterOptions).subscribe( result => {
       this.loading = false;
-      this.total = result[0].totalApproval;
+      this.total = result[0].totalApproval? result[0].totalApproval: 0;
       this.displayData = result;
     }, error1 => this._message.error(error1.error))
   }
 
-  approvalSuccess(userId: string) {
-
+  approvalSuccess(userId: string, template: TemplateRef<{}>) {
+    const modal = this._modal.create({
+      nzTitle: '填写备注',
+      nzContent: template,
+      nzOnOk: () => {
+        this.userApproval$.updateUserApproval('approved', this.reason, userId).subscribe(result => {
+          this.notification.success('认证成功！', '');
+          let i;
+          this.userApproval$.changeStatus.subscribe(value => i = value);
+          this.userApproval$.changeStatus.next(i + 1);
+          this.reason = '';
+        }, error1 => this.notification.error('发生错误！', `${error1.error}`))
+      }
+    })
   }
 
-  approvalFailed(userId: string) {
+  approvalFailed(userId: string, template: TemplateRef<{}>) {
+    const modal = this._modal.create({
+      nzTitle: '填写备注',
+      nzContent: template,
+      nzOnOk: () => {
+        this.userApproval$.updateUserApproval('approve_fail', this.reason, userId).subscribe(result => {
+          this.notification.success('认证失败！', '');
+          let i;
+          this.userApproval$.changeStatus.subscribe(value => i = value);
+          this.userApproval$.changeStatus.next(i + 1);
+          this.reason = ''
+        }, error1 => this.notification.error('发生错误！', `${error1.error}`))
+      }
+    })
+  }
 
+  openPreviewModal(src: string, template: TemplateRef<{}>) {
+    this.previewSrc = src;
+    const modal = this._modal.create({
+      nzTitle: '查看大图',
+      nzContent: template,
+      nzFooter: null
+    });
+    modal.afterClose.subscribe(() => {
+      this.previewSrc = '';
+    })
   }
 
 }

@@ -136,3 +136,18 @@
     </nz-footer>
   </nz-layout>
 </nz-layout>
+
+<nz-affix *ngIf="!isHide" [nzOffsetBottom]="50" style="margin-left: 5%;">
+  <button class="shadow" nz-button nzType="danger" nzSize="large" nzShape="circle"
+    nz-popover nzPopoverTitle="查看新公告" [(nzVisible)]="isShow" nzPopoverTrigger="click" [nzPopoverContent]="announcementTemplate" nzPopoverPlacement="top">
+    <i nz-icon nzType="notification"></i>
+  </button>
+</nz-affix>
+
+<ng-template #announcementTemplate>
+  <div *ngFor="let announcement of announcementList">
+    <div [innerHTML]="announcement.content"></div>
+    <nz-divider></nz-divider>
+  </div>
+  <div style="display: flex; flex-direction: row; justify-content: space-between"><a (click)="close()">确认</a><a (click)="cancel()">隐藏</a></div>
+</ng-template>

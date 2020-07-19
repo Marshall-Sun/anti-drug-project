@@ -7,10 +7,11 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   selector: 'app-classinf-comment',
   templateUrl: './classinf-comment.component.html',
   styleUrls: ['./classinf-comment.component.less'],
-  inputs: ["classid"]
+  inputs: ["classid","userId"]
 })
 export class ClassinfCommentComponent implements OnInit {
   classid = "0";
+  userId=null;
   //评价
   comments = [
     {
@@ -119,7 +120,7 @@ export class ClassinfCommentComponent implements OnInit {
 
   comment_submit() {
     if (this.editorContent !== "" && this.commentnumber !== 0) {
-      this.classinfservice.comment_submit(this.classid, "0", this.editorContent, this.editorTitle, this.commentnumber, "0").subscribe((res: any) => {
+      this.classinfservice.comment_submit(this.classid, "0", this.editorContent, this.editorTitle, this.commentnumber, this.userId).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
@@ -144,7 +145,7 @@ export class ClassinfCommentComponent implements OnInit {
   currentcommitid = "0";
   comment_response_submit(parentid: string) {
     if (this.editorContent != "") {
-      this.classinfservice.comment_Response_submit(this.classid, this.currentcommitid, this.editorContent, this.editorTitle, this.commentnumber, "0").subscribe((res: any) => {
+      this.classinfservice.comment_Response_submit(this.classid, this.currentcommitid, this.editorContent, this.editorTitle, this.commentnumber,this.userId).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
@@ -175,6 +176,13 @@ export class ClassinfCommentComponent implements OnInit {
     this.commentcontainer.insert(item);
   }
   write_comment() {
+    if(this.userId==null){
+      this.notification.create(
+        'error',
+        '发生错误！',
+        `请先登录`)
+      return;
+    }
     this.from_init();
     this.commentcontainer.clear();
     const item: ViewRef = this.writecomment.createEmbeddedView(null);

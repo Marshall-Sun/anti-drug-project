@@ -99,6 +99,7 @@ import {PaperMarkingComponent as ClassPaperMarkingComponent} from '../class-mana
 import { HomeworkMarkingComponent } from '../client/mine-management/homework-marking/homework-marking.component';
 import { AuthGuard } from './auth/auth.guard';
 import { PageNotFoundComponent } from '../client/page-not-found/page-not-found.component';
+import { TestPaperEditComponent } from '../course-management/test-paper/test-paper-edit/test-paper-edit.component';
 
 
 
@@ -203,6 +204,7 @@ const routes: Routes = [
           { path: 'file', component: FileComponent },
           { path: 'testpaper', component: TestPaperComponent },
           { path: 'testpapercreate', component: TestPaperCreateComponent },
+          { path: 'testpaperedit/:testPaperId', component: TestPaperEditComponent },
           { path: 'question', component: QuestionComponent },
           {
             path: 'question_create', component: QuestionCreateComponent, children: [

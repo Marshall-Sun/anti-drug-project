@@ -4,7 +4,7 @@
         <ng-template #teachersitem let-teachersitem>
             <nz-list-item [nzContent]="nzContent">
                 <ng-template #nzContent>
-                    <app-teacherblock [teacher]="teachersitem"></app-teacherblock>
+                    <app-teacherblock [userId]="userId" [teacher]="teachersitem"></app-teacherblock>
                 </ng-template>
             </nz-list-item>
         </ng-template>

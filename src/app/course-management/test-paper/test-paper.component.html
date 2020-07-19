@@ -8,11 +8,22 @@
   </div>
   <nz-divider></nz-divider>
   <div class="content">
-    <nz-table #rowSelectionTable nzShowSizeChanger>
+    <nz-table #rowSelectionTable
+              [nzData]="displayData"
+              [nzFrontPagination]="false"
+              [nzTotal]="total"
+              [nzLoading]="loading"
+              [nzPageSize]="10"
+              [(nzPageIndex)]="pageIndex"
+              [nzShowSizeChanger]="false"
+              (nzPageIndexChange)="searchData()">
       <thead>
         <tr>
-          <th nzShowCheckbox></th>
-          <th width="30%">名称</th>
+          <th nzShowCheckbox
+              [(nzChecked)]="isAllDisplayDataChecked"
+              [nzIndeterminate]="isIndeterminate"
+              (nzCheckedChange)="checkAll($event)"></th>
+          <th>名称</th>
           <th>状态</th>
           <th>题目统计</th>
           <th>时间限制</th>
@@ -22,16 +33,43 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of rowSelectionTable.data">
-          <td nzShowCheckbox></td>
-          <td>{{ data.name }}</td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
+          <td nzShowCheckbox
+              [(nzChecked)]="mapOfCheckedId[data.id]"
+              (nzCheckedChange)="refreshStatus()"></td>
+          <td>{{ data.testPaperName }}</td>
+          <td>{{ paperStatus[data.status] }}</td>
+          <td>{{ data.itemCount }}题/{{data.score | number: '.2-2'}}</td>
+          <td>{{data.limitedTime == 0? '无限制': data.limitedTime + '分'}}</td>
+          <td>
+            <a (click)="navigateByUrl('/client/userpage/' + data.updatedUserId)">{{data.updatedUserName}}</a>
+            <br/>
+            <span>{{data.updatedTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+          </td>
+          <td><i class="more-operation" nz-popover nzTitle="可执行操作" [nzContent]="operationTemplate" nzTrigger="hover" nz-icon nzType="more" nzTheme="outline" nzPlacement="bottom"></i></td>
+          <ng-template #operationTemplate>
+            <div class="user-management-operation">
+              <div>
+                <span (click)="navigateByUrl('')"><i nz-icon nzType="eye" nzTheme="outline"></i>预览</span>
+              </div>
+              <div>
+                <span *ngIf="data.status !== 'open'" (click)="publish(data.id)"><i nz-icon nzType="check-circle" nzTheme="outline"></i>发布试卷</span>
+              </div>
+              <div>
+                <span *ngIf="data.status === 'open'" (click)="close(data.id)"><i nz-icon nzType="close" nzTheme="outline"></i>关闭试卷</span>
+              </div>
+              <div>
+                <span *ngIf="data.status === 'draft'" (click)="navigateByUrl('/client/course/' + courseId + '/testpaperedit/' + data.id)"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑试卷</span>
+              </div>
+              <div>
+                <span *ngIf="data.status === 'draft'" (click)="delete(data.id)"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</span>
+              </div>
+            </div>
+          </ng-template>
         </tr>
       </tbody>
     </nz-table>
   </div>
-  <label nz-checkbox>全选</label>
-  <button nz-button nzType="danger" nzSize="small" (click)="check()"><i nz-icon nzType="delete"
+  <button nz-button nzType="danger" nzSize="small" (click)="deleteList()"><i nz-icon nzType="delete"
       nzTheme="outline"></i>删除</button>
 
   <p class="warning-info">提示：试卷一旦发布不能修改，发布后的试卷需要

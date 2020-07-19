@@ -22,7 +22,7 @@
                 <button *ngIf="item.isshow&&item.isfollowed" nz-button nzType="default" style="text-align: center">已关注</button>
               </nz-card>
               <ng-template #coverTemplate>
-                <nz-avatar (click)="navigateByUrl('/client/userpage/'+item.id)" [nzSize]="100"
+                <nz-avatar (click)="navigateByUrl('/client/userpage/'+item.id+ '/focus')" [nzSize]="100"
                   style="text-align:center;margin:60px auto;" nzIcon="user" nzSrc="{{item.largeAvatar}}"></nz-avatar>
               </ng-template>
               <ng-template #titleTemplate>

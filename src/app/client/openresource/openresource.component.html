@@ -1,40 +1,52 @@
 <nz-layout>
-  <nz-header >
+  <nz-header>
     <h1 class="openclasslist_title">公开课列表</h1>
     <div class="empty-space"></div>
-    <button nz-button nzType="primary" [nzSize]="'large'" >查看课程</button>
-    <button   nz-button nzType="primary" [nzSize]="'large'" >查看班级</button>
+    <button nz-button nzType="primary" nzSize="large" (click)="navigateByUrl('/client/courselist')">查看课程</button>
+    <button nz-button nzType="primary" nzSize="large" (click)="navigateByUrl('/client/classlist')">查看班级</button>
   </nz-header>
   <nz-content class="contentcard">
     <div style="padding:30px;">
       <div>
-        <nz-list [nzDataSource]="displayData" style="margin: 30px;" [nzRenderItem]="item" [nzGrid]="{ gutter: 24, xs: 24, sm: 12, md: 12, lg: 8, xl: 6 }">
+        <nz-list [nzDataSource]="dataInPage" style="margin: 30px;" [nzRenderItem]="item"
+                 [nzPagination]="pagination" [nzLoading]="loading"
+                 [nzGrid]="{ gutter: 24, xs: 24, sm: 12, md: 12, lg: 8, xl: 6 }">
           <ng-template #item let-item>
             <nz-list-item [nzContent]="content">
               <ng-template #content>
-                <nz-card style="cursor: pointer" [nzCover]="coverTemplate"  (click)="navigateByUrl('/client/openresourcedetail/' + item.id)"  >
-                  <nz-row [nzGutter]="4">
-                    <nz-col [nzSpan]="14">
-                      <nz-card-meta
-                        [nzTitle]="item.title"
-                        [nzDescription]="item.description"
-                      ></nz-card-meta>
-                    </nz-col>
-                    <nz-col [nzSpan]="5">
-                      <nz-statistic [nzValue]="item.hitNum | number"  [nzPrefix]="prefixTpl1" [nzValueStyle]="{fontSize:'12px '}"></nz-statistic>
-                      <ng-template #prefixTpl1><i nz-icon nzType="eye"></i></ng-template>
-                    </nz-col>
-                    <nz-col [nzSpan]="5">
-                      <nz-statistic [nzValue]="item.postNum | number"  [nzPrefix]="prefixTpl2" [nzValueStyle]="{fontSize:'12px '}"></nz-statistic>
-                      <ng-template #prefixTpl2><i nz-icon nzType="like"></i></ng-template>
-                    </nz-col>
-                  </nz-row>
-                </nz-card>
-                <ng-template #coverTemplate >
-                  <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"/>
-                </ng-template>
+                <a target="_blank">
+                  <nz-card style="cursor: pointer; margin-left: 10px"
+                           [nzCover]="coverTemplate" nzHoverable
+                           (click)="navigateByUrl('/client/openresourcedetail/' + item.id)">
+                    <nz-row [nzGutter]="4">
+                      <nz-col [nzSpan]="14">
+                        <nz-card-meta [title]="item.title"
+                          [nzTitle]="item.title"
+                          [nzDescription]="item.description"
+                        ></nz-card-meta>
+                      </nz-col>
+                      <nz-col [nzSpan]="5">
+                        <nz-statistic [nzValue]="item.hitNum | number"  [nzPrefix]="prefixTpl1" [nzValueStyle]="{fontSize:'12px '}"></nz-statistic>
+                        <ng-template #prefixTpl1><i nz-icon nzType="eye"></i></ng-template>
+                      </nz-col>
+                      <nz-col [nzSpan]="5">
+                        <nz-statistic [nzValue]="item.postNum | number"  [nzPrefix]="prefixTpl2" [nzValueStyle]="{fontSize:'12px '}"></nz-statistic>
+                        <ng-template #prefixTpl2><i nz-icon nzType="like"></i></ng-template>
+                      </nz-col>
+                    </nz-row>
+                  </nz-card>
+                  <ng-template #coverTemplate >
+                    <img style="width: 200px; height: 140px" alt="example"
+                         [src]="item.picture"/>
+                  </ng-template>
+                </a>
               </ng-template>
             </nz-list-item>
+          </ng-template>
+          <ng-template #pagination>
+            <div style="text-align: center">
+              <nz-pagination [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]= "total" (nzPageIndexChange)="loadIndex($event)"></nz-pagination>
+            </div>
           </ng-template>
         </nz-list>
       </div>

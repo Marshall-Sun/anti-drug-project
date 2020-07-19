@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NzMessageService, NzModalService} from 'ng-zorro-antd';
+import {NzMessageService, NzModalService, NzNotificationService} from 'ng-zorro-antd';
 import {WebsitesAnnouncementService} from '../../../service/websites-announcement/websites-announcement.service';
 import {AnnouncementEditModalComponent} from '../../../core/modal/announcement-edit-modal/announcement-edit-modal.component';
 
@@ -16,10 +16,12 @@ export class WebsitesAnnouncementManagementComponent implements OnInit {
   totalPage: number;
   pageIndex: number = 1;
 
+  userId = '1';
   constructor(
     private websitesAnnouncementService$: WebsitesAnnouncementService ,
     private _message: NzMessageService,
-    private _modalService: NzModalService
+    private _modalService: NzModalService,
+    private _notification: NzNotificationService
   ) { }
 
   ngOnInit() {
@@ -29,11 +31,11 @@ export class WebsitesAnnouncementManagementComponent implements OnInit {
   searchData(pageIndex: number = this.pageIndex) {
     this.displayData = [];
     this.loading = true;
-    this.websitesAnnouncementService$.getMessageList(pageIndex, 10).subscribe(result => {
+    this.websitesAnnouncementService$.getAnnouncementList(pageIndex, 10).subscribe(result => {
       this.loading = false;
-      this.total = result[0].totalUser;
+      this.total = result.data.total;
       this.totalPage = Math.ceil(this.total / 10);
-      this.dataList = result;
+      this.dataList = result.data.data;
       this.displayData = this.dataList;
     }, error1 => {
       this.loading = false;
@@ -45,29 +47,48 @@ export class WebsitesAnnouncementManagementComponent implements OnInit {
     const modal = this._modalService.create({
       nzTitle: '新建公告',
       nzContent: AnnouncementEditModalComponent,
+      nzComponentParams: {
+        mode: 'create',
+        userId: this.userId
+      },
       nzWidth: 600,
       nzOnOk: instance => instance.submit(),
       nzOnCancel: instance => instance.destroy()
+    });
+    modal.afterClose.subscribe(result => {
+      if (result == 'success') {
+        this.searchData()
+      }
     })
   }
 
-  edit(id: string) {
+  edit(data: any) {
     const modal = this._modalService.create({
       nzTitle: '编辑公告',
       nzContent: AnnouncementEditModalComponent,
       nzWidth: 600,
       nzComponentParams: {
-        id: id
+        data: data,
+        mode: 'edit',
+        userId: this.userId
       },
       nzOnOk: instance => instance.submit(),
       nzOnCancel: instance => instance.destroy()
+    });
+    modal.afterClose.subscribe(result => {
+      if (result == 'success') {
+        this.searchData()
+      }
     })
   }
 
   delete(id: string) {
     this._modalService.confirm({
       nzTitle: '是否要删除该条公告？',
-      nzOnOk: () => console.log('1111')
+      nzOnOk: () => this.websitesAnnouncementService$.deleteAnnouncement(id).subscribe(result => {
+        this.searchData();
+        this._notification.success('成功删除公告！','')
+      }, error1 => this._notification.error('发生错误！', `${error1.error}`))
     })
   }
 

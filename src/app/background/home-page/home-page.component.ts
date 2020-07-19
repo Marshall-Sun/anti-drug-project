@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { AdminReviewService } from "src/app/service/admin-review/admin-review.service";
 import { CourseReplyService } from "src/app/service/course-reply/course-reply.service";
@@ -11,9 +11,9 @@ import { NewsManagementService } from "src/app/service/news-management/news-mana
 import { GroupTopicManagementTableService } from "src/app/service/group-topic-management-table/group-topic-management-table.service";
 
 @Component({
-  selector: "app-home-page",
-  templateUrl: "./home-page.component.html",
-  styleUrls: ["./home-page.component.less"],
+  selector: 'app-home-page',
+  templateUrl: './home-page.component.html',
+  styleUrls: ['./home-page.component.less']
 })
 export class HomePageComponent implements OnInit {
   user = [];
@@ -56,6 +56,7 @@ export class HomePageComponent implements OnInit {
     this.initNews();
     this.initTopic();
   }
+
 
   initUser() {
     this.userManagementService

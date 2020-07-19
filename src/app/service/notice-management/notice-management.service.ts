@@ -11,10 +11,16 @@ export class NoticeManagementService {
   }
 
   getMessageList(targetPage: number, pageSize: number): Observable<any> {
-    return this._http.post(``, {
-      pageSize: pageSize,
-      pageNum: targetPage,
+    return this._http.get(`/system/getBatchNotifications?pageNum=${targetPage}&pageSize=${pageSize}`)
+  }
+
+  createNewNotification(content: string, fromUserId: number, title: string): Observable<any> {
+    return this._http.post(`/system/createBatchNotifications?content=${content}&fromUserId=${fromUserId}&title=${title}`, {
     })
+  }
+
+  deleteNotification(id: string): Observable<any> {
+    return this._http.delete(`/system/deleteBatchNotifications?id=${id}`)
   }
 
 }

@@ -4,21 +4,24 @@ import { PersonInfoEditService } from '../../../service/person-info-edit/person-
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { UploadChangeParam, NzMessageService, UploadXHRArgs } from 'ng-zorro-antd';
 import { HttpEventType, HttpResponse, HttpClient } from '@angular/common/http';
+import {Validators} from '@angular/forms';
+import {VerificationService} from '../../../service/verification/verification.service';
+
 @Component({
   selector: 'app-information',
   templateUrl: './information.component.html',
   styleUrls: ['./information.component.less']
 })
 export class InformationComponent implements OnInit {
-
-
+  userID:string = window.localStorage.getItem("id");
+  nameNonEditable: string = "false";
   user: any = {
     about: "",
     company: "",
     fansNum: 0,
     followedNum: 0,
     gender: "",
-    id: 0,
+    id: this.userID,
     job: "",
     mediumAvatar: null,
     nickName: "",
@@ -38,7 +41,8 @@ export class InformationComponent implements OnInit {
     private personInfoEditService: PersonInfoEditService,
     private notification: NzNotificationService,
     private _http: HttpClient,
-    private msg: NzMessageService
+    private msg: NzMessageService,
+    private _verificationService: VerificationService,
   ) { }
 
   editPersonalInfo() {
@@ -46,6 +50,9 @@ export class InformationComponent implements OnInit {
       this.notification.success('修改成功', '');
     }, err => {
       this.notification.error('修改失败', '');
+    })
+    this.personInfoEditService.getPersonDetail(this.user.id).subscribe(result => {
+      this.user.mediumAvatar = result.data.mediumAvatar;
     })
   }
 
@@ -71,9 +78,9 @@ export class InformationComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.personInfoEditService.getPersonDetail(1).subscribe(result => {
+    // this.user.id = "16";
+    this.personInfoEditService.getPersonDetail(this.user.id).subscribe(result => {
       let data = result.data;
-      this.user.id = data.id;
       this.user.trueName = data.trueName;
       this.user.nickName = data.nickName;
       this.user.gender = data.gender;
@@ -90,6 +97,11 @@ export class InformationComponent implements OnInit {
       this.user.fansNum = data.fansNum;
       this.user.followedNum = data.followedNum;
     })
+    this._verificationService.getUserVerificationStatus(this.user.id).subscribe(result => {
+      if(result.data.状态 == "认证成功"){
+        this.user.trueName = result.data.真实姓名;
+        this.nameNonEditable = "true";
+      }
+    })
   }
-
 }

@@ -45,8 +45,8 @@
         (nzCheckedChange)="refreshStatus()"
       ></td>
       <td>
-        <span style="color: #108ee9; cursor: pointer;" (click)="navigateTo(data.threadId)">{{data.threadTitle}}</span><br/>
-        <span [innerHTML]="data.content"></span>
+        <div style="color: #108ee9; cursor: pointer;" (click)="navigateTo(data.threadId)">{{data.threadTitle}}</div>
+        <div [innerHTML]="data.content"></div>
         <span *ngIf="data.classroomTitle !== ''"><span (click)="navigateTo(data.classroomId)" style="color: #6dd2ee; cursor: pointer; font-size: 14px;">{{data.classroomTitle}}</span><span style="font-size: 12px;"></span></span>
       </td>
       <td>

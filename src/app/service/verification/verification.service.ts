@@ -9,9 +9,18 @@ export class VerificationService {
 
   constructor(private _http: HttpClient) { }
 
+  getUserVerificationStatus(userId: string): Observable<any> {
+    return this._http.get(`/user/getUserApproveStatus?userId=${userId}`)
+  }
 
-  setUserApproval(config: any): Observable<any> {
+  setUserApproval(backImg: string, faceImg: string, idCard: string, trueName: string, userId: number): Observable<any> {
     const api = "/user/setUserApproval";
-    return this._http.put(api, config);
+    return this._http.post(api, {
+      backImg: backImg,
+      faceImg: faceImg,
+      idcard: idCard,
+      truename: trueName,
+      userId: userId
+    });
   }
 }

@@ -141,7 +141,7 @@ export class MultipleChoiceComponent implements OnInit {
     if (check && command === "continue") {
       console.log(command);
       this.validateForm.patchValue({
-        type: 'mutiple_choice',
+        type: 'choice',
         stem: null,
         score: 2,
         answer: null,
@@ -174,7 +174,7 @@ export class MultipleChoiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      type: ['mutiple_choice', []],
+      type: ['choice', []],
       stem: [null, [Validators.required]],
       score: [2, [Validators.min(0)]],
       answer: [null, [Validators.required]],

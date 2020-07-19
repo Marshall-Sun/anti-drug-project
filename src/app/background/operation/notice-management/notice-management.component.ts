@@ -1,5 +1,5 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {NzMessageService, NzModalService} from 'ng-zorro-antd';
+import {NzMessageService, NzModalService, NzNotificationService} from 'ng-zorro-antd';
 import {NoticeManagementService} from '../../../service/notice-management/notice-management.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -17,23 +17,26 @@ export class NoticeManagementComponent implements OnInit {
   pageIndex: number = 1;
 
   newNoticeForm: FormGroup;
-  content: string = '';
 
   title: string = '';
   time: string = '';
   noticeContent: string = '';
 
+  userId = 1;
+
   constructor(
     private noticeManagementService$: NoticeManagementService ,
     private _message: NzMessageService,
     private _modalService: NzModalService,
+    private  _notification: NzNotificationService,
     private fb: FormBuilder
   ) { }
 
   ngOnInit() {
     this.searchData();
     this.newNoticeForm = this.fb.group({
-      title: ['', Validators.required]
+      title: ['', Validators.required],
+      content: ['', Validators.required]
     })
   }
 
@@ -42,9 +45,9 @@ export class NoticeManagementComponent implements OnInit {
     this.loading = true;
     this.noticeManagementService$.getMessageList(pageIndex, 10).subscribe(result => {
       this.loading = false;
-      this.total = result[0].totalUser;
+      this.total = result.data.total;
       this.totalPage = Math.ceil(this.total / 10);
-      this.dataList = result;
+      this.dataList = result.data.data;
       this.displayData = this.dataList;
     }, error1 => {
       this.loading = false;
@@ -56,12 +59,43 @@ export class NoticeManagementComponent implements OnInit {
     const modal = this._modalService.create({
       nzTitle: '发布站内信通告',
       nzContent: template,
-      nzOnOk: () => console.log('111')
+      nzOnOk: () => {
+        this.newNoticeForm.markAllAsTouched();
+        this.newNoticeForm.controls.title.updateValueAndValidity();
+        this.newNoticeForm.controls.content.updateValueAndValidity();
+        let shouldBeClose = false;
+        if (this.newNoticeForm.status == 'VALID') {
+          this.noticeManagementService$.createNewNotification(this.newNoticeForm.controls.content.value, this.userId, this.newNoticeForm.controls.title.value).subscribe(result => {
+            this._notification.success('成功发送通知！', '');
+            this.searchData();
+            this.newNoticeForm.reset();
+            modal.destroy()
+          }, error1 => {
+            this._notification.error('发生错误！', `${error1.error}`);
+          })
+        }
+        return shouldBeClose
+      },
+      nzOnCancel: () => {
+        this.newNoticeForm.reset()
+      }
     })
   }
 
-  checkDetail(id: string, template: TemplateRef<{}>) {
-
+  checkDetail(data: any, template: TemplateRef<{}>) {
+    this.title = data.title;
+    this.time = data.sendedTime;
+    this.noticeContent = data.content;
+    const modal = this._modalService.create({
+      nzTitle: '查看通知详情',
+      nzContent: template,
+      nzOnOk: () => modal.destroy()
+    });
+    modal.afterClose.subscribe( () => {
+      this.time = '';
+      this.title = '';
+      this.noticeContent = ''
+    })
   }
 
   publish(id: string) {
@@ -72,9 +106,11 @@ export class NoticeManagementComponent implements OnInit {
   }
 
   delete(id: string) {
-    this._modalService.confirm({
-      nzTitle: '是否要删除该条通知？',
-      nzOnOk: () => console.log('111')
+    this.noticeManagementService$.deleteNotification(id).subscribe(result => {
+      this._notification.success('删除成功！', '');
+      this.searchData()
+    }, error1 => {
+      this._notification.error('删除失败！', `${error1.error}`)
     })
   }
 }

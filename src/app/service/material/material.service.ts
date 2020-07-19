@@ -173,4 +173,8 @@ export class MaterialService {
     return this.http.post(`/material/lib/addTagToTeachingMaterialList?fileIdList=${fileIdList}&tagIdList=${tagIdList}`, {});
   }
 
+  addTaskMaterial(courseId: any, file: any,userId:any) {
+    return this.http.post(`/material/uploadTaskMaterial?courseId=${courseId}&file=${file}&userId=${userId}`, {});
+  }
+
 }

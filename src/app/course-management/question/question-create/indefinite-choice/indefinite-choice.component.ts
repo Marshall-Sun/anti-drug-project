@@ -142,7 +142,7 @@ export class IndefiniteChoiceComponent implements OnInit {
     if (check || command === "continue") {
       console.log(command);
       this.validateForm.patchValue({
-        type: 'choice',
+        type: 'uncertain_choice',
         stem: null,
         score: 2,
         answer: null,
@@ -173,7 +173,7 @@ export class IndefiniteChoiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      type: ['choice', []],
+      type: ['uncertain_choice', []],
       stem: [null, [Validators.required]],
       score: [2, [Validators.min(0)]],
       answer: [null, [Validators.required]],

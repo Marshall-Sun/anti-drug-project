@@ -6,8 +6,8 @@ import { QuestionCreateService } from 'src/app/service/question-create/question-
 
 enum QUSTIONTYPE {
   single_choice = '单选题',
-  mutiple_choice = '多选题',
-  choice = '不定项选择题',
+  choice = '多选题',
+  uncertain_choice = '不定项选择题',
   determine = '判断题'
 }
 @Component({
@@ -19,8 +19,8 @@ export class QuestionComponent implements OnInit {
 
   listOfQuestionTypes: any[] = [
     { label: "单选题", value: "single_choice" },
-    { label: "多选题", value: "mutiple_choice" },
-    { label: "不定项选择题", value: "choice" },
+    { label: "多选题", value: "choice" },
+    { label: "不定项选择题", value: "uncertain_choice" },
     { label: "判断题", value: "determine" }
   ]
 

@@ -7,11 +7,12 @@ import { CourseInfService } from 'src/app/service/courseinf-frontend/courseinf-f
   selector: 'app-courseinf-comment',
   templateUrl: './courseinf-comment.component.html',
   styleUrls: ['./courseinf-comment.component.less'],
-  inputs: ["comments","courseid","teachplanId"],
+  inputs: ["comments","courseid","teachplanId","userId"],
 })
 export class CourseinfCommentComponent implements OnInit {
   courseid = "0";
   teachplanId = "0";
+  userId = null;
   //评价
   comments = [];
 
@@ -84,31 +85,31 @@ export class CourseinfCommentComponent implements OnInit {
     this.commentnumber = 0;
   }
 
-  comment_submit() {
-    if (this.editorContent !== "") {
-      this.courseinfservice.comment_submit(this.courseid, "0", this.editorContent, this.editorTitle, this.commentnumber, "1").subscribe((res: any) => {
-        this.notification.create(
-          'success',
-          '提交成功！',
-          `提交成功`)
-        this.return_comment();
-      }, error => {
-        this.notification.create(
-          'error',
-          '发生错误！',
-          `${error.error}`)
-      });
-    } else {
-      this.notification.create(
-        'error',
-        '发生错误！',
-        `请填写表单全部内容`);
-    }
-    this.from_init();
-  }
+  // comment_submit() {
+  //   if (this.editorContent !== "") {
+  //     this.courseinfservice.comment_submit(this.courseid, "0", this.editorContent, this.editorTitle, this.commentnumber, this.userId).subscribe((res: any) => {
+  //       this.notification.create(
+  //         'success',
+  //         '提交成功！',
+  //         `提交成功`)
+  //       this.return_comment();
+  //     }, error => {
+  //       this.notification.create(
+  //         'error',
+  //         '发生错误！',
+  //         `${error.error}`)
+  //     });
+  //   } else {
+  //     this.notification.create(
+  //       'error',
+  //       '发生错误！',
+  //       `请填写表单全部内容`);
+  //   }
+  //   this.from_init();
+  // }
 
   return_comment() {
-    this.courseinfservice.get_teaching_plan_reivew(this.courseid).subscribe((res: any) => {
+    this.courseinfservice.get_teaching_plan_reivew(this.teachplanId).subscribe((res: any) => {
       this.setCoursesComments(res);
     }, error => {
       this.notification.create(
@@ -125,9 +126,17 @@ export class CourseinfCommentComponent implements OnInit {
   }
 
   write_comment() {
-    this.commentcontainer.clear();
-    const item: ViewRef = this.writecomment.createEmbeddedView(null);
-    this.commentcontainer.insert(item);
+    if(this.userId!=null){
+      this.commentcontainer.clear();
+      const item: ViewRef = this.writecomment.createEmbeddedView(null);
+      this.commentcontainer.insert(item);
+    }else{
+      this.notification.create(
+        'error',
+        '错误！',
+        `请先登录`)
+    }
+
   }
   //界面跳转-------------------------------------------------------------------------------
   return_response_comment() {
@@ -185,7 +194,7 @@ export class CourseinfCommentComponent implements OnInit {
 
   comment_response_submit(parentid: string) {
     if (this.editorContent != "") {
-      this.courseinfservice.write_teaching_plan_review(this.courseid,this.teachplanId, this.currentcommitid, this.editorContent, "", 0, "1").subscribe((res: any) => {
+      this.courseinfservice.write_teaching_plan_review(this.courseid,this.teachplanId, this.currentcommitid, this.editorContent, "", 0, this.userId).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
@@ -209,7 +218,7 @@ export class CourseinfCommentComponent implements OnInit {
 
 
   onPageChange_comment(event?: any) {
-    this.courseinfservice.get_teaching_plan_reivew(this.courseid).subscribe((res: any) => {
+    this.courseinfservice.get_teaching_plan_reivew(this.teachplanId).subscribe((res: any) => {
       this.setCoursesComments(res);
     }, error => {
       this.notification.create(
@@ -224,7 +233,7 @@ export class CourseinfCommentComponent implements OnInit {
 
   response_submit() {
     if (this.editorContent != "") {
-      this.courseinfservice.write_teaching_plan_review(this.courseid,this.teachplanId, "", this.editorContent, this.editorTitle, this.commentnumber, "1").subscribe((res: any) => {
+      this.courseinfservice.write_teaching_plan_review(this.courseid,this.teachplanId, '0', this.editorContent, this.editorTitle, this.commentnumber, this.userId).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',

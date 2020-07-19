@@ -180,7 +180,7 @@ export class TdCardComponent implements OnInit {
   }
   //下载
   downloadMessage(): void {
-    this.navigateByUrl(this.data.fileURL);
+    window.open('http://172.16.10.94:9013'+this.data.fileURL);
     this.message.info('开始下载', { nzDuration: 1000 });
   }
   //共享

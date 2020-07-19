@@ -9,6 +9,7 @@ import { CourseService } from 'src/app/service/courselist-frontend/courselist-fr
 import { ClassInfService } from 'src/app/service/classinf-frontend/classinf-frontend.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { LoginRegisterService } from 'src/app/service/login-register/login-register.service';
 
 @Component({
   selector: 'app-classinf',
@@ -21,13 +22,7 @@ export class ClassinfComponent implements OnInit {
   classid = "1";
 
   //当前用户
-  user = {
-    isJoin: false,
-    iscollection: true,
-    islearned: true,
-    finished: 5,
-    currented: 5,
-  }
+  userId=null;
   joinINf = null;
 
   //公告历史记录
@@ -38,7 +33,8 @@ export class ClassinfComponent implements OnInit {
 
   constructor(private courseservice: CourseService, private modalService: NzModalService, private classinfservice: ClassInfService,
     private router: Router, private activateInfo: ActivatedRoute, private message: NzMessageService, 
-    private notification: NzNotificationService) {
+    private notification: NzNotificationService,
+    private loginService: LoginRegisterService) {
     // route.queryParams.subscribe(queryParams => {
     //   this.coursepage_number = queryParams.coursepage || "1";
     //   this.currenttopicpage = queryParams.topicpage || "1";
@@ -54,23 +50,30 @@ export class ClassinfComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loginService.courseUserID.subscribe(res => {
+      this.userId = window.localStorage.getItem("id");
+      this.reloadData();
+    })
     //获取当前页id
     this.activateInfo.params.subscribe(
       (params: Params) => {
         this.classid = params["id"];
-        this.classinfservice.get_class_isJoin("1",this.classid).subscribe((res: any) => {
-          this.joinINf = res.data;
-          console.log(this.joinINf)
-        }, error => {
+
+        if(this.userId!=null){
+          this.classinfservice.get_class_isJoin(this.userId,this.classid).subscribe((res: any) => {
+            this.joinINf = res.data;
+          }, error => {
+            this.joinINf = null;
+            this.notification.create(
+              'error',
+              '错误！',
+              `${error}`,
+              { nzDuration: 100 }
+            )
+          });
+        }else{
           this.joinINf = null;
-          this.notification.create(
-            'error',
-            '错误！',
-            `${error}`,
-            { nzDuration: 100 }
-          )
-        });
-        //console.log(this.classid)
+        }
       }, error => {
         this.notification.create(
           'error',
@@ -102,18 +105,22 @@ export class ClassinfComponent implements OnInit {
 
 
   reloadData(){
-    this.classinfservice.get_class_isJoin("1",this.classid).subscribe((res: any) => {
-      this.joinINf = res.data;
-      console.log(this.joinINf)
-    }, error => {
+    if(this.userId!=null){
+      this.classinfservice.get_class_isJoin(this.userId,this.classid).subscribe((res: any) => {
+        this.joinINf = res.data;
+        console.log(this.joinINf)
+      }, error => {
+        this.joinINf = null;
+        this.notification.create(
+          'error',
+          '错误！',
+          `${error}`,
+          { nzDuration: 100 }
+        )
+      });
+    }else{
       this.joinINf = null;
-      this.notification.create(
-        'error',
-        '错误！',
-        `${error}`,
-        { nzDuration: 100 }
-      )
-    });
+    }
   }
 
   // setclassNotices(res: any) {

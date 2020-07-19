@@ -11,7 +11,7 @@ import { MaterialService } from 'src/app/service/material/material.service';
 export class MyInformationComponent implements OnInit {
 
 
-  userId: number = 1;
+  userId = undefined;
   None: any;
   dataList: any;
 
@@ -62,6 +62,7 @@ export class MyInformationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userId = window.localStorage.getItem("id");
     this.getMaterials();
   }
 

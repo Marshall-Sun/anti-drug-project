@@ -8,10 +8,10 @@
     <div class="drag-list" cdkDropList (cdkDropListDropped)="drop($event)">
       <div *ngFor="let item of courseList" class="drag-box" cdkDrag>
         <div class="list-info">
-          <img class="img-info" [src]="item?.smallPicture? item?.smallPicture: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
+          <img class="img-info" [src]="item?.smallpicture? item?.smallpicture: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
           <div class="text-info">
             <div class="info-header">
-              <div class="course-title" nz-tooltip [nzTitle]="item?.courseSetTitle">{{item?.courseSetTitle + ' '}}(教学计划：{{item?.title}}`)</div>
+              <div class="course-title" nz-tooltip [nzTitle]="item?.courseSetTitle + '（教学计划：'+ item?.title +'）'">{{item?.courseSetTitle + ' '}}(教学计划：{{item?.title}}`)</div>
               <nz-tag [nzColor]="'#87d068'">{{item.serializeMode == 'serialized'? '已完结': '更新中'}}</nz-tag>
               <span class="empty-space"></span>
               <i style="cursor: pointer; font-size: 16px; line-height: 24px;" (click)="deleteCourse(item.classroomCourseId)" nz-icon nzType="close"></i>
@@ -20,7 +20,7 @@
             <div class="empty-space"></div>
             <div class="info-footer">
               <div class="teacher-info">
-                <img class="avatar" [src]="!item?.smallAvatar.startsWith('public')? item?.smallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
+                <img class="avatar" [src]="!(item?.smallAvatar == null)? item?.smallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
                 <div style="display: flex; flex-direction: column; justify-content: space-between">
                   <span>{{item?.nickName}}</span>
                   <span>{{item?.teacherTitle}}</span>

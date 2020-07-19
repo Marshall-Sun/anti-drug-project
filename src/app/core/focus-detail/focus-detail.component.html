@@ -6,27 +6,27 @@
    <ng-template #item let-item>
      <nz-list-item [nzContent]="nzContent">
        <ng-template #nzContent>
-         <nz-card (mouseover)="show1(item)" (mouseleave)="show2(item)" class="pcard" style="width:240px;height:350px;margin:30px;"
+         <nz-card *ngIf="this.item.cardshow" (mouseover)="show1(item)" (mouseleave)="show2(item)" class="pcard" style="width:240px;height:350px;margin:30px;"
                   nzHoverable [nzCover]="coverTemplate">
            <nz-card-meta [nzTitle]="titleTemplate" [nzDescription]="descriptTemplate"></nz-card-meta>
            <button nz-button nzType="default" style="text-align: center"
-                   *ngIf="!this.item.isshow">不再关注</button>
+                   *ngIf="!this.item.isshow" (click)="defollow(item.userId)" >不再关注</button>
          </nz-card>
          <ng-template #coverTemplate>
            <nz-avatar class="user-avatar" [nzSize]="100" style="text-align:center;margin:60px auto;" nzIcon="user"></nz-avatar>
          </ng-template>
          <ng-template  #titleTemplate>
            <h3 *ngIf="this.item.isshow">{{item.userNickName}}</h3>
-         </ng-template> 
+         </ng-template>
          <ng-template  #descriptTemplate>
           <p *ngIf="this.item.isshow">{{item.userTitle}}</p>
-       </ng-template>    
+       </ng-template>
        </ng-template>
      </nz-list-item>
    </ng-template>
    <nz-pagination [nzPageIndex]="pageIndex" [nzTotal]="total" (nzPageIndexChange)="changePageIndex($event)" [nzPageSize]="pageSize"></nz-pagination>
   </nz-list>
-  
+
   </div>
   <div style="text-align: center" class="mobile-style">
     <nz-list  [nzDataSource]="data" style="margin:30px" [nzRenderItem]="item1"
@@ -36,7 +36,7 @@
         <ng-template #nzContent>
           <nz-card (mouseover)=show1(item) (mouseleave)="show2(item)" class="pcard" style="width:140px;height:200px;margin:5px;"
                     nzHoverable [nzCover]="coverTemplate">
-            <nz-card-meta [nzTitle]="titleTemplate"></nz-card-meta> 
+            <nz-card-meta [nzTitle]="titleTemplate"></nz-card-meta>
             <button nz-button nzType="default" style="text-align: center" nzSize="small"
                     *ngIf="!this.item.isshow">不再关注</button>
           </nz-card>
@@ -45,7 +45,7 @@
           </ng-template>
           <ng-template  #titleTemplate>
             <h4 *ngIf="this.item.isshow">{{item.name}}</h4>
-          </ng-template>     
+          </ng-template>
         </ng-template>
       </nz-list-item>
     </ng-template>
