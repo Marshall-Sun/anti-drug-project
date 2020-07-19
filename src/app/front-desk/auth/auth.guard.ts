@@ -53,7 +53,7 @@ export class AuthGuard implements CanActivate {
       let targetId = url.split("/")[3];
       let res: any = await this.authService.courseClosedChecker(targetId);
       if (res) {
-        this.msg.error("课程不存在");
+        this.msg.error("课程未开放");
         canActivate = false;
       }
     }
@@ -63,7 +63,7 @@ export class AuthGuard implements CanActivate {
       let targetId = url.split("/")[3];
       let res: any = await this.authService.openCourseClosedChecker(targetId);
       if (res) {
-        this.msg.error("公开课不存在");
+        this.msg.error("公开课未开放");
         canActivate = false;
       }
     }
@@ -73,7 +73,7 @@ export class AuthGuard implements CanActivate {
       let targetId = url.split("/")[3];
       let res: any = await this.authService.classClosedChecker(targetId);
       if (res) {
-        this.msg.error("班级不存在");
+        this.msg.error("班级未开放");
         canActivate = false;
       }
     }
@@ -83,7 +83,7 @@ export class AuthGuard implements CanActivate {
       let targetId = url.split("/")[3];
       let res: any = await this.authService.newsClosedChecker(targetId);
       if (res) {
-        this.msg.error("资讯不存在");
+        this.msg.error("资讯未开放");
         canActivate = false;
       }
     }
@@ -94,7 +94,7 @@ export class AuthGuard implements CanActivate {
       if (parseInt(targetUrl[3]) > 0) {
         let res: any = await this.authService.groupClosedChecker(targetUrl[3]);
         if (res) {
-          this.msg.error("小组不存在");
+          this.msg.error("小组未开放");
           canActivate = false;
         }
       }
@@ -113,7 +113,7 @@ export class AuthGuard implements CanActivate {
       } else if (parseInt(targetUrl[5]) > 0) {
         let res: any = await this.authService.groupThreadClosedChecker(targetUrl[5]);
         if (res) {
-          this.msg.error("小组话题不存在");
+          this.msg.error("小组话题未开放");
           canActivate = false;
         }
       }
