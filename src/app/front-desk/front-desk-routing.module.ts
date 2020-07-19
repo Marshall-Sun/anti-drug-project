@@ -135,7 +135,6 @@ const routes: Routes = [
       { path: 'courseinf/:id/teachplan/:pid/task/:taskId', component: CoursevideoComponent, canActivate: [AuthGuard] },
       { path: 'classinf/:id', component: ClassinfComponent, canActivate: [AuthGuard] },
       { path: 'teacher', component: TeacherComponent},
-      { path: 'userpage/:id', component: UserPageComponent},
       { path: 'userpage/:id', component: UserPageComponent,children:[
         {path: 'focus', component: FocusDetailComponent},
         {path: 'fans', component: FansComponent},
@@ -164,7 +163,7 @@ const routes: Routes = [
       { path: 'newsnews', component: NewsNewsModalComponent},
       { path: 'newscase', component: NewsCaseModalComponent},
       { path: 'newsdetails/:id', component: NewsDetailsModalComponent, canActivate: [AuthGuard]},
-      { path: 'newstag/:id', component: NewsTagModalComponent},
+      { path: 'newstag/:id', component: NewsTagModalComponent, canActivate: [AuthGuard]},
       {
         path: 'classroom/:id', component: ClassManagementComponent, children: [
           { path: '', redirectTo: 'manage', pathMatch: 'full' },
