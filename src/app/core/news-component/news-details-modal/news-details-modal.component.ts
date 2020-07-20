@@ -155,14 +155,16 @@ export class NewsDetailsModalComponent implements OnInit {
     });
   }
   getArticleLike() {
-    this.loading = true;
-    this.newsService$.getArticleLike(this.id, this.userId).subscribe(result => {
-      this.loading = false;
-      this.isLike = result.data;
-    }, error1 => {
-      this.loading = false;
-      this._message.error(error1.error);
-    });
+    if (this.userId) {
+      this.loading = true;
+      this.newsService$.getArticleLike(this.id, this.userId).subscribe(result => {
+        this.loading = false;
+        this.isLike = result.data;
+      }, error1 => {
+        this.loading = false;
+        this._message.error(error1.error);
+      });
+    }
   }
   getAriticlelikes(){
     this.newsService$.getArticlebyid(this.id).subscribe(result => {

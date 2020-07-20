@@ -7,6 +7,7 @@ import {
 } from "@angular/router";
 import { NzMessageService } from "ng-zorro-antd";
 import { AuthService } from "./auth.service";
+import { NewsService } from "src/app/service/news/news.service";
 
 @Injectable({
   providedIn: "root",
@@ -15,7 +16,8 @@ export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
     private msg: NzMessageService,
-    private authService: AuthService
+    private authService: AuthService,
+    private newsService: NewsService
   ) {}
 
   async canActivate(
@@ -53,7 +55,7 @@ export class AuthGuard implements CanActivate {
       let targetId = url.split("/")[3];
       let res: any = await this.authService.courseClosedChecker(targetId);
       if (res) {
-        this.msg.error("课程不存在");
+        this.msg.error("课程未开放");
         canActivate = false;
       }
     }
@@ -63,7 +65,7 @@ export class AuthGuard implements CanActivate {
       let targetId = url.split("/")[3];
       let res: any = await this.authService.openCourseClosedChecker(targetId);
       if (res) {
-        this.msg.error("公开课不存在");
+        this.msg.error("公开课未开放");
         canActivate = false;
       }
     }
@@ -73,7 +75,7 @@ export class AuthGuard implements CanActivate {
       let targetId = url.split("/")[3];
       let res: any = await this.authService.classClosedChecker(targetId);
       if (res) {
-        this.msg.error("班级不存在");
+        this.msg.error("班级未开放");
         canActivate = false;
       }
     }
@@ -83,36 +85,54 @@ export class AuthGuard implements CanActivate {
       let targetId = url.split("/")[3];
       let res: any = await this.authService.newsClosedChecker(targetId);
       if (res) {
-        this.msg.error("资讯不存在");
+        this.msg.error("资讯未开放");
         canActivate = false;
       }
     }
-    
+
+    // 页面：新闻标签，判断关闭状态
+    if (url.indexOf("/newstag") != -1) {
+      let targetId = url.split("/")[3];
+      try {
+        let res: any = await this.newsService.getTagname(targetId).toPromise();
+        canActivate = typeof res.data == "string";
+      } catch (error) {
+        this.msg.error("新闻标签不存在");
+        canActivate = false;
+      }
+    }
+
     // 页面：小组系列，判断关闭状态
     if (url.indexOf("/groupmainlist") != -1) {
-      var targetUrl = url.split("/");
+      let targetUrl = url.split("/");
       if (parseInt(targetUrl[3]) > 0) {
         let res: any = await this.authService.groupClosedChecker(targetUrl[3]);
         if (res) {
-          this.msg.error("小组不存在");
+          this.msg.error("小组未开放");
           canActivate = false;
         }
       }
     }
-    
+
     // 页面：小组话题系列，判断关闭状态
-    if (canActivate &&  targetUrl!=undefined && targetUrl[4] == "groupthread") {
+    if (canActivate && url.split("/")[4] == "groupthread") {
+      let targetUrl = url.split("/");
       // 页面：创建、编辑小组话题，仅限小组成员访问
-      if (url.indexOf("/grouptopic") != -1 || url.indexOf("/groupthreadedit") != -1) {
+      if (
+        url.indexOf("/grouptopic") != -1 ||
+        url.indexOf("/groupthreadedit") != -1
+      ) {
         let res: any = await this.authService.userInGroupChecker(targetUrl[3]);
         if (!res) {
           this.msg.error("您不在此小组内");
           canActivate = false;
         }
       } else if (parseInt(targetUrl[5]) > 0) {
-        let res: any = await this.authService.groupThreadClosedChecker(targetUrl[5]);
+        let res: any = await this.authService.groupThreadClosedChecker(
+          targetUrl[5]
+        );
         if (res) {
-          this.msg.error("小组话题不存在");
+          this.msg.error("小组话题未开放");
           canActivate = false;
         }
       }
