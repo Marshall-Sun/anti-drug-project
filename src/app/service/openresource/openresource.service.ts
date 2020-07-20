@@ -10,6 +10,6 @@ export class OpenresourceService {
   constructor( private _http: HttpClient) { }
 
   getOpenCourseList(): Observable<any> {
-    return this._http.get(`/course/open/list`);
+    return this._http.get(`/course/open/list`)
   }
 }

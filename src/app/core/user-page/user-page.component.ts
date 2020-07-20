@@ -91,6 +91,8 @@ export class UserPageComponent implements OnInit {
     }
     this.followmanagementService.followUser(this.fromID,id).subscribe(res=>{
         this.message.create('success',"关注成功！");
+        this.followed = true;
+        this.data.followedNum++;
     }
     ,error1=>{
         this.message.create('error',"关注失败！");
@@ -101,6 +103,8 @@ export class UserPageComponent implements OnInit {
   defollow(id:string){
     this.followmanagementService.defollow(this.fromID,id).subscribe(res=>{
       this.message.create('success',"已取消关注！");
+        this.followed = false;
+        this.data.followedNum--;
   }
   ,error1=>{
       this.message.create('error',error1.error);
