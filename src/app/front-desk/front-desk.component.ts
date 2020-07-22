@@ -16,6 +16,9 @@ export class FrontDeskComponent implements OnInit {
   isCollapsed: boolean = true;
   userId: string = '1';
 
+  // 搜索框输入值
+  keyword: string;
+
   announcementList = [];
 
   isHide: boolean = true;
@@ -27,13 +30,14 @@ export class FrontDeskComponent implements OnInit {
     private msg: NzMessageService,
     private authService: AuthService,
     private websiteAnnoucementService$: WebsitesAnnouncementService
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (this.isLogin) {
       this.checkLoginStatus();
     }
-    this.getNewAnnouncement()
+    this.getNewAnnouncement();
+    this.search();
   }
 
   checkLoginStatus() {
@@ -107,5 +111,15 @@ export class FrontDeskComponent implements OnInit {
 
   close() {
     this.isShow = false;
+  }
+
+  search() {
+    console.log('搜索内容: ', this.keyword);
+    if ( this.keyword === '' || this.keyword == null) {
+      // alert('请输入关键词');
+      return false;
+    } else {
+      this.router.navigateByUrl('/client/searchcourse?keyword=' + this.keyword);
+    }
   }
 }

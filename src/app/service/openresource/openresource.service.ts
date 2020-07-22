@@ -12,4 +12,7 @@ export class OpenresourceService {
   getOpenCourseList(): Observable<any> {
     return this._http.get(`/course/open/list`)
   }
+  getOpenCourseDetailUrl(openCourseLessonId: number): Observable<any> {
+    return this._http.get(`/course/open/getVideoUrl?openCourseLessonId=${openCourseLessonId}`)
+  }
 }

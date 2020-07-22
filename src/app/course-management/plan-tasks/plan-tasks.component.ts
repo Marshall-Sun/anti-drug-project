@@ -255,7 +255,7 @@ export class PlanTasksComponent implements OnInit {
         if (this.pt_Form.valid) {
           this.pt_Form.patchValue({
             createdUserId: this.userid,
-            finishDetail: "",
+            finishDetail: "观看图文",
             fromCourseId: parseInt(this.teachplanId),
             fromCourseSetId: parseInt(this.courseId),
             isOptional: optional,
@@ -364,7 +364,7 @@ export class PlanTasksComponent implements OnInit {
     this.vi_Form.patchValue({
       courseType: "",
       fileId: this.current_select_material.fileID || this.current_select_material.fileId,
-      finishDetail: "",
+      finishDetail: "观看视频",
       finishType: "",
       fromCourseId: parseInt(this.teachplanId),
       fromCourseSetId: parseInt(this.courseId),
@@ -838,7 +838,7 @@ export class PlanTasksComponent implements OnInit {
 
   editTask(task: any, mode: string) {
     this.initform_addtask();
-    this.courseManagement$.getTaskDetail(task.taskId).subscribe((res: any) => {
+    this.courseManagement$.getTaskDetail(this.teachplanId,task.taskId,this.userid).subscribe((res: any) => {
       this.currentEditTask = task;
       let curretntask = res.data;
       this.isCreateTask = false;
@@ -892,7 +892,7 @@ export class PlanTasksComponent implements OnInit {
     }
     this.pt_Form.patchValue({
       content: task.Activity.content,
-      finishDetail: "",
+      finishDetail: "观看图文",
       isOptional: task.CourseTask.isoptional,
       title: task.Activity.title
     });

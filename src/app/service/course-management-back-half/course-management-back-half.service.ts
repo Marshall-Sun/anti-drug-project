@@ -175,8 +175,8 @@ export class CourseManagementBackHalfService {
     return this._http.put(`/course/unpublishTask?taskId=${taskId}`, {})
   }
 
-  getTaskDetail(courseTaskId:any){
-    return this._http.get(`/course/getTaskDetail?courseTaskId=${courseTaskId}`)
+  getTaskDetail(courseid:string,taskid: string,userid:string): Observable<any> {
+    return this._http.get(`/course/getTaskDetail?courseId=${courseid}&taskId=${taskid}&userId=${userid}`)
   }
 
   edit_text(taskId:any,tx_form:any){

@@ -301,8 +301,8 @@ export class PlanTasksService {
     })
   }
   //获取任务详情，传入courseTask.id,不区分任务和子任务
-  getTaskDetail(courseTaskId:number): Observable<any>{
-    return this._http.get(`/course/getTaskDetail?courseTaskId=${courseTaskId}`)
+  getTaskDetail(courseid:string,taskid: string,userid:string): Observable<any> {
+    return this._http.get(`/course/getTaskDetail?courseId=${courseid}&taskId=${taskid}&userId=${userid}`)
   }
   //获取计划任务列表。
   listAll(courseId:number): Observable<any>{

@@ -36,11 +36,15 @@ export class NotificationsComponent implements OnInit {
   }
   search() {
     this.notificationservice.getNotifications('1',this.pageIndex, this.pageSize, this.userId).subscribe( result => {
-      this.notification = result.data;
-      this.total= result.data[0].jsonContents.totalNum;
-      this.notification.forEach(item => {
-        item.needDel = false;
-      })
+      if (result.data.length == 0)
+        this.total = 0;
+      else {
+        this.notification = result.data;
+        this.total= result.data[0].jsonContents.totalNum;
+        this.notification.forEach(item => {
+          item.needDel = false;
+        })
+      }
       this.loading = false;
     }, error1 => {
       this._notification.create(

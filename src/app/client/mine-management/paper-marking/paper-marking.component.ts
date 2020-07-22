@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './paper-marking.component.html',
   styleUrls: ['./paper-marking.component.less']
 })
-export class PaperMarkingComponent implements OnInit {
+export class MinePaperMarkingComponent implements OnInit {
 
   constructor() { }
 

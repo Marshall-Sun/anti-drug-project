@@ -32,10 +32,11 @@ import { FocusDetailComponent } from './focus-detail/focus-detail.component';
 import { CoreRoutingModule  } from "./core-routing.module";
 import { FansComponent } from './fans/fans.component';
 import {RouterModule} from '@angular/router';
-import {VideoPlayerComponent} from './video-player/video-player.component'
+import {OpenRsourceVideoPlayerComponent} from './openResource-video-player/openResource-video-player.component'
 import { RegisterModalComponent } from './modal/register-modal/register-modal.component';
 import { FindPasswdModalComponent } from './modal/find-passwd-modal/find-passwd-modal.component';
 import { SelectQuestionComponent } from './modal/select-question/select-question.component';
+import { VideoPlayerComponent } from './video-player/video-player/video-player.component';
 
 
 
@@ -66,10 +67,11 @@ import { SelectQuestionComponent } from './modal/select-question/select-question
     NewsTagModalComponent,
     FocusDetailComponent,
     FansComponent,
-    VideoPlayerComponent,
+    OpenRsourceVideoPlayerComponent,
     RegisterModalComponent,
     FindPasswdModalComponent,
-    SelectQuestionComponent
+    SelectQuestionComponent,
+    VideoPlayerComponent
   ],
   imports: [
     ShareModule,
@@ -104,10 +106,11 @@ import { SelectQuestionComponent } from './modal/select-question/select-question
     NewsTagModalComponent,
     FocusDetailComponent,
     FansComponent,
-    VideoPlayerComponent,
+    OpenRsourceVideoPlayerComponent,
     RegisterModalComponent,
     FindPasswdModalComponent,
-    SelectQuestionComponent
+    SelectQuestionComponent,
+    VideoPlayerComponent
   ]
 })
 export class CoreModule { }

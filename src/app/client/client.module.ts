@@ -47,7 +47,7 @@ import { StudentTopicComponent } from './mine-management/student-topic/student-t
 import { TopicTabComponent } from './mine-management/student-topic/topic-tab/topic-tab.component';
 import { CourseTopicComponent } from './mine-management/student-topic/course-topic/course-topic.component';
 import { ClassTopicComponent } from './mine-management/student-topic/class-topic/class-topic.component';
-import { PaperMarkingComponent as MinePaperMarkingComponent } from './mine-management/paper-marking/paper-marking.component';
+import { MinePaperMarkingComponent } from './mine-management/paper-marking/paper-marking.component';
 import { PaperMarkingTabComponent } from './mine-management/paper-marking/paper-marking-tab/paper-marking-tab.component';
 import { HaveMarkedComponent } from './mine-management/paper-marking/have-marked/have-marked.component';
 import { NotMarkedComponent } from './mine-management/paper-marking/not-marked/not-marked.component';
@@ -133,7 +133,7 @@ import {CourselistListviewModalComponent} from './courselist/courselist-listview
 import {CourselistCourseblockModalComponent} from './courselist/courselist-courseblock-modal/courselist-courseblock-modal.component';
 import {CourseinfTeacherlistModalComponent} from './courseinf/courseinf-teacherlist-modal/courseinf-teacherlist-modal.component';
 import {CourseinfStudentdynamicsModalComponent} from './courseinf/courseinf-studentdynamics-modal/courseinf-studentdynamics-modal.component';
-import {CourseExamComponent} from './course-exam/course-exam.component';
+
 import { TeachPlanPageComponent } from './course-management/teach-plan-page/teach-plan-page/teach-plan-page.component';
 import { PaperListComponent } from './mine-management/paper-marking/paper-list/paper-list.component';
 import { HomeworkMarkingComponent } from './mine-management/homework-marking/homework-marking.component';
@@ -145,6 +145,16 @@ import { DashboardListOpenresourceComponent } from './dashboard/dashboard-list/d
 import { DashboardListStudentComponent } from './dashboard/dashboard-list/dashboard-list-student/dashboard-list-student.component';
 import { DashboardListTeacherComponent } from './dashboard/dashboard-list/dashboard-list-teacher/dashboard-list-teacher.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HaveMarkedClasspaperComponent } from './mine-management/paper-marking/have-marked-classpaper/have-marked-classpaper.component';
+import { HaveMarkedCoursepaperComponent } from './mine-management/paper-marking/have-marked-coursepaper/have-marked-coursepaper.component';
+import { NotMarkedClasspaperComponent } from './mine-management/paper-marking/not-marked-classpaper/not-marked-classpaper.component';
+import { NotMarkedCoursepaperComponent } from './mine-management/paper-marking/not-marked-coursepaper/not-marked-coursepaper.component';
+import { CourseExamComponent } from './course-exam/course-exam.component';
+import { SearchclassComponent } from './search/searchclass/searchclass.component';
+import { SearchopensorComponent } from './search/searchopensor/searchopensor.component';
+import { SearchgroupComponent } from './search/searchgroup/searchgroup.component';
+import { SearchnewsComponent } from './search/searchnews/searchnews.component';
+import { SearchcourseComponent } from './search/searchcourse/searchcourse.component';
 
 
 @NgModule({
@@ -206,10 +216,12 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     PublicInformationComponent, FavoritesComponent, FromSharingComponent, MyCourseComponent, MyCourseTabComponent, LearningCourseComponent, LearnedCourseComponent,
     FavoriteCourseComponent, MyQAComponent, MyTopicComponent, MyTopicTabComponent, MyNoteComponent, MyExamComponent, MyGroupComponent,
      MyClassComponent, MyLiveComponent, CreateCourseComponent, MyLiveCourseComponent, ExamRecordComponent, QuestionRecordComponent,
-    TopicRecordComponent, TopicComponent, GroupJoinComponent, MyGroupJoinComponent,TdClassificationComponent, TdCardComponent, MyNoteDetailComponent, CourseExamComponent,
+    TopicRecordComponent, TopicComponent, GroupJoinComponent, MyGroupJoinComponent,TdClassificationComponent, TdCardComponent, MyNoteDetailComponent, MyCourseComponent,
     TopicPostComponent, MyOwnGroupComponent, CourseTaskComponent, MyClassTopicComponent, MyCourseTopicComponent, GroupsearchComponent, GroupmainsearchComponent, GroupthreadComponent,
     GroupthreadeditComponent, TeachPlanPageComponent,PaperListComponent,HomeworkMarkingComponent,HomeworkMarkingTabComponent,
-    DashboardMenuComponent, DashboardListComponent, DashboardListCourseComponent, DashboardListOpenresourceComponent, DashboardListStudentComponent, DashboardListTeacherComponent, PageNotFoundComponent
+    DashboardMenuComponent, DashboardListComponent, DashboardListCourseComponent, DashboardListOpenresourceComponent, DashboardListStudentComponent, DashboardListTeacherComponent, 
+    PageNotFoundComponent,HaveMarkedClasspaperComponent,HaveMarkedCoursepaperComponent,NotMarkedClasspaperComponent,
+    NotMarkedCoursepaperComponent,CourseExamComponent,SearchclassComponent, SearchopensorComponent, SearchgroupComponent, SearchnewsComponent, SearchcourseComponent
   ],
   imports: [
     ShareModule,

@@ -31,6 +31,7 @@ export class MessagesComponent implements OnInit {
   }
   ngOnInit() {
     this.userId = parseInt(localStorage.getItem('id'));
+    console.log(this.userId);
     this.privateChatService.getNickName(this.userId).subscribe(res=>{
       this.userNickName = res.data;
       this.search();
@@ -75,11 +76,15 @@ export class MessagesComponent implements OnInit {
   }
   search(){
     this.privateChatService.getMessages(1,this.pageIndex,this.pageSize,this.userId).subscribe(result =>{
-      this.data = result.data;
-      this.total = this.data[0].totalNum;
-      this.data.forEach(item=>{
-        item.needDel = false;
-      })
+      if (result.data.length == 0)
+        this.total = 0;
+      else {
+        this.data = result.data;
+        this.total = this.data[0].totalNum;
+        this.data.forEach(item=>{
+          item.needDel = false;
+        })
+      }
       this.loading =false;
     },error1 => {
       this.error.create(
