@@ -1,7 +1,15 @@
 <nz-layout>
   <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [nzCollapsedWidth]="0">
     <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
-      <input type="text" nz-input class="nzText" placeholder="搜索..." />
+      <!-- <input type="text" nz-input class="nzText" placeholder="搜索..." /> -->
+      <div class="user-panel">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input type="text" nz-input placeholder="搜索" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i nz-icon nzType="search"></i>
+        </ng-template>
+      </div>
 
       <li nz-menu-item (click)="navigateByUrl('/client')">
         首页
@@ -39,12 +47,14 @@
       </li>
 
       <li nz-submenu nzTitle="管理后台" *ngIf="isLogin">
-          <ul>
-            <li nz-menu-item (click)="navigateByUrl('/admin')" [style.display]="checkIdentity('SUPER_ADMIN') ? '' : 'none'">我的后台</li>
-            <li nz-menu-item (click)="navigateByUrl('/client/mine/teachingcourse')" [style.display]="checkIdentity('ROLE_TEACHER') ? '' : 'none'">我的教学</li>
-            <li nz-menu-item (click)="navigateByUrl('/client/mine/mycourse')">我的学习</li>
-          </ul>
-        </li>
+        <ul>
+          <li nz-menu-item (click)="navigateByUrl('/admin')"
+            [style.display]="checkIdentity('SUPER_ADMIN') ? '' : 'none'">我的后台</li>
+          <li nz-menu-item (click)="navigateByUrl('/client/mine/teachingcourse')"
+            [style.display]="checkIdentity('ROLE_TEACHER') ? '' : 'none'">我的教学</li>
+          <li nz-menu-item (click)="navigateByUrl('/client/mine/mycourse')">我的学习</li>
+        </ul>
+      </li>
 
       <li nz-menu-item *ngIf="!isLogin" (click)="login()">登录</li>
       <li nz-menu-item *ngIf="!isLogin" (click)="register()">注册</li>
@@ -85,13 +95,11 @@
           </li>
 
           <li nz-submenu nzTitle="搜索" class="menu-item">
-            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-              <input type="text" nz-input />
+            <nz-input-group [nzSuffix]="suffixIconSearch">
+              <input type="text" nz-input placeholder="搜索" [(ngModel)]="keyword" />
             </nz-input-group>
-            <ng-template #suffixIconButton>
-              <button nz-button nzType="primary" nzSearch>
-                <i nz-icon nzType="search"></i>
-              </button>
+            <ng-template #suffixIconSearch>
+              <i nz-icon nzType="search" (click)="search()"></i>
             </ng-template>
           </li>
 
@@ -104,16 +112,10 @@
 
           <li nz-submenu *ngIf="isLogin" nzTitle="管理后台" class="menu-item">
             <ul>
-              <li 
-                nz-menu-item 
-                (click)="navigateByUrl('/admin')"
-                [style.display]="checkIdentity('SUPER_ADMIN') ? '' : 'none'"
-              >我的后台</li>
-              <li
-                nz-menu-item
-                (click)="navigateByUrl('/client/mine/teachingcourse')"
-                [style.display]="checkIdentity('ROLE_TEACHER') ? '' : 'none'"
-              >我的教学</li>
+              <li nz-menu-item (click)="navigateByUrl('/admin')"
+                [style.display]="checkIdentity('SUPER_ADMIN') ? '' : 'none'">我的后台</li>
+              <li nz-menu-item (click)="navigateByUrl('/client/mine/teachingcourse')"
+                [style.display]="checkIdentity('ROLE_TEACHER') ? '' : 'none'">我的教学</li>
               <li nz-menu-item (click)="navigateByUrl('/client/mine/mycourse')">我的学习</li>
             </ul>
           </li>
@@ -138,8 +140,8 @@
 </nz-layout>
 
 <nz-affix *ngIf="!isHide" [nzOffsetBottom]="50" style="margin-left: 5%;">
-  <button class="shadow" nz-button nzType="danger" nzSize="large" nzShape="circle"
-    nz-popover nzPopoverTitle="查看新公告" [(nzVisible)]="isShow" nzPopoverTrigger="click" [nzPopoverContent]="announcementTemplate" nzPopoverPlacement="top">
+  <button class="shadow" nz-button nzType="danger" nzSize="large" nzShape="circle" nz-popover nzPopoverTitle="查看新公告"
+    [(nzVisible)]="isShow" nzPopoverTrigger="click" [nzPopoverContent]="announcementTemplate" nzPopoverPlacement="top">
     <i nz-icon nzType="notification"></i>
   </button>
 </nz-affix>
@@ -149,5 +151,6 @@
     <div [innerHTML]="announcement.content"></div>
     <nz-divider></nz-divider>
   </div>
-  <div style="display: flex; flex-direction: row; justify-content: space-between"><a (click)="close()">确认</a><a (click)="cancel()">隐藏</a></div>
+  <div style="display: flex; flex-direction: row; justify-content: space-between"><a (click)="close()">确认</a><a
+      (click)="cancel()">隐藏</a></div>
 </ng-template>

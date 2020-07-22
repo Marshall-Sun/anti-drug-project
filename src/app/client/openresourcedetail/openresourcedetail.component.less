@@ -1,9 +1,12 @@
 nz-layout {
-  padding: 5% 10%;
+
 }
 
 .video-content {
-  min-height: 200px;
+  margin: 50px auto 20px auto;
+  height: 500px;
+  background-color: #000000;
+  width: 1064px;
 }
 .statistics {
   display: flex;
@@ -14,10 +17,33 @@ nz-layout {
 .sidertitle{
   text-align:left;
 }
-
+.recommendCourse{
+  color: #ffffff;
+  height: 500px;
+  overflow: scroll;
+  padding-left: 10px;
+}
+.recommendCourse::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+.recommendCourse::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 10px;
+  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background   : #535353;
+}
+.recommendCourse::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background   : #ededed;
+}
 
 .inner-layout {
-  margin-top: 20px;
+  width: 1064px;
+  margin: 20px auto;
   background: #ffffff;
   display: flex;
   flex-direction: row;
@@ -39,7 +65,7 @@ nz-layout {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-
+  margin-top: 30px;
 }
 :host ::ng-deep .like > .ant-statistic-title {
   margin-bottom: 0;
@@ -74,19 +100,32 @@ nz-layout {
   margin-top: 20px;
 }
 .left-content {
-  width: 68%;
+  width: 1064px;
+  margin: 0 auto 20px auto;
 }
 
 .right-content {
-  width: 30%;
+  width: 320px;
+  margin-right: 90px;
+  margin-top: -12px;
 }
 
 .teacher-card {
-  padding: 4% 4%;
-  min-height: 300px;
-}
-.comment-area {
-  margin-top: 20px;
+  height: 240px;
   padding: 4% 4%;
 }
-
+.courseResourceDL {
+  height: 240px;
+  padding: 4% 4%;
+}
+.specialLink {
+  text-decoration: none;
+  color: #5c7b75;
+  margin-bottom: 20px;
+}
+.like{
+  background-color: #ff5b43;
+}
+.collect{
+  background-color: #7dbcea;
+}

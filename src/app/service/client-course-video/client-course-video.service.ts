@@ -38,10 +38,13 @@ export class ClientCourseVideoService {
   }
 
   // 获得任务详细信息
-  getCurrentTask(id: string): Observable<any> {
-    return this.http.get(`/course/getTaskDetail?courseTaskId=${id}`)
+  //courseid就是教学计划id  我一般把它叫做teachplanid
+  getCurrentTask(courseid:string,taskid: string,userid:string): Observable<any> {
+    return this.http.get(`/course/getTaskDetail?courseId=${courseid}&taskId=${taskid}&userId=${userid}`)
   }
 
-
   //告知服务器任务完成
+  finishTask(courseid:string,taskid: string,userid:string): Observable<any> {
+    return this.http.put(`/course/finishTask?courseId=${courseid}&taskId=${taskid}&userId=${userid}`, {})
+  }
 }

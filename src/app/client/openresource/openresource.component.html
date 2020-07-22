@@ -14,32 +14,31 @@
           <ng-template #item let-item>
             <nz-list-item [nzContent]="content">
               <ng-template #content>
-                <a target="_blank">
-                  <nz-card style="cursor: pointer; margin-left: 10px"
-                           [nzCover]="coverTemplate" nzHoverable
-                           (click)="navigateByUrl('/client/openresourcedetail/' + item.id)">
-                    <nz-row [nzGutter]="4">
-                      <nz-col [nzSpan]="14">
-                        <nz-card-meta [title]="item.title"
-                          [nzTitle]="item.title"
-                          [nzDescription]="item.description"
-                        ></nz-card-meta>
-                      </nz-col>
-                      <nz-col [nzSpan]="5">
-                        <nz-statistic [nzValue]="item.hitNum | number"  [nzPrefix]="prefixTpl1" [nzValueStyle]="{fontSize:'12px '}"></nz-statistic>
-                        <ng-template #prefixTpl1><i nz-icon nzType="eye"></i></ng-template>
-                      </nz-col>
-                      <nz-col [nzSpan]="5">
-                        <nz-statistic [nzValue]="item.postNum | number"  [nzPrefix]="prefixTpl2" [nzValueStyle]="{fontSize:'12px '}"></nz-statistic>
-                        <ng-template #prefixTpl2><i nz-icon nzType="like"></i></ng-template>
-                      </nz-col>
-                    </nz-row>
-                  </nz-card>
-                  <ng-template #coverTemplate >
-                    <img style="width: 200px; height: 140px" alt="example"
-                         [src]="item.picture"/>
-                  </ng-template>
-                </a>
+                <nz-card style="cursor: pointer; margin-left: 10px"
+                         [nzCover]="coverTemplate" nzHoverable
+                         (mouseover)="getVideoUrl(item.id)"
+                         (click)="navigateByUrl('/client/openresourcedetail/'+item.id+'/'+videoUrl)">
+                  <nz-row [nzGutter]="4">
+                    <nz-col [nzSpan]="14">
+                      <nz-card-meta [title]="item.title"
+                        [nzTitle]="item.title"
+                        [nzDescription]="item.description"
+                      ></nz-card-meta>
+                    </nz-col>
+                    <nz-col [nzSpan]="5">
+                      <nz-statistic [nzValue]="item.hitNum | number"  [nzPrefix]="prefixTpl1" [nzValueStyle]="{fontSize:'12px '}"></nz-statistic>
+                      <ng-template #prefixTpl1><i nz-icon nzType="eye"></i></ng-template>
+                    </nz-col>
+                    <nz-col [nzSpan]="5">
+                      <nz-statistic [nzValue]="item.postNum | number"  [nzPrefix]="prefixTpl2" [nzValueStyle]="{fontSize:'12px '}"></nz-statistic>
+                      <ng-template #prefixTpl2><i nz-icon nzType="like"></i></ng-template>
+                    </nz-col>
+                  </nz-row>
+                </nz-card>
+                <ng-template #coverTemplate >
+                  <img style="width: 200px; height: 140px" alt="example"
+                       [src]="item.picture"/>
+                </ng-template>
               </ng-template>
             </nz-list-item>
           </ng-template>

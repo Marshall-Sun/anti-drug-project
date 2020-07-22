@@ -15,8 +15,8 @@ export class FrontNotificationComponent implements OnInit {
   notificationData = [];
   pageIndex = 1;
   pageSize = 5;
-  notificationNum:number;
-  msgNum:number;
+  notificationNum:number=0;
+  msgNum:number=0;
   notificationLoading:boolean = true;
   msgLoading:boolean = true;
 
@@ -35,8 +35,10 @@ export class FrontNotificationComponent implements OnInit {
 
   search() {
     this.privateChatService.getMessages(0, this.pageIndex, this.pageSize, this.userId).subscribe(result => {
-      this.sixin = result.data;
-      this.msgNum = result.data[0].totalNum;
+      if (result.data.length != 0) {
+        this.sixin = result.data;
+        this.msgNum = result.data[0].totalNum;
+      }
       this.msgLoading = false;
     }, error1 => {
       this._notification.create(
@@ -46,8 +48,10 @@ export class FrontNotificationComponent implements OnInit {
       )
     })
     this.notificationService.getNotifications('0', this.pageIndex, this.pageSize, this.userId).subscribe(result => {
-      this.notificationData = result.data;
-      this.notificationNum = result.data[0].jsonContents.totalNum;
+      if (result.data.length != 0) {
+        this.notificationData = result.data;
+        this.notificationNum = result.data[0].jsonContents.totalNum;
+      }
       this.notificationLoading = false;
     }, error1 => {
       this._notification.create(

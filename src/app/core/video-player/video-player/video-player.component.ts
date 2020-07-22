@@ -2,26 +2,29 @@ import { Component, OnInit, Input, OnDestroy, ElementRef, Renderer2,Output,Event
 import { DomSanitizer } from '@angular/platform-browser'; // 引入DomSanitizer服务
 import { HttpClient } from '@angular/common/http';
 import { HttpParams } from "@angular/common/http";
-// import videojs from 'video.js'
+import videojs from 'video.js'
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { ClientCourseVideoService } from 'src/app/service/client-course-video/client-course-video.service';
 @Component({
   selector: 'app-video-player',
   templateUrl: './video-player.component.html',
-  styleUrls: ['./video-player.component.less']
+  styleUrls: ['./video-player.component.less'],
+  inputs:["url"]
 })
 export class VideoPlayerComponent implements OnInit, OnDestroy {
   @Input()
-  userID: string;  //必须拿到
-  //在线视频源
-  url: string = 'http://video.chinanews.com/tvmining//News/MP4ZXW/CCYVNEWS/2018/01/09/Ls3weyy_1515508088761_yB1n19f_3314.mp4';
-  // url:string='http://202.199.13.65:9005/v.f30.mp4'
+  userID: string = window.localStorage.getItem("id");
+  @Input()
+  url:string;
   result: any;
   event: any; // 学习任务状态
   lastPosition: number = 0;  //上次时间
   lengthOfVideo: number = 0; // 视频长度
   maxTime: number = 0; //目前最新观看位置，快进大于这个值则后退
-  isMousedown: boolean = false;
-  courseTaskId: any; 
+  @Input()
+  courseTaskId: string;
+  @Input()
+  courseId: string;
   allogId: any; //学习任务ID
   @Output() private outer=new EventEmitter<string>();
   options = {
@@ -37,29 +40,26 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
   };
 
 
-  player: any = {
-    currentTime() { }
-  };
+  player: any = {};
 
 
   //,public videoService:VideoService
   constructor(private sanitizer: DomSanitizer, public http: HttpClient, private modalService: NzModalService, private el: ElementRef,
-    private renderer2: Renderer2) {
+    private renderer2: Renderer2 , private courseVideoService: ClientCourseVideoService) {
   }
 
   ngOnInit() {
+    this.url = this.url.replace(/_/g,'/');
     // 页面刷新监听
     window.onbeforeunload = () => {
       this.endPlay();
     };
-    let userId: String = '5';//测试用
-    this.courseTaskId = 1;  //测试用
-    this.getVideoLearnLog(userId, this.courseTaskId);  //初始化
+    this.getVideoLearnLog(this.userID, this.courseTaskId);  //初始化
   }
 
-  ngAfterViewInit() {
-    // this.onload();
-  }
+  // ngAfterViewInit() {
+  //   this.onload();
+  // }
 
   ngOnDestroy() {
     this.endPlay();
@@ -70,35 +70,35 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
       nzTitle: '视频学习完成',
     });
   }
-  onload() {
-    var that = this;
-    // that.player = videojs('my-video', this.options, function onPlayerReady() {  // 播放器内部监控
+  // onload() {
+  //   var that = this;
+  //   videojs('my-player', this.options, function onPlayerReady() {  // 播放器内部监控
+  //       this.on('ended', function () {
+  //         that.changeLearnStatus(that.allogId, 'finish', parseInt(that.player.duration())); // 如果学习完了，学习位置设置为0还总长度
+  //         that.courseVideoService.finishTask(that.courseId, that.courseTaskId, that.userID);
+  //         that.success();
+  //         console.log("播放完毕")
+  //       });
 
-    //   this.on('ended', function () {
-    //     that.changeLearnStatus(that.allogId, 'finish', parseInt(that.player.duration())); // 如果学习完了，学习位置设置为0还总长度
-    //     that.success();
-    //   });
-
-    //   that.renderer2.listen(that.el.nativeElement.querySelector('.vjs-progress-control'), 'mouseup',
-    //     () => {
-    //       if (parseInt(that.player.currentTime()) > that.maxTime) {
-    //         that.onJump(that.maxTime)
-    //       }
-    //     });
-    //   this.on('timeupdate', function () {
-    //       let currentTime:number=parseInt(that.player.currentTime())
-    //       if ((currentTime - that.maxTime) <= 1) {
-    //         that.maxTime = currentTime;
-    //       }
-    //   });
-    // });
-  }
+  //       that.renderer2.listen(that.el.nativeElement.querySelector('.vjs-progress-control'), 'mouseup',
+  //         () => {
+  //           if (parseInt(that.player.currentTime()) > that.maxTime) {
+  //             that.onJump(that.maxTime)
+  //           }
+  //         });
+  //       this.on('timeupdate', function () {
+  //           let currentTime:number=parseInt(that.player.currentTime())
+  //           if ((currentTime - that.maxTime) <= 1) {
+  //             that.maxTime = currentTime;
+  //           }
+  //       });
+  //     });
+  // }
 
 
   // 获得该学习记录的状态和上次的位置
   getVideoLearnLog(userId: any, coursetaskid: any) {
-    let params = new HttpParams().set('userId', userId).set('coursetaskid', coursetaskid);
-    this.http.get('/course/video/getVideoLearnLog', { params: params }).subscribe((response) => {
+    this.http.get(`/course/video/getVideoLearnLog?coursetaskid=${coursetaskid}&userId=${userId}`).subscribe((response) => {
       this.result = response;
       this.event = this.result.data.event; // 直接使用response会报错
       this.outer.emit(this.event)//向父组件传递学习状态

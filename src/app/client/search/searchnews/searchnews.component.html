@@ -1,0 +1,28 @@
+<nz-layout>
+    <nz-header>
+        <h1 class="search-title">搜索结果</h1>
+    </nz-header>
+    <nz-content>
+        <div class="result-container">
+            <div class="result-filter">
+                <ul class="menu-list" nz-menu nzMode="horizontal">
+                    <li nz-menu-item (click)="navigateByUrl('/client/searchcourse?keyword=' + this.keyword)">课程</li>
+                    <li nz-menu-item (click)="navigateByUrl('/client/searchclass?keyword=' + this.keyword)">班级</li>
+                    <li nz-menu-item (click)="navigateByUrl('/client/searchopensor?keyword=' + this.keyword)">开放资源</li>
+                    <li nz-menu-item (click)="navigateByUrl('/client/searchgroup?keyword=' + this.keyword)">小组</li>
+                    <li nz-menu-item [nzSelected]="true" (click)="navigateByUrl('/client/searchnews?keyword=' + this.keyword)">新闻资讯</li>
+                </ul>
+            </div>
+            <nz-divider></nz-divider>
+            <nz-list [nzDataSource]="displayArticleData" [nzRenderItem]="item">
+                <ng-template #item let-item>
+                    <nz-form-control class="title" (click)="navigateByUrl('/client/newsdetails/'+item.id)">
+                        <span>{{item.title}}</span>
+                    </nz-form-control>
+                    <nz-divider></nz-divider>
+                </ng-template>
+            </nz-list>
+            <nz-divider></nz-divider>
+        </div>
+    </nz-content>
+</nz-layout>

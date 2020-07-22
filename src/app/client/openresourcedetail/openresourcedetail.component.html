@@ -1,116 +1,130 @@
 <nz-layout>
   <nz-content class="content1" >
-    <div style="background-color: #ffffff;" class="video-content">
-      <app-video-player [userID]= ''></app-video-player>
+    <div class="video-content" nz-row>
+      <div nz-col nzSpan="18">
+        <app-openResource-video-player [userID]='userId' [url]="videoUrl" [courseTaskId]="courseId"></app-openResource-video-player>
+      </div>
+      <div nz-col nzSpan="6">
+        <nz-list [nzDataSource]="courseList" [nzHeader]="header"
+                 [nzRenderItem]="item" [nzLoading]="courseListLoading"
+                 [nzSplit]="false" class="recommendCourse">
+          <ng-template #header>
+            <i nz-icon nzType="star" nzTheme="outline"></i>
+            <span style="margin-left: 10px; font-size: 18px">推荐课程</span>
+          </ng-template>
+          <ng-template #item let-item>
+            <nz-list-item [nzContent]="courseItem"></nz-list-item>
+            <ng-template #courseItem>
+              <a style="color: white" (click)="navigateByUrl('/client/openresourcedetail/'+item.courseId)">
+              {{item.courseTitle}}</a>
+            </ng-template>
+          </ng-template>
+        </nz-list>
+      </div>
     </div>
     <div class="inner-layout">
       <div class="logo">
-        <img [src]="SmallPicture"  width="130" height="100"/>
+        <img [src]="videoCover"  width="130" height="100"/>
         <div class="video-info">
-          <div class="titleone" style="font-size:22px;font-weight:600">"禁毒微电影{{movietitle}}"</div>
+          <div style="font-size:18px;font-weight:500; margin: 10px 20px 40px 20px">
+            禁毒微电影{{movieTitle}}
+          </div>
           <div class="statistics">
-            <div class="statistic1">
-              <nz-statistic [nzValue]="HitNum| number"  [nzPrefix]="prefixTpl1" [nzValueStyle]="{fontSize:'13px '}"></nz-statistic>
-              <ng-template #prefixTpl1><i nz-icon nzType="eye"></i></ng-template>
-            </div>
-            <div class="statistic2">
-              <nz-statistic [nzValue]="PostNum| number"  [nzPrefix]="prefixTpl" [nzValueStyle]="{fontSize:'13px '}"></nz-statistic>
-              <ng-template #prefixTpl><i nz-icon nzType="message"></i></ng-template>
-            </div>
+            <nz-statistic [nzValue]="hitNum|number"
+                          [nzPrefix]="prefixTpl1"
+                          [nzValueStyle]="{fontSize:'13px'}"></nz-statistic>
+            <ng-template #prefixTpl1><i nz-icon nzType="eye"></i></ng-template>
           </div>
         </div>
       </div>
-
       <div class="operation">
-        <div class="setting-icon"><nz-avatar [nzIcon]="'setting'" [nzShape]="'square'" [nzSize]="20" style="cursor: pointer;"></nz-avatar></div>
         <div class="detail-operation">
-          <nz-statistic class="like" [nzValue]="LikeNum| number"  [nzPrefix]="prefixTpl55" [nzValueStyle]="{fontSize:'18px '}"></nz-statistic>
-          <ng-template #prefixTpl55><nz-avatar  [nzIcon]="'like'"  [nzShape]="'circle'" style="cursor: pointer"></nz-avatar></ng-template>
-          <span style="font-size:18px"><nz-avatar [nzIcon]="'share-alt'" [nzShape]="'circle'"  [nzSize]="32" style="cursor: pointer"></nz-avatar>分享</span>
-          <span style="font-size:18px"><nz-avatar [nzIcon]="'save'" [nzShape]="'circle'" [nzSize]="32" style="cursor: pointer"></nz-avatar>收藏</span>
-          <span style="font-size:18px"><nz-avatar [nzIcon]="'mobile'" [nzShape]="'circle'" [nzSize]="32" style="cursor: pointer"></nz-avatar>二维码</span>
+          <span>
+            <nz-statistic [nzValue]="likeNum | number" [nzPrefix]="like" [nzValueStyle]="{fontSize:'18px'}"></nz-statistic>
+            <ng-template #like>
+              <nz-avatar [nzIcon]="'like'" [nzShape]="'circle'" [nzSize]="40"
+                         style="cursor: pointer" (click)="clickLike()"
+                         (mouseover)="likeBtnState=1" (mouseleave)="likeBtnState=0"
+                         [ngClass]="{like:likeBtnState==1}"></nz-avatar>
+              <span style="margin-left: 10px">点赞</span>
+            </ng-template>
+          </span>
+          <span>
+            <nz-avatar [nzIcon]="'save'" [nzShape]="'circle'" [nzSize]="40"
+                       style="cursor: pointer" (click)="clickCollect()"
+                       (mouseover)="collectBtnState=1" (mouseleave)="collectBtnState=0"
+                       [ngClass]="{collect:collectBtnState==1}"></nz-avatar>
+            <span *ngIf="isCollected==0" style="font-size:18px; margin-left: 10px">收藏</span>
+            <span *ngIf="isCollected==1" style="font-size:18px; margin-left: 10px">已收藏</span>
+          </span>
         </div>
       </div>
     </div>
-
     <div class="content2">
+<!--  左侧部分-->
       <div class="left-content">
-        <div style="background-color: #ffffff;" class="video-intro">禁毒微电影{{SubTitle}}</div>
-        <div class="comment-area" style="background-color: #ffffff;">
-          <h4 class="commenttitle">评论</h4>
-          <nz-divider></nz-divider>
-          <nz-comment>
-            <nz-comment-content>
-              <nz-form-item>
-                <textarea [(ngModel)]="inputValue" nz-input rows="4"></textarea>
-              </nz-form-item>
-              <nz-form-item class="commentbutton">
-                <button nz-button nzType="primary" [nzLoading]="submitting" [disabled]="!inputValue" (click)="handleSubmit()">
-                  发表评论
-                </button>
-              </nz-form-item>
-            </nz-comment-content>
-          </nz-comment>
-          <ng-template #commentTemplateRef let-comment="comment">
-            <nz-comment [nzAuthor]="comment.author" [nzDatetime]="comment.datetime">
-              <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="comment.avatar"></nz-avatar>
-              <nz-comment-content>
-                <p>{{ comment.content }}</p>
-              </nz-comment-content>
-              <nz-comment-action>回复</nz-comment-action>
-              <ng-container *ngIf="comment.children && comment.children.length">
-                <ng-template ngFor let-child [ngForOf]="comment.children">
-                  <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: child }">
-                  </ng-template>
-                </ng-template>
-              </ng-container>
-            </nz-comment>
-          </ng-template>
-          <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: data }"> </ng-template>
-        </div>
-      </div>
-      <div class="right-content">
         <div class="teacher-card" style="background-color: #ffffff;">
-          <h4 class="sidertitle">课程教师</h4>
+          <h2 class="sidertitle">课程教师</h2>
           <nz-divider></nz-divider>
-          <div class="Avatar" style="cursor: pointer"><nz-avatar  nz-popover  [nzPopoverTitle]="Title" [nzPopoverContent]="contentTemplate" [nzShape]="'circle'" [nzSize]="100" nzIcon="user" nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-            <ng-template #Title>
-              <nz-avatar class="user-avatar pointer-perform" nzIcon="user" nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                         [nzSize]="50" (click)="navigateByUrl('个人页面的路由')">
-              </nz-avatar>&nbsp;
-              <span slot="title" style="font-weight:400">{{teachernickname}}</span>
-              <div style="font-weight:100;font-size: 12px;margin-top:-18px;margin-left: 59px;">{{teachertitle}}</div>
-            </ng-template>
-            <ng-template #contentTemplate>
-              <div>
-                <p>青少年毒品预防教育</p>
-                <div nz-row [nzGutter]="2">
-                  <div nz-col [nzSpan]="8" style="cursor: pointer;">
-                    <nz-card nzTitle="3">
-                      <p>在学</p>
-                    </nz-card>
-                  </div>
-                  <div nz-col [nzSpan]="8"  style="cursor: pointer;">
-                    <nz-card nzTitle="{{FansNum}}">
-                      <p>关注</p>
-                    </nz-card>
-                  </div>
-                  <div nz-col [nzSpan]="8" style="cursor: pointer;">
-                    <nz-card nzTitle="{{FollowedNum}}">
-                      <p>粉丝</p>
-                    </nz-card>
+          <div style="display: flex">
+            <span style="cursor: pointer">
+              <nz-avatar nz-popover [nzPopoverTitle]="Title" [nzPopoverContent]="contentTemplate"
+                         nzPopoverPlacement="right"
+                         [nzSize]="100" nzIcon="user" [nzSrc]="teacherAvatar"></nz-avatar>
+              <ng-template #Title>
+                <nz-avatar class="user-avatar pointer-perform" nzIcon="user" [nzSrc]="teacherAvatar" [nzSize]="50" (click)="navigateByUrl('个人页面的路由')"></nz-avatar>&nbsp;
+                <span slot="title" style="font-weight:400">{{teacherNickName}}</span>
+                <div style="font-weight:100;font-size: 12px;margin-top:-18px;margin-left: 59px;">{{teacherTitle}}</div>
+                <div style="float: right">
+                  <button *ngIf="!isFollowed" nz-button nzSize="small" nzType="primary" style="text-align: center"
+                          (click)="follow_submit(teacherId)">关注</button>
+                  <button *ngIf="isFollowed" nz-button nzSize="small" nzType="default" style="text-align: center"
+                          (click)="del_follow_submit(teacherId)">已关注</button>
+                  <button nz-button nzSize="small" style="margin: 10px"
+                          (click)="navigateByUrl('/client/tidings/privatechat/'+teacherNickName)">私信</button>
+                </div>
+              </ng-template>
+              <ng-template #contentTemplate>
+                <div style="width: 400px">
+                  <p>青少年毒品预防教育</p>
+                  <div nz-row [nzGutter]="2">
+                    <div nz-col [nzSpan]="8" style="cursor: pointer;">
+                      <nz-card nzTitle="3" style="border: 0">
+                        <p>在学</p>
+                      </nz-card>
+                    </div>
+                    <div nz-col [nzSpan]="8"  style="cursor: pointer;">
+                      <nz-card nzTitle="{{fellowNum}}" style="border: 0">
+                        <p>关注</p>
+                      </nz-card>
+                    </div>
+                    <div nz-col [nzSpan]="8" style="cursor: pointer;">
+                      <nz-card nzTitle="{{attentionNum}}" style="border: 0">
+                        <p>粉丝</p>
+                      </nz-card>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ng-template></div>
-          <div style="font-weight:400;margin-bottom: 10px;" >{{teachernickname}}</div>
-          <div style="font-weight:300;margin-bottom: 10px;">{{teachertitle}}</div>
-          <div style="font-weight:bold;margin-bottom: 10px; text-align: left">青少年毒品预防教育!</div>
+              </ng-template>
+            </span>
+            <span style="font-weight:400;margin-left: 30px;">
+              <h3><a class="specialLink" (click)="navigateByUrl('教师个人界面')">
+                {{teacherNickName}}
+              </a></h3>
+              <p>{{teacherTitle}}</p>
+            </span>
+          </div>
         </div>
       </div>
+<!--  右侧部分-->
+<!--      <div class="right-content">-->
+<!--        <div class="courseResourceDL">-->
+<!--          <nz-card nzTitle="课程资料下载">-->
+<!--            <div><a class="specialLink">{{movieTitle}}.mp4</a></div>-->
+<!--            <div>75.19MB - <a class="specialLink">课时1</a> - 上传于2018-06-23</div>-->
+<!--          </nz-card>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
-
   </nz-content>
-
-
 </nz-layout>

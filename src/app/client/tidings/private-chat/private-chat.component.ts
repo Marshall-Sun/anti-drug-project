@@ -65,16 +65,20 @@ export class PrivateChatComponent implements OnInit {
   }
   search(){
     this.privateChatService.getConversation(this.msgConversationId, this.pageIndex, this.pageSize).subscribe(result=>{
-      this.data = result.data;
-      this.total = result.data.totalNum;
-      for (let i = 0, j = this.data.length-1; i < j; i++, j--){
-        let temp = this.data[i];
-        this.data[i] = this.data[j];
-        this.data[j] = temp;
+      if (result.data.length == 0)
+        this.total = 0;
+      else {
+        this.data = result.data;
+        this.total = result.data.totalNum;
+        for (let i = 0, j = this.data.length-1; i < j; i++, j--){
+          let temp = this.data[i];
+          this.data[i] = this.data[j];
+          this.data[j] = temp;
+        }
+        this.data.forEach(item=>{
+          item.needDel = false;
+        })
       }
-      this.data.forEach(item=>{
-        item.needDel = false;
-      })
       this.loading = false;
     },error1 => {
       this.error.create(

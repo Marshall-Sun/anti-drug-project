@@ -170,7 +170,7 @@
       </div>
     </nz-breadcrumb>
     <div *ngIf="taskType=='video'" class="video-content">
-      <app-video-player (outer)="setVideoLearingStatus($event)"></app-video-player>
+      <app-video-player (outer)="setVideoLearingStatus($event)" [url]="videoUrl"></app-video-player>
     </div>
 
     <div *ngIf="taskType=='text'" class="text-content">

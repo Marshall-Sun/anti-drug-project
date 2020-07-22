@@ -20,11 +20,13 @@
               <nz-collapse-panel [nzHeader]="extraheader" [nzActive]="panel.active" [nzExtra]="extraTpl">
                 <ng-template #extraheader>
                   <!-- You can use stopPropagation if you don't want the panel to toggle -->
-                  <nz-tag *ngIf="getTaskByType(panel,'lesson').isOptional==1" [nzColor]="'#87d068'">选修</nz-tag>
-                  <nz-tag *ngIf="getTaskByType(panel,'lesson').isOptional==0" [nzColor]="'#F56C6C'">必修</nz-tag>
+                  <!-- <nz-tag *ngIf="getTaskByType(panel,'lesson').isOptional==1" [nzColor]="'#87d068'">选修</nz-tag>
+                  <nz-tag *ngIf="getTaskByType(panel,'lesson').isOptional==0" [nzColor]="'#F56C6C'">必修</nz-tag> -->
                   {{getTaskByType(panel,'lesson').title}}
-                  <span *ngIf="getTaskByType(panel,'lesson').status!='published'" style="color: orange;">(未发布)</span>
-                  <span *ngIf="getTaskByType(panel,'lesson').status=='published'" style="color: #87d068;">(已发布)</span>
+                  <nz-tag *ngIf="getTaskByType(panel,'lesson').status!='published'" [nzColor]="'orange'">未发布</nz-tag>
+                  <nz-tag *ngIf="getTaskByType(panel,'lesson').status=='published'"  [nzColor]="'#87d068'">已发布</nz-tag>
+                  <!-- <span *ngIf="getTaskByType(panel,'lesson').status!='published'" style="color: orange;">(未发布)</span>
+                  <span *ngIf="getTaskByType(panel,'lesson').status=='published'" style="color: #87d068;">(已发布)</span> -->
                 </ng-template>
                 <div nz-row>
                   <span *ngIf="getTaskByType(panel,'preparation')==null" class="spanblock" nz-col nzSpan="4" (click)="handleOpen_addtask(getTaskByType(panel,'lesson').sequence,'preparation')">预习<i nz-icon
@@ -388,10 +390,22 @@
       <p>完成条件：提交作业</p>
     </div>
 
-    <div>
-      <!--  *ngIf="addtssk_currenttype=='text'||addtssk_currenttype=='video'||addtssk_currenttype=='voice'||addtssk_currenttype=='download'" -->
-      <label nz-checkbox [(ngModel)]="iselective" style="margin-top: 10px;">是否为选修</label>
+    <div *ngIf="addtssk_currenttype=='text'" style="margin-top: 10px;">
+      <p>完成条件：观看图文</p>
     </div>
+
+    <div *ngIf="addtssk_currenttype=='video'" style="margin-top: 10px;">
+      <p>完成条件：观看视频</p>
+    </div>
+
+    <div *ngIf="addtssk_currenttype=='download'" style="margin-top: 10px;">
+      <p>完成条件：观看下载资料</p>
+    </div>
+
+    <!-- <div>
+        *ngIf="addtssk_currenttype=='text'||addtssk_currenttype=='video'||addtssk_currenttype=='voice'||addtssk_currenttype=='download'"
+      <label nz-checkbox [(ngModel)]="iselective" style="margin-top: 10px;">是否为选修</label>
+    </div> -->
   </div>
 
   <ng-template #modalFooter>

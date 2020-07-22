@@ -55,7 +55,7 @@ import {TeachingCourseComponent} from "../client/mine-management/teaching-course
 import {TeachingClassComponent} from "../client/mine-management/teaching-class/teaching-class.component";
 import {StudentQAComponent} from "../client/mine-management/student-qa/student-qa.component";
 import {StudentTopicComponent} from "../client/mine-management/student-topic/student-topic.component";
-import {PaperMarkingComponent  as MinePaperMarkingComponent} from "../client/mine-management/paper-marking/paper-marking.component";
+import {MinePaperMarkingComponent} from "../client/mine-management/paper-marking/paper-marking.component";
 import {TeachingDatabaseComponent} from "../client/mine-management/teaching-database/teaching-database.component";
 import {MyCourseComponent} from "../client/mine-management/my-course/my-course.component";
 import {MyQAComponent} from "../client/mine-management/my-qa/my-qa.component";
@@ -100,6 +100,12 @@ import { HomeworkMarkingComponent } from '../client/mine-management/homework-mar
 import { AuthGuard } from './auth/auth.guard';
 import { PageNotFoundComponent } from '../client/page-not-found/page-not-found.component';
 import { TestPaperEditComponent } from '../course-management/test-paper/test-paper-edit/test-paper-edit.component';
+import { CourseExamComponent } from '../client/course-exam/course-exam.component';
+import { SearchclassComponent } from '../client/search/searchclass/searchclass.component';
+import { SearchgroupComponent } from '../client/search/searchgroup/searchgroup.component';
+import { SearchnewsComponent } from '../client/search/searchnews/searchnews.component';
+import { SearchopensorComponent } from '../client/search/searchopensor/searchopensor.component';
+import { SearchcourseComponent } from '../client/search/searchcourse/searchcourse.component';
 
 
 
@@ -110,6 +116,11 @@ const routes: Routes = [
     path: 'client', component: FrontDeskComponent, children: [
       { path: '', component: ClientComponent },
       { path: 'dashboard', component: DashboardComponent },
+      {path: 'searchclass', component: SearchclassComponent},
+      {path: 'searchgroup', component: SearchgroupComponent},
+      {path: 'searchnews', component: SearchnewsComponent},
+      {path: 'searchopensor', component: SearchopensorComponent},
+      {path: 'searchcourse', component: SearchcourseComponent},
       { path: 'mine', component:MineManagementComponent, canActivate: [AuthGuard], children:[
           {path: 'teachingcourse', component:TeachingCourseComponent},
           {path: 'createcourse', component:CreateCourseComponent},
@@ -132,7 +143,8 @@ const routes: Routes = [
       { path: 'courselist', component: CourselistComponent},
       { path: 'courseinf/:id', component: CourseinfComponent, canActivate: [AuthGuard]},
       { path: 'courseinf/:id/teachplan/:pid', component: CourseinfComponent, canActivate: [AuthGuard] },
-      { path: 'courseinf/:id/teachplan/:pid/task/:taskId', component: CoursevideoComponent, canActivate: [AuthGuard] },
+      { path: 'courseinf/:id/teachplan/:pid/task/:taskId', component: CoursevideoComponent, canActivate: [AuthGuard] },//******** */
+      { path: 'course_test/:courseId/task/:taskId/test/:testId',component:CourseExamComponent},
       { path: 'classinf/:id', component: ClassinfComponent, canActivate: [AuthGuard] },
       { path: 'teacher', component: TeacherComponent},
       { path: 'userpage/:id', component: UserPageComponent,children:[
@@ -143,7 +155,7 @@ const routes: Routes = [
       ]},
       { path: 'classlist', component: ClasslistComponent },
       { path: 'openresource', component: OpenresourceComponent},
-      { path: 'openresourcedetail/:id', component: OpenresourcedetailComponent, canActivate: [AuthGuard] },
+      { path: 'openresourcedetail/:id/:url', component: OpenresourcedetailComponent, canActivate: [AuthGuard] },
       {path: 'groupmainlist', component: GroupmainlistComponent,
       children:[
           {path: '', component: GroupnowComponent},

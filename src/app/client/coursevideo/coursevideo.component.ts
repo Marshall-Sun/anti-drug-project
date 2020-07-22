@@ -28,6 +28,8 @@ export class CoursevideoComponent implements OnInit {
   questionForm: FormGroup;
   videoLearingStatus: string;
 
+  videoUrl:any;
+
   currentTask: any;
   currentactivity: any;
   constructor(private router: Router, private formBuilder: FormBuilder,
@@ -37,21 +39,12 @@ export class CoursevideoComponent implements OnInit {
     private route: Router) { }
 
   ngOnInit() {
+    //各种Id获取
     this.courseId = location.pathname.split('/')[3];
     this.teachplanId = location.pathname.split('/')[5];
     this.taskId = location.pathname.split('/')[7];
     this.userId = window.localStorage.getItem("id");
 
-    // this.courseVideoService.getTaskList(this.teachplanId.toString()).subscribe(result => {
-    //   // this.taskList = result;
-
-    //   this.taskList = result.data[Object.keys(result.data)[0]];
-    //   // this.taskName="";
-    //   // let index=Number(this.taskId)-1;
-    //   // this.title = this.taskList[index].title;  // taskId不是数组下标！！
-
-    //   //获取任务信息！！！！！！！！
-    // });
 
     this.courseManagement$.getPlanTaskNew(this.teachplanId).subscribe((res: any) => {
       this.setCoursesCatalog(res);
@@ -65,7 +58,6 @@ export class CoursevideoComponent implements OnInit {
     });
 
 
-
     this.noteForm = this.formBuilder.group({
       noteContent: ['', Validators.required]
     });
@@ -75,6 +67,7 @@ export class CoursevideoComponent implements OnInit {
       questionContent: ['', Validators.required]
     });
 
+    //获取任务详细信息
     this.getcurrentTask();
   }
 
@@ -89,7 +82,6 @@ export class CoursevideoComponent implements OnInit {
       this.taskList = [];
     }
   }
-
   getTaskByType(tasks: any, type: string) {
     for (let i = 0; i < tasks.length; i++) {
       if (tasks[i].mode == type) {
@@ -101,22 +93,44 @@ export class CoursevideoComponent implements OnInit {
 
   //获取当前任务详情
   getcurrentTask() {
-    this.courseVideoService.getCurrentTask(this.taskId.toString()).subscribe(result => {
+    this.courseVideoService.getCurrentTask(this.teachplanId.toString(),this.taskId.toString(),this.userId.toString()).subscribe(result => {
       this.currentTask = result.data;
       this.currentactivity = result.data["Activity"];
       this.taskType =  result.data.Activity.mediatype;
-      if(this.taskType == "download"){
+      if(this.taskType == "text"){
+        //添加任务完成的函数
+        this.courseVideoService.finishTask(this.courseId.toString(), this.taskId.toString(), this.userId.toString());
+      }
+      if(this.taskType == "video"){
+        this.videoUrl = result.data.ActivityVideo.mediauri
+      }
+      if(this.taskType == "download"){//如果是下载,打开下载链接
         this.message.info('开始下载', { nzDuration: 1000 });
         window.open('http://172.16.10.94:9013/'+result.data.CourseMaterialV8s[0].fileuri);
+        //添加任务完成的函数
+        this.courseVideoService.finishTask(this.courseId.toString(), this.taskId.toString(), this.userId.toString());
       }
-      if(this.taskType == "homework"){
-        this.navigateByUrl("")
+      //下面的不用管
+      if(this.taskType == "homework"){//如果是作业,跳转到作业页面，本页不处理作业,作业页面尚未处理好
+        //this.navigateByUrl("client/course_test/"+this.teachplanId+"/task/"+this.taskId+"/test/"+this.courseId)
       }
-      if(this.taskType == "testpaper"){
-        this.navigateByUrl("")
+      if(this.taskType == "testpaper"){//如果是考试,跳转到考试页面，本页不处理考试
+        this.navigateByUrl("client/course_test/"+this.teachplanId+"/task/"+this.taskId+"/test/"+this.courseId)
       }
     });
   }
+
+  //页面跳转
+  navigateByUrl(url: string) {
+    this.route.navigateByUrl(url)
+  }
+
+  //下载资料
+  downloadMaterial(){
+    this.message.info('开始下载', { nzDuration: 1000 });
+    window.open('http://172.16.10.94:9013/'+this.currentTask.CourseMaterialV8s[0].fileuri);
+  }
+
   //记笔记
   noteSubmit({ value, valid }): void {
     let code; // 返回码
@@ -140,18 +154,13 @@ export class CoursevideoComponent implements OnInit {
     });
   }
 
-  //任务完成
+  //任务完成相关
   finishTask() {
-    if (this.checkFinishCondition()) {
 
-    }
-  }
-
-  checkFinishCondition() {
-    return true
   }
 
 
+  //以前的代码
 
   setVideoLearingStatus(status: any): void {
     this.videoLearingStatus = status;
@@ -186,12 +195,5 @@ export class CoursevideoComponent implements OnInit {
     this.question_visible = false;
   }
 
-  navigateByUrl(url: string) {
-    this.route.navigateByUrl(url)
-  }
 
-  downloadMaterial(){
-    this.message.info('开始下载', { nzDuration: 1000 });
-    window.open('http://172.16.10.94:9013/'+this.currentTask.CourseMaterialV8s[0].fileuri);
-  }
 }
