@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy, ElementRef, Renderer2,Output,Event
 import { DomSanitizer } from '@angular/platform-browser'; // 引入DomSanitizer服务
 import { HttpClient } from '@angular/common/http';
 import { HttpParams } from "@angular/common/http";
-import videojs from 'video.js'
+// import videojs from 'video.js'
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ClientCourseVideoService } from 'src/app/service/client-course-video/client-course-video.service';
 @Component({

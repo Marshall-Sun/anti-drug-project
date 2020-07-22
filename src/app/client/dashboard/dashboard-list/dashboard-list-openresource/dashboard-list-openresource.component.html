@@ -12,7 +12,8 @@
         <nz-card
           nzHoverable
           [nzCover]="coverTemplate"
-          (click)="navigateByUrl('/client/openresourcedetail/' + item.id)"
+          (mouseover)="getVideoUrl(item.id)"
+          (click)="navigateByUrl('/client/openresourcedetail/'+item.id+'/'+videoUrl)"
         >
           <nz-card-meta nzTitle="{{ item.title }}"
           nzDescription="{{ item.description }}"> </nz-card-meta>

@@ -24,7 +24,7 @@
     "changeOrigin": true
   },
   "/course": {
-    "target": "http://219.216.86.249:9002",
+    "target": "http://172.16.10.94:9002",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

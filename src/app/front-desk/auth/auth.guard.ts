@@ -60,13 +60,18 @@ export class AuthGuard implements CanActivate {
       }
     }
 
-    // 页面：公开课详情，判断关闭状态
+    // 页面：公开课详情，判断关闭状态，需登录
     if (url.indexOf("/openresourcedetail") != -1) {
-      let targetId = url.split("/")[3];
-      let res: any = await this.authService.openCourseClosedChecker(targetId);
-      if (res) {
-        this.msg.error("公开课未开放");
+      if (!this.authService.userLoginChecker()) {
+        this.msg.error("尚未登录");
         canActivate = false;
+      } else {
+        let targetId = url.split("/")[3];
+        let res: any = await this.authService.openCourseClosedChecker(targetId);
+        if (res) {
+          this.msg.error("公开课未开放");
+          canActivate = false;
+        }
       }
     }
 
