@@ -8,6 +8,7 @@ import {
 import { NzMessageService } from "ng-zorro-antd";
 import { AuthService } from "./auth.service";
 import { NewsService } from "src/app/service/news/news.service";
+import { UserManagementService } from "src/app/service/user-management/user-management.service";
 
 @Injectable({
   providedIn: "root",
@@ -17,7 +18,8 @@ export class AuthGuard implements CanActivate {
     private router: Router,
     private msg: NzMessageService,
     private authService: AuthService,
-    private newsService: NewsService
+    private newsService: NewsService,
+    private userManagementService: UserManagementService
   ) {}
 
   async canActivate(
@@ -95,7 +97,7 @@ export class AuthGuard implements CanActivate {
       }
     }
 
-    // 页面：新闻标签，判断关闭状态
+    // 页面：新闻标签，判断是否存在
     if (url.indexOf("/newstag") != -1) {
       let targetId = url.split("/")[3];
       try {
@@ -103,6 +105,20 @@ export class AuthGuard implements CanActivate {
         canActivate = typeof res.data == "string";
       } catch (error) {
         this.msg.error("新闻标签不存在");
+        canActivate = false;
+      }
+    }
+
+    // 页面：用户界面，判断是否存在
+    if (url.indexOf("/userpage") != -1) {
+      let targetId = url.split("/")[3];
+      try {
+        let res: any = await this.userManagementService
+          .getPersonalDetailById(targetId)
+          .toPromise();
+        canActivate = typeof res.data.id == "number";
+      } catch (error) {
+        this.msg.error("用户不存在");
         canActivate = false;
       }
     }
@@ -116,6 +132,14 @@ export class AuthGuard implements CanActivate {
           this.msg.error("小组未开放");
           canActivate = false;
         }
+      }
+    }
+
+    // 页面：个人设置，需登录
+    if (url.indexOf("/settings") != -1) {
+      if (!this.authService.userLoginChecker()) {
+        this.msg.error("尚未登录");
+        canActivate = false;
       }
     }
 
@@ -150,7 +174,7 @@ export class AuthGuard implements CanActivate {
     return canActivate;
   }
 
-  checkIdentity(identity = null): boolean {
+  checkIdentity(identity): boolean {
     if (!this.authService.userLoginChecker()) {
       this.msg.error("尚未登录");
       return false;

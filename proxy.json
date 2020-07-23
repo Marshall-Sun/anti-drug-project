@@ -1,6 +1,6 @@
 {
   "/user": {
-    "target": "http://219.216.64.77:9011",
+    "target": "http://172.16.10.94:9011",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
@@ -18,7 +18,7 @@
     "changeOrigin": true
   },
   "/classroom": {
-    "target": "http://219.216.64.77:9001",
+    "target": "http://172.16.10.94:9001",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

@@ -147,7 +147,7 @@ const routes: Routes = [
       { path: 'course_test/:courseId/task/:taskId/test/:testId',component:CourseExamComponent},
       { path: 'classinf/:id', component: ClassinfComponent, canActivate: [AuthGuard] },
       { path: 'teacher', component: TeacherComponent},
-      { path: 'userpage/:id', component: UserPageComponent,children:[
+      { path: 'userpage/:id', component: UserPageComponent, canActivate: [AuthGuard], children:[
         {path: 'focus', component: FocusDetailComponent},
         {path: 'fans', component: FansComponent},
         {path: 'focus', component: FocusDetailComponent,outlet:'r2'},
@@ -199,7 +199,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'settings', component: PersonalSettingsComponent, children: [
+        path: 'settings', component: PersonalSettingsComponent, canActivate: [AuthGuard], children: [
           { path: '', redirectTo: 'information', pathMatch: 'full' },
           { path: 'information', component: InformationComponent },
           { path: 'verification', component: VerificationComponent },
