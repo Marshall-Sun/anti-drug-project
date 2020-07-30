@@ -73,27 +73,27 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
   }
   onload() {
     var that = this;
-    that.player = videojs('my-video', this.options, function onPlayerReady() {  // 播放器内部监控
+    // that.player = videojs('my-video', this.options, function onPlayerReady() {  // 播放器内部监控
 
-      this.on('ended', function () {
-        that.success();
-        // that.changeLearnStatus(that.allogId, 'finish', parseInt(that.player.duration())); // 如果学习完了，学习位置设置为0还总长度
-        that.courseVideoService.finishTask(that.teachingPlanId, that.courseTaskId, that.userID).subscribe();
-      });
+    //   this.on('ended', function () {
+    //     that.success();
+    //     // that.changeLearnStatus(that.allogId, 'finish', parseInt(that.player.duration())); // 如果学习完了，学习位置设置为0还总长度
+    //     that.courseVideoService.finishTask(that.teachingPlanId, that.courseTaskId, that.userID).subscribe();
+    //   });
 
-      // that.renderer2.listen(that.el.nativeElement.querySelector('.vjs-progress-control'), 'mouseup',
-      //   () => {
-      //     if (parseInt(that.player.currentTime()) > that.maxTime) {
-      //       that.onJump(that.maxTime)
-      //     }
-      //   });
-      // this.on('timeupdate', function () {
-      //     let currentTime:number=parseInt(that.player.currentTime())
-      //     if ((currentTime - that.maxTime) <= 1) {
-      //       that.maxTime = currentTime;
-      //     }
-      // });
-    });
+    //   // that.renderer2.listen(that.el.nativeElement.querySelector('.vjs-progress-control'), 'mouseup',
+    //   //   () => {
+    //   //     if (parseInt(that.player.currentTime()) > that.maxTime) {
+    //   //       that.onJump(that.maxTime)
+    //   //     }
+    //   //   });
+    //   // this.on('timeupdate', function () {
+    //   //     let currentTime:number=parseInt(that.player.currentTime())
+    //   //     if ((currentTime - that.maxTime) <= 1) {
+    //   //       that.maxTime = currentTime;
+    //   //     }
+    //   // });
+    // });
   }
 
 
