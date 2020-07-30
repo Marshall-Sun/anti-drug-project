@@ -32,4 +32,11 @@ export class DashboardListOpenresourceComponent implements OnInit {
   navigateByUrl(url) {
     this.router.navigateByUrl(url);
   }
+
+  videoUrl:string;
+  getVideoUrl(courseId){
+    this.openService$.getOpenCourseDetailUrl(courseId).subscribe(res=>{
+      this.videoUrl = res.data.replace(/\//g,'_');
+    })
+  }
 }

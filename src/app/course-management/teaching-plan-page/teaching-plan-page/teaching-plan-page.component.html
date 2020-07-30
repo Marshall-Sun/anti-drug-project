@@ -22,7 +22,7 @@
             <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/teaching_plan_page/'+teachplanId+'/studentsetting')" [nzSelected]="location?.pathname.endsWith('studentsetting')">学员设置</li>
           <li nz-menu-divider></li>
           <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/teaching_plan_page/'+teachplanId+ '/papers')" [nzSelected]="location?.pathname.endsWith('papers')">试卷批阅</li>
-          <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/teaching_plan_page/'+teachplanId+ '/homeworks')" [nzSelected]="location?.pathname.endsWith('homeworks')">作业批阅</li>
+          <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/teaching_plan_page/'+teachplanId+ '/homeworkmarking')" [nzSelected]="location?.pathname.endsWith('homeworkmarking')">作业批阅</li>
           <li nz-menu-divider></li>
           <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/teaching_plan')" [nzSelected]="location?.pathname.endsWith('teaching_plan')">返回教学计划管理</li>
           </ul>

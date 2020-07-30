@@ -50,7 +50,7 @@ import { TestPaperEditComponent } from './test-paper/test-paper-edit/test-paper-
     JudgementComponent, CompletionComponent, MaterialComponent,  QuestionCreateComponent, TeachingPlanManagementComponent,
     PaperMarkingComponent, TestResultTableComponent, StudentManagementComponent, StudentManagementTabComponent, FormalStudentTableComponent,
     InformalStudentTableComponent, StudentInvolveRecordComponent, StudentExitRecordComponent, TeacherManagementComponent, PlanSettingComponent, TeachingPlanPageComponent,
-    HaveMarkedComponent,NotMarkedComponent,PaperListComponent,PaperMarkingTabComponent,TestPaperEditComponent],
+    HaveMarkedComponent,NotMarkedComponent,PaperListComponent,PaperMarkingTabComponent,TestPaperEditComponent,PaperMarkingComponent],
   imports: [
     ShareModule,
     RouterModule,

@@ -8,8 +8,7 @@ import { ClientCourseVideoService } from 'src/app/service/client-course-video/cl
 @Component({
   selector: 'app-video-player',
   templateUrl: './video-player.component.html',
-  styleUrls: ['./video-player.component.less'],
-  inputs:["url"]
+  styleUrls: ['./video-player.component.less']
 })
 export class VideoPlayerComponent implements OnInit, OnDestroy {
   @Input()
@@ -24,9 +23,9 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
   @Input()
   courseTaskId: string;
   @Input()
-  courseId: string;
+  teachingPlanId: string;
   allogId: any; //学习任务ID
-  @Output() private outer=new EventEmitter<string>();
+  @Output() private outer = new EventEmitter<string>();
   options = {
     bigPlayButton: true,
     textTrackDisplay: true,
@@ -40,7 +39,9 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
   };
 
 
-  player: any = {};
+  player: any = {
+    currentTime() { }
+  };
 
 
   //,public videoService:VideoService
@@ -51,49 +52,49 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.url = this.url.replace(/_/g,'/');
     // 页面刷新监听
-    window.onbeforeunload = () => {
-      this.endPlay();
-    };
-    this.getVideoLearnLog(this.userID, this.courseTaskId);  //初始化
+    // window.onbeforeunload = () => {
+    //   this.endPlay();
+    // };
+    // this.getVideoLearnLog(this.userID, this.courseTaskId);  //初始化
   }
 
-  // ngAfterViewInit() {
-  //   this.onload();
-  // }
+  ngAfterViewInit() {
+    this.onload();
+  }
 
   ngOnDestroy() {
-    this.endPlay();
-    // this.player.dispose();
+    // this.endPlay();
+    this.player.dispose();
   }
   success(): void {
     this.modalService.success({
       nzTitle: '视频学习完成',
     });
   }
-  // onload() {
-  //   var that = this;
-  //   videojs('my-player', this.options, function onPlayerReady() {  // 播放器内部监控
-  //       this.on('ended', function () {
-  //         that.changeLearnStatus(that.allogId, 'finish', parseInt(that.player.duration())); // 如果学习完了，学习位置设置为0还总长度
-  //         that.courseVideoService.finishTask(that.courseId, that.courseTaskId, that.userID);
-  //         that.success();
-  //         console.log("播放完毕")
-  //       });
+  onload() {
+    var that = this;
+    that.player = videojs('my-video', this.options, function onPlayerReady() {  // 播放器内部监控
 
-  //       that.renderer2.listen(that.el.nativeElement.querySelector('.vjs-progress-control'), 'mouseup',
-  //         () => {
-  //           if (parseInt(that.player.currentTime()) > that.maxTime) {
-  //             that.onJump(that.maxTime)
-  //           }
-  //         });
-  //       this.on('timeupdate', function () {
-  //           let currentTime:number=parseInt(that.player.currentTime())
-  //           if ((currentTime - that.maxTime) <= 1) {
-  //             that.maxTime = currentTime;
-  //           }
-  //       });
-  //     });
-  // }
+      this.on('ended', function () {
+        that.success();
+        // that.changeLearnStatus(that.allogId, 'finish', parseInt(that.player.duration())); // 如果学习完了，学习位置设置为0还总长度
+        that.courseVideoService.finishTask(that.teachingPlanId, that.courseTaskId, that.userID).subscribe();
+      });
+
+      // that.renderer2.listen(that.el.nativeElement.querySelector('.vjs-progress-control'), 'mouseup',
+      //   () => {
+      //     if (parseInt(that.player.currentTime()) > that.maxTime) {
+      //       that.onJump(that.maxTime)
+      //     }
+      //   });
+      // this.on('timeupdate', function () {
+      //     let currentTime:number=parseInt(that.player.currentTime())
+      //     if ((currentTime - that.maxTime) <= 1) {
+      //       that.maxTime = currentTime;
+      //     }
+      // });
+    });
+  }
 
 
   // 获得该学习记录的状态和上次的位置
