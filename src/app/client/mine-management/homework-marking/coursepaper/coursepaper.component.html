@@ -19,12 +19,12 @@
     <nz-divider></nz-divider>
     <!--显示试卷列表-->
     <div *ngFor="let paper of paperListAfterSearch">
-        <div style="">
+        <div>
             <div nz-row>
                 <div nz-col nzSpan="20">
                     <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="nzDescription">
                         <ng-template #nzTitle >
-                            <div>{{ paper.number }}  {{paper.title}}</div>
+                            <div style="font-size: 15px;">{{ paper.number }}  {{paper.title}}</div>
                         </ng-template>
                         <ng-template #nzDescription>
                             <!--
@@ -38,7 +38,7 @@
                     </nz-list-item-meta>
                 </div>
         
-                <div nz-col nzSpan="4"><button nz-button (click)="clickShowButton(paper.testId)">显示</button></div>
+                <div nz-col nzSpan="4" style="text-align: center;"><button nz-button (click)="clickShowButton(paper.testId)">显示</button></div>
             </div>
             <!--显示学生答题情况-->
             <div nz-row *ngIf="showStudentOrNot(paper.testId)">
@@ -71,6 +71,13 @@
 
         <div nz-row><nz-divider></nz-divider></div>
     </div>
-
+    <nz-table *ngIf="ispaperMarkListHaveData">
+        <thead>
+            <tr></tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </nz-table>
 </div>
 

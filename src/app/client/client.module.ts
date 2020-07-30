@@ -47,7 +47,7 @@ import { StudentTopicComponent } from './mine-management/student-topic/student-t
 import { TopicTabComponent } from './mine-management/student-topic/topic-tab/topic-tab.component';
 import { CourseTopicComponent } from './mine-management/student-topic/course-topic/course-topic.component';
 import { ClassTopicComponent } from './mine-management/student-topic/class-topic/class-topic.component';
-import { MinePaperMarkingComponent } from './mine-management/paper-marking/paper-marking.component';
+
 import { PaperMarkingTabComponent } from './mine-management/paper-marking/paper-marking-tab/paper-marking-tab.component';
 import { HaveMarkedComponent } from './mine-management/paper-marking/have-marked/have-marked.component';
 import { NotMarkedComponent } from './mine-management/paper-marking/not-marked/not-marked.component';
@@ -136,7 +136,7 @@ import {CourseinfStudentdynamicsModalComponent} from './courseinf/courseinf-stud
 
 import { TeachPlanPageComponent } from './course-management/teach-plan-page/teach-plan-page/teach-plan-page.component';
 import { PaperListComponent } from './mine-management/paper-marking/paper-list/paper-list.component';
-import { HomeworkMarkingComponent } from './mine-management/homework-marking/homework-marking.component';
+
 import { HomeworkMarkingTabComponent } from './mine-management/homework-marking/homework-marking-tab/homework-marking-tab.component';
 import { DashboardMenuComponent } from './dashboard/dashboard-menu/dashboard-menu.component';
 import { DashboardListComponent } from './dashboard/dashboard-list/dashboard-list.component';
@@ -155,6 +155,13 @@ import { SearchopensorComponent } from './search/searchopensor/searchopensor.com
 import { SearchgroupComponent } from './search/searchgroup/searchgroup.component';
 import { SearchnewsComponent } from './search/searchnews/searchnews.component';
 import { SearchcourseComponent } from './search/searchcourse/searchcourse.component';
+import { ClasspaperComponent } from './mine-management/homework-marking/classpaper/classpaper.component';
+import { CoursepaperComponent } from './mine-management/homework-marking/coursepaper/coursepaper.component';
+import { MineHomeworkMarkingComponent } from './mine-management/homework-marking/homework-marking.component';
+//答作业
+import { HomeworkExamComponent } from './homework-exam/homework-exam.component';
+import { PaperMarkingComponent } from './mine-management/paper-marking/paper-marking.component';
+
 
 
 @NgModule({
@@ -211,17 +218,18 @@ import { SearchcourseComponent } from './search/searchcourse/searchcourse.compon
     NewsNewsModalComponent, NewsCaseModalComponent,
     MineManagementComponent, TeachingCourseComponent, TeachingCourseTabComponent,
     NormalCourseComponent, LiveCourseComponent, ClassCourseComponent, RecordCourseComponent, OpenCourseComponent, TeachingClassComponent, StudentQAComponent,
-    StudentTopicComponent, TopicTabComponent, CourseTopicComponent, ClassTopicComponent, MinePaperMarkingComponent, PaperMarkingTabComponent, HaveMarkedComponent,
+    StudentTopicComponent, TopicTabComponent, CourseTopicComponent, ClassTopicComponent, PaperMarkingTabComponent, HaveMarkedComponent,
     NotMarkedComponent, TeachingDatabaseComponent, TeachingDatabaseTabComponent, MyInformationComponent,
     PublicInformationComponent, FavoritesComponent, FromSharingComponent, MyCourseComponent, MyCourseTabComponent, LearningCourseComponent, LearnedCourseComponent,
     FavoriteCourseComponent, MyQAComponent, MyTopicComponent, MyTopicTabComponent, MyNoteComponent, MyExamComponent, MyGroupComponent,
      MyClassComponent, MyLiveComponent, CreateCourseComponent, MyLiveCourseComponent, ExamRecordComponent, QuestionRecordComponent,
     TopicRecordComponent, TopicComponent, GroupJoinComponent, MyGroupJoinComponent,TdClassificationComponent, TdCardComponent, MyNoteDetailComponent, MyCourseComponent,
     TopicPostComponent, MyOwnGroupComponent, CourseTaskComponent, MyClassTopicComponent, MyCourseTopicComponent, GroupsearchComponent, GroupmainsearchComponent, GroupthreadComponent,
-    GroupthreadeditComponent, TeachPlanPageComponent,PaperListComponent,HomeworkMarkingComponent,HomeworkMarkingTabComponent,
+    GroupthreadeditComponent, TeachPlanPageComponent,PaperListComponent,HomeworkMarkingTabComponent,
     DashboardMenuComponent, DashboardListComponent, DashboardListCourseComponent, DashboardListOpenresourceComponent, DashboardListStudentComponent, DashboardListTeacherComponent, 
     PageNotFoundComponent,HaveMarkedClasspaperComponent,HaveMarkedCoursepaperComponent,NotMarkedClasspaperComponent,
-    NotMarkedCoursepaperComponent,CourseExamComponent,SearchclassComponent, SearchopensorComponent, SearchgroupComponent, SearchnewsComponent, SearchcourseComponent
+    NotMarkedCoursepaperComponent,CourseExamComponent,SearchclassComponent, SearchopensorComponent, SearchgroupComponent, SearchnewsComponent, SearchcourseComponent,
+    ClasspaperComponent,CoursepaperComponent,HomeworkExamComponent,MineHomeworkMarkingComponent,PaperMarkingComponent
   ],
   imports: [
     ShareModule,

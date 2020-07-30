@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './homework-marking.component.html',
   styleUrls: ['./homework-marking.component.less']
 })
-export class HomeworkMarkingComponent implements OnInit {
+export class MineHomeworkMarkingComponent implements OnInit {
 
   constructor() { }
 

@@ -55,7 +55,6 @@ import {TeachingCourseComponent} from "../client/mine-management/teaching-course
 import {TeachingClassComponent} from "../client/mine-management/teaching-class/teaching-class.component";
 import {StudentQAComponent} from "../client/mine-management/student-qa/student-qa.component";
 import {StudentTopicComponent} from "../client/mine-management/student-topic/student-topic.component";
-import {MinePaperMarkingComponent} from "../client/mine-management/paper-marking/paper-marking.component";
 import {TeachingDatabaseComponent} from "../client/mine-management/teaching-database/teaching-database.component";
 import {MyCourseComponent} from "../client/mine-management/my-course/my-course.component";
 import {MyQAComponent} from "../client/mine-management/my-qa/my-qa.component";
@@ -96,7 +95,6 @@ import {CoursevideoComponent} from '../client/coursevideo/coursevideo.component'
 import {ClassinfComponent} from '../client/classinf/classinf.component';
 import { TeachingPlanPageComponent } from '../course-management/teaching-plan-page/teaching-plan-page/teaching-plan-page.component';
 import {PaperMarkingComponent as ClassPaperMarkingComponent} from '../class-management/paper-marking/paper-marking.component'
-import { HomeworkMarkingComponent } from '../client/mine-management/homework-marking/homework-marking.component';
 import { AuthGuard } from './auth/auth.guard';
 import { PageNotFoundComponent } from '../client/page-not-found/page-not-found.component';
 import { TestPaperEditComponent } from '../course-management/test-paper/test-paper-edit/test-paper-edit.component';
@@ -107,7 +105,11 @@ import { SearchnewsComponent } from '../client/search/searchnews/searchnews.comp
 import { SearchopensorComponent } from '../client/search/searchopensor/searchopensor.component';
 import { SearchcourseComponent } from '../client/search/searchcourse/searchcourse.component';
 
-
+import {PaperMarkingComponent as MinePaperMarkingComponent} from "../client/mine-management/paper-marking/paper-marking.component"
+import {HomeworkExamComponent} from "../client/homework-exam/homework-exam.component";
+import { MineHomeworkMarkingComponent } from '../client/mine-management/homework-marking/homework-marking.component';
+import { ClasspaperComponent } from '../client/mine-management/homework-marking/classpaper/classpaper.component';
+import { CoursepaperComponent } from '../client/mine-management/homework-marking/coursepaper/coursepaper.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -128,6 +130,7 @@ const routes: Routes = [
           {path: 'studentQA' , component:StudentQAComponent},
           {path: 'studenttopic', component:StudentTopicComponent},
           {path: 'papermarking', component:MinePaperMarkingComponent},
+          {path: 'homeworkmarking',component:MineHomeworkMarkingComponent},
           {path: 'teachingdatabase', component:TeachingDatabaseComponent},
           {path: 'mycourse', component:MyCourseComponent},
           {path: 'myQA', component:MyQAComponent},
@@ -145,6 +148,7 @@ const routes: Routes = [
       { path: 'courseinf/:id/teachplan/:pid', component: CourseinfComponent, canActivate: [AuthGuard] },
       { path: 'courseinf/:id/teachplan/:pid/task/:taskId', component: CoursevideoComponent, canActivate: [AuthGuard] },//******** */
       { path: 'course_test/:courseId/task/:taskId/test/:testId',component:CourseExamComponent},
+      {path : 'courseId/:courseId/taskId/:taskId/testId/:testId/homework-exam',component:HomeworkExamComponent},
       { path: 'classinf/:id', component: ClassinfComponent, canActivate: [AuthGuard] },
       { path: 'teacher', component: TeacherComponent},
       { path: 'userpage/:id', component: UserPageComponent, canActivate: [AuthGuard], children:[
@@ -188,6 +192,7 @@ const routes: Routes = [
           { path: 'studentsetting', component: StudentSettingComponent },
           { path: 'coversetting', component: CoverSettingComponent },
           { path: 'testpaper', component: ClassPaperMarkingComponent},
+          { path: 'homeworkmarking',component:ClasspaperComponent},
          // { path: 'testpaper/:paperid/resulttable', component: ResultTableComponent }
         ]},
       { path: 'testpaper/:paperid/result/:studentid', component: PaperResultDetailComponent },
@@ -244,9 +249,10 @@ const routes: Routes = [
         { path: 'studentsetting', component: StudentManagementComponent },
         { path: 'teachersetting', component: TeacherManagementComponent },
         { path: 'papers', component: PaperMarkingComponent },
+        { path: 'homeworkmarking',component:CoursepaperComponent},
         { path: 'papers/:paperid/resulttable', component: TestResultTableComponent },
-        { path: 'homeworks', component: HomeworkMarkingComponent },
       ] },
+      {path : 'courseId/:courseId/taskId/:taskId/testId/:testId/homework-exam',component:HomeworkExamComponent},
       { path:'course/:id/task/:id/show',component:CourseTaskComponent}
     ]
   },

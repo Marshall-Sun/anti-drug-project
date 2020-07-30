@@ -112,7 +112,7 @@ export class CoursevideoComponent implements OnInit {
       }
       //下面的不用管
       if(this.taskType == "homework"){//如果是作业,跳转到作业页面，本页不处理作业,作业页面尚未处理好
-        //this.navigateByUrl("client/course_test/"+this.teachplanId+"/task/"+this.taskId+"/test/"+this.courseId)
+        this.navigateByUrl("client/courseId/"+this.teachplanId+"/taskId/"+this.taskId+"/testId/"+this.courseId+"/homework-exam")
       }
       if(this.taskType == "testpaper"){//如果是考试,跳转到考试页面，本页不处理考试
         this.navigateByUrl("client/course_test/"+this.teachplanId+"/task/"+this.taskId+"/test/"+this.courseId)

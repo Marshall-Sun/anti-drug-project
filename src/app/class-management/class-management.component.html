@@ -27,6 +27,8 @@
               <li nz-menu-item (click)="navigatTo('client/classroom/' + classroomId + '/coursesetting')" [nzSelected]="location?.pathname.endsWith('coursesetting')">课程管理</li>
               <li nz-menu-item (click)="navigatTo('client/classroom/' + classroomId + '/studentsetting')" [nzSelected]="location?.pathname.endsWith('studentsetting')">学员管理</li>
               <li nz-menu-item (click)="navigatTo('client/classroom/' + classroomId + '/testpaper')" [nzSelected]="location?.pathname.endsWith('testpaper')">试卷批阅</li>
+              <li nz-menu-item (click)="navigatTo('client/classroom/' + classroomId + '/homeworkmarking')" [nzSelected]="location?.pathname.endsWith('homeworkmarking')">作业批阅</li>
+
             </ul>
           </li>
         </ul>

@@ -40,7 +40,7 @@ export class PaperMarkingService {
 
 
   //获取班级考试
-  getClassroomTestpaper(userId: number): Observable<any> {
+  getClassroomTestpaper(userId: string): Observable<any> {
     const httpParam = new HttpParams()
       .set('userId', `${userId}`);
     return this._http.get(`/user/getClassroomTestpaper`, {
@@ -60,7 +60,7 @@ export class PaperMarkingService {
     })
   }
 
-  //获取考试的试卷内容
+  //获取考试的试卷内容，获取作业也是这个接口
   getTestPaperContent(courseId:string,taskId:string,userId:string):Observable<any>{
     const httpParam = new HttpParams()
       .set('courseId', `${courseId}`)
@@ -80,4 +80,44 @@ export class PaperMarkingService {
       userId:userId
     })
   }
+
+  //提交作业
+  submitHomework(answers: any[], courseId: string,taskId:string,userId:string): Observable<any> {
+    return this._http.post(`/course/submitHomework`, {
+      answers: answers,
+      courseId: courseId,
+      taskId:taskId,
+      userId:userId
+    })
+  }
+
+  //获取作业批阅列表
+  getHomeworkCheckList(courseId: string):Observable<any>{
+    const httpParam = new HttpParams()
+      .set('courseId', `${courseId}`);
+    return this._http.get(`/course/getHomeworkCheckList`, {
+      params: httpParam
+    })
+  }
+
+  //获取班级作业批阅列表
+  getClassHomeworkCheckList(classId:string):Observable<any>{
+    const httpParam = new HttpParams()
+      .set('classId', `${classId}`);
+    return this._http.get(`/course/getClassHomeworkCheckList`, {
+      params: httpParam
+    })
+  }
+
+  //通过useri获取classid
+  getTeachingClassroom(pageNum:number,pageSize:number,teacherId:string):Observable<any>{
+    const httpParam = new HttpParams()
+      .set('pageNum', `${pageNum}`)
+      .set('pageSize', `${pageSize}`)
+      .set('teacherId',`${teacherId}`);
+    return this._http.get(`/user/getTeachingClassroom`, {
+      params: httpParam
+    })
+  }
+
 }
