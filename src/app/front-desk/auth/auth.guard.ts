@@ -14,6 +14,7 @@ import { CourseInfService } from "src/app/service/courseinf-frontend/courseinf-f
 import { ClientCourseVideoService } from "src/app/service/client-course-video/client-course-video.service";
 import { PaperMarkingService } from "src/app/service/paperMarking/paper-marking.service";
 import { ClientClassManagementService } from "src/app/service/client-class-management/client-class-management.service";
+import { PaperResultDetailService } from 'src/app/service/paper-result-detail/paper-result-detail.service';
 
 @Injectable({
   providedIn: "root",
@@ -29,7 +30,8 @@ export class AuthGuard implements CanActivate {
     private courseVideoService: ClientCourseVideoService,
     private paperMarkingService: PaperMarkingService,
     private classManagementService: ClientClassManagementService,
-    private userManagementService: UserManagementService
+    private userManagementService: UserManagementService,
+    private paperResultDetailService: PaperResultDetailService,
   ) {}
 
   async canActivate(
@@ -229,6 +231,21 @@ export class AuthGuard implements CanActivate {
       } catch (error) {
         this.msg.error("新闻标签不存在");
         canActivate = false;
+      }
+    }
+
+    // 页面：查看考试详情，判断是否存在，需登录
+    if (url.indexOf("/testpaper") != -1 && url.indexOf("/result") != -1) {
+      if (!this.authService.userLoginChecker()) {
+        this.msg.error("尚未登录");
+        canActivate = false;
+      } else {
+        let targetId = url.split("/");
+        let res: any = await this.paperResultDetailService.getTestPaperDetail(targetId[3], targetId[5]).toPromise();
+        if (res.data.SingleList.length < 1) {
+          this.msg.error("考试详情不存在");
+          canActivate = false;
+        }
       }
     }
 

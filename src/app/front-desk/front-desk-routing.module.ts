@@ -195,8 +195,7 @@ const routes: Routes = [
           { path: 'homeworkmarking',component:ClasspaperComponent},
          // { path: 'testpaper/:paperid/resulttable', component: ResultTableComponent }
         ]},
-      { path: 'testpaper/:paperid/result/:studentid', component: PaperResultDetailComponent },
-      { path: 'course/:courseid/analysis/:courseTaskId', component: PaperResultAnalysisComponent},
+      { path: 'testpaper/:paperid/result/:studentid', component: PaperResultDetailComponent, canActivate: [AuthGuard] },
       { path: 'tidings', component:TidingsComponent, children: [
           { path: 'messages', component: MessagesComponent },
           { path: 'notifications', component: NotificationsComponent },
@@ -252,6 +251,7 @@ const routes: Routes = [
         { path: 'homeworkmarking',component:CoursepaperComponent},
         { path: 'papers/:paperid/resulttable', component: TestResultTableComponent },
       ] },
+      { path: 'course/:courseid/analysis/:courseTaskId', component: PaperResultAnalysisComponent, canActivate: [AuthGuard]},
       { path:'course/:id/task/:id/show',component:CourseTaskComponent}
     ]
   },
