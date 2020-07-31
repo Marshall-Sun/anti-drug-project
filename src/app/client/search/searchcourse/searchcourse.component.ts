@@ -36,8 +36,12 @@ export class SearchcourseComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.keyword = this.activatedRoute.snapshot.queryParams['keyword'];
-    this.search();
+    this.keyword = this.activatedRoute.snapshot.queryParams["keyword"];
+    if (typeof this.keyword == "string" && this.keyword != "undefined") {
+      this.search();
+    } else {
+      this.router.navigateByUrl("/client");
+    }
   }
 
   navigateByUrl(url: string) {

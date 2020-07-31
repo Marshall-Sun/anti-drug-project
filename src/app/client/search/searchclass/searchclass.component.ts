@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {SearchService} from '../../../service/search/search.service';
-
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { SearchService } from "../../../service/search/search.service";
 
 @Component({
-  selector: 'app-searchclass',
-  templateUrl: './searchclass.component.html',
-  styleUrls: ['./searchclass.component.less']
+  selector: "app-searchclass",
+  templateUrl: "./searchclass.component.html",
+  styleUrls: ["./searchclass.component.less"],
 })
 export class SearchclassComponent implements OnInit {
-
-
   keyword: string;
   total: number;
   totalPage: number;
@@ -34,11 +31,15 @@ export class SearchclassComponent implements OnInit {
     private router: Router,
     private searchService$: SearchService,
     private activatedRoute: ActivatedRoute
-    ) {}
+  ) {}
 
   ngOnInit() {
-    this.keyword = this.activatedRoute.snapshot.queryParams['keyword'];
-    this.search();
+    this.keyword = this.activatedRoute.snapshot.queryParams["keyword"];
+    if (typeof this.keyword == "string" && this.keyword != "undefined") {
+      this.search();
+    } else {
+      this.router.navigateByUrl("/client");
+    }
   }
 
   navigateByUrl(url: string) {
@@ -54,7 +55,7 @@ export class SearchclassComponent implements OnInit {
     this.displayOpenCourseData = [];
 
     this.loading = true;
-    this.searchService$.getSearchResults(this.keyword).subscribe(result => {
+    this.searchService$.getSearchResults(this.keyword).subscribe((result) => {
       this.loading = false;
 
       this.CourseSetList = result.data.courseSetList;
@@ -72,8 +73,4 @@ export class SearchclassComponent implements OnInit {
       console.log(this.displayClassroomData);
     });
   }
-
-
-
-
 }
