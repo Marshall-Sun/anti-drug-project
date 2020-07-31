@@ -46,7 +46,7 @@
         </ul>
       </li>
 
-      <li nz-submenu nzTitle="管理后台" *ngIf="isLogin">
+      <li nz-submenu nzTitle="管理后台" [style.display]="isLogin ? '' : 'none'">
         <ul>
           <li nz-menu-item (click)="navigateByUrl('/admin')"
             [style.display]="checkIdentity('SUPER_ADMIN') ? '' : 'none'">我的后台</li>
