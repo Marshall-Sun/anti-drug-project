@@ -16,6 +16,8 @@ import { PaperMarkingService } from "src/app/service/paperMarking/paper-marking.
 import { ClientClassManagementService } from "src/app/service/client-class-management/client-class-management.service";
 import { PaperResultDetailService } from "src/app/service/paper-result-detail/paper-result-detail.service";
 import { PrivateChatService } from "src/app/service/private-chat/private-chat.service";
+import { CourseBaseInfoEditService } from "src/app/service/course-base-info-edit/course-base-info-edit.service";
+import { QuestionCreateService } from "src/app/service/question-create/question-create.service";
 
 @Injectable({
   providedIn: "root",
@@ -32,7 +34,9 @@ export class AuthGuard implements CanActivate {
     private paperMarkingService: PaperMarkingService,
     private classManagementService: ClientClassManagementService,
     private userManagementService: UserManagementService,
+    private courseBaseInfoEditService: CourseBaseInfoEditService,
     private privateChatService: PrivateChatService,
+    private questionCreateService: QuestionCreateService,
     private paperResultDetailService: PaperResultDetailService
   ) {}
 
@@ -211,7 +215,6 @@ export class AuthGuard implements CanActivate {
               teacherList.indexOf(window.localStorage.getItem("id")) != -1;
           }
         } else {
-          this.msg.error("权限不足");
           canActivate = false;
         }
       }
@@ -339,6 +342,88 @@ export class AuthGuard implements CanActivate {
           canActivate = false;
         }
       }
+    }
+
+    // 页面：课程管理
+    if (url.indexOf("/course/") != -1) {
+      let targetId = url.split("/");
+      try {
+        let res: any = await this.courseBaseInfoEditService
+          .getCourseInfo(targetId[3])
+          .toPromise();
+        if (this.authService.userIdentityChecker("SUPER_ADMIN")) {
+          canActivate = true;
+        } else if (this.checkIdentity("ROLE_TEACHER")) {
+          let res: any = await this.classManagementService
+            .getClassTeachers(targetId[3])
+            .toPromise();
+          let teacherList = [];
+          for (const item of res.data.teacherList) {
+            teacherList.push(item.id + "");
+          }
+          canActivate =
+            teacherList.indexOf(window.localStorage.getItem("id")) != -1;
+        } else {
+          canActivate = false;
+        }
+      } catch (e) {
+        this.msg.error("课程不存在");
+        canActivate = false;
+      }
+    }
+
+    // 页面：编辑试卷，判断是否存在
+    if (canActivate && url.indexOf("/testpaperedit") != -1) {
+      let targetId = url.split("/")[5];
+      try {
+        let res: any = await this.questionCreateService
+          .showPaperInfoEdit(targetId)
+          .toPromise();
+        if (res.data.length < 1) {
+          this.msg.error("试卷不存在");
+          canActivate = false;
+        }
+      } catch (e) {
+        this.msg.error("试卷不存在");
+        canActivate = false;
+      }
+    }
+
+    // 页面：编辑题目，判断是否存在
+    if (canActivate && url.indexOf("/question_create") != -1) {
+      let targetId = url.split("/");
+      console.log(targetId);
+      if (
+        (targetId[5] == "single_choice" ||
+          targetId[5] == "mutiple_choice" ||
+          targetId[5] == "choice" ||
+          targetId[5] == "determine") &&
+        parseInt(targetId[6]) > 0
+      ) {
+        try {
+          let res: any = await this.questionCreateService
+            .getQuestionInfo(parseInt(targetId[6]))
+            .toPromise();
+          if (res.data == null) {
+            this.msg.error("题目不存在");
+            canActivate = false;
+          }
+        } catch (e) {
+          this.msg.error("题目不存在");
+          canActivate = false;
+        }
+      }
+
+      // try {
+      //   let res: any = await this._questionCreateService.getQuestionInfo(this.questionId).toPromise();
+      //   if (res.data.length < 1) {
+      //     this.msg.error("试卷不存在");
+      //     canActivate = false;
+      //   }
+      // } catch (e) {
+      //   this.msg.error("试卷不存在");
+      //   canActivate = false;
+      // }
     }
 
     if (!canActivate && this.router.url == "/") {

@@ -212,7 +212,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'course/:id', component: CourseManagementComponent, children: [
+        path: 'course/:id', component: CourseManagementComponent, canActivate: [AuthGuard], children: [
           { path: '', redirectTo: 'base', pathMatch: 'full' },
           { path: 'base', component: BaseInfoComponent },
           { path: 'detail', component: DetailInfoComponent },

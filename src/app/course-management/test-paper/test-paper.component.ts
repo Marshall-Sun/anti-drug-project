@@ -50,8 +50,10 @@ export class TestPaperComponent implements OnInit {
     this.nzEmptyService.setDefaultContent(this.customTpl);
   }
 
-  navigateByUrl(url: string) {
-    this.router.navigateByUrl(url);
+  navigateByUrl(url) {
+    console.log(url);
+    
+    // this.router.navigateByUrl(url);
   }
 
   searchData() {
