@@ -9,6 +9,7 @@ import { NzMessageService } from "ng-zorro-antd";
 import { AuthService } from "./auth.service";
 import { NewsService } from "src/app/service/news/news.service";
 import { UserManagementService } from "src/app/service/user-management/user-management.service";
+import { MyteachingService } from "src/app/service/myteaching/myteaching.service";
 
 @Injectable({
   providedIn: "root",
@@ -19,6 +20,7 @@ export class AuthGuard implements CanActivate {
     private msg: NzMessageService,
     private authService: AuthService,
     private newsService: NewsService,
+    private myteachingService: MyteachingService,
     private userManagementService: UserManagementService
   ) {}
 
@@ -39,6 +41,14 @@ export class AuthGuard implements CanActivate {
       canActivate = this.checkIdentity("SUPER_ADMIN");
     }
 
+    // 页面：我的学习系列，需登录
+    if (url.indexOf("/mine") != -1) {
+      if (!this.authService.userLoginChecker()) {
+        this.msg.error("尚未登录");
+        canActivate = false;
+      }
+    }
+
     // 页面：我的教学系列，限管理员、教师访问
     if (
       url == "/client/mine/teachingcourse" ||
@@ -47,9 +57,25 @@ export class AuthGuard implements CanActivate {
       url == "/client/mine/studentQA" ||
       url == "/client/mine/studenttopic" ||
       url == "/client/mine/papermarking" ||
+      url == "/client/mine/homeworkmarking" ||
       url == "/client/mine/teachingdatabase"
     ) {
       canActivate = this.checkIdentity("ROLE_TEACHER");
+    }
+
+    // 页面：我的笔记详情，判断是否存在
+    if (url.indexOf("/client/mine/mynoteDetail") != -1) {
+      let targetId = url.split("/")[4];
+      let res: any = await this.myteachingService.getMyNoteDetilList(
+        1,
+        10,
+        parseInt(window.localStorage.getItem("id")),
+        parseInt(targetId)
+      ).toPromise();
+      if (res.data.length < 1) {
+        this.msg.error("笔记不存在");
+        canActivate = false;
+      }
     }
 
     // 页面：课程详情系列，判断关闭状态

@@ -34,7 +34,7 @@ export class MyNoteDetailComponent implements OnInit {
     private routerInfo: ActivatedRoute
   ) {
     this.courseId = this.routerInfo.snapshot.params['id'];
-    this.userId = this.routerInfo.snapshot.params['userId']
+    this.userId = parseInt(window.localStorage.getItem("id"));
   }
 
   ngOnInit() {

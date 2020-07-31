@@ -22,6 +22,7 @@ export class MyNoteComponent implements OnInit {
     private MyteachingService$: MyteachingService,
     private router: Router
   ) {
+    this.userId = window.localStorage.getItem("id");
   }
 
   ngOnInit() {

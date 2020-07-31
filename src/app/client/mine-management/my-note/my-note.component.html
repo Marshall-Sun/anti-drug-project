@@ -6,7 +6,7 @@
   <div class="page-content ">
     <nz-list  [nzDataSource]="noteList" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" [nzLoading]="loading">
       <ng-template #item let-item>
-        <nz-list-item  style="cursor: pointer;"   (click)="navigatTo('client/mine/mynoteDetail/'+ item.courseId + '/' + userId )" >
+        <nz-list-item  style="cursor: pointer;"   (click)="navigatTo('client/mine/mynoteDetail/'+ item.courseId)" >
           <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="nzDesrc" >
             <ng-template #nzTitle   >
               {{item.courseSetTitle}}-{{ item.courseTitle }}
