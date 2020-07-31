@@ -10,6 +10,8 @@ import { AuthService } from "./auth.service";
 import { NewsService } from "src/app/service/news/news.service";
 import { UserManagementService } from "src/app/service/user-management/user-management.service";
 import { MyteachingService } from "src/app/service/myteaching/myteaching.service";
+import { CourseInfService } from "src/app/service/courseinf-frontend/courseinf-frontend.service";
+import { ClientCourseVideoService } from "src/app/service/client-course-video/client-course-video.service";
 
 @Injectable({
   providedIn: "root",
@@ -21,6 +23,8 @@ export class AuthGuard implements CanActivate {
     private authService: AuthService,
     private newsService: NewsService,
     private myteachingService: MyteachingService,
+    private courseinfservice: CourseInfService,
+    private courseVideoService: ClientCourseVideoService,
     private userManagementService: UserManagementService
   ) {}
 
@@ -66,25 +70,47 @@ export class AuthGuard implements CanActivate {
     // 页面：我的笔记详情，判断是否存在
     if (url.indexOf("/client/mine/mynoteDetail") != -1) {
       let targetId = url.split("/")[4];
-      let res: any = await this.myteachingService.getMyNoteDetilList(
-        1,
-        10,
-        parseInt(window.localStorage.getItem("id")),
-        parseInt(targetId)
-      ).toPromise();
+      let res: any = await this.myteachingService
+        .getMyNoteDetilList(
+          1,
+          10,
+          parseInt(window.localStorage.getItem("id")),
+          parseInt(targetId)
+        )
+        .toPromise();
       if (res.data.length < 1) {
         this.msg.error("笔记不存在");
         canActivate = false;
       }
     }
 
-    // 页面：课程详情系列，判断关闭状态
+    // 页面：课程详情系列，判断关闭状态；任务、教学计划是否存在
     if (url.indexOf("/courseinf") != -1) {
-      let targetId = url.split("/")[3];
-      let res: any = await this.authService.courseClosedChecker(targetId);
+      let targetId = url.split("/");
+      let res: any = await this.authService.courseClosedChecker(targetId[3]);
       if (res) {
         this.msg.error("课程未开放");
         canActivate = false;
+      } else if (targetId[4] == "teachplan") {
+        let res: any = await this.courseinfservice
+          .get_teaching_plan_introduce(targetId[5])
+          .toPromise();
+        if (res.data == null) {
+          this.msg.error("教学计划不存在");
+          canActivate = false;
+        } else if (targetId[6] == "task") {
+          let res: any = await this.courseVideoService
+            .getCurrentTask(
+              targetId[5],
+              targetId[7],
+              window.localStorage.getItem("id")
+            )
+            .toPromise();
+          if (res.data == null) {
+            this.msg.error("任务不存在");
+            canActivate = false;
+          }
+        }
       }
     }
 
