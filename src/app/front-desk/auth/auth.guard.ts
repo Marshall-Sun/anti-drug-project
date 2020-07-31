@@ -18,6 +18,7 @@ import { PaperResultDetailService } from "src/app/service/paper-result-detail/pa
 import { PrivateChatService } from "src/app/service/private-chat/private-chat.service";
 import { CourseBaseInfoEditService } from "src/app/service/course-base-info-edit/course-base-info-edit.service";
 import { QuestionCreateService } from "src/app/service/question-create/question-create.service";
+import { CourseManagementBackHalfService } from 'src/app/service/course-management-back-half/course-management-back-half.service';
 
 @Injectable({
   providedIn: "root",
@@ -37,6 +38,7 @@ export class AuthGuard implements CanActivate {
     private courseBaseInfoEditService: CourseBaseInfoEditService,
     private privateChatService: PrivateChatService,
     private questionCreateService: QuestionCreateService,
+    private courseManagementBackHalfService: CourseManagementBackHalfService,
     private paperResultDetailService: PaperResultDetailService
   ) {}
 
@@ -392,7 +394,6 @@ export class AuthGuard implements CanActivate {
     // 页面：编辑题目，判断是否存在
     if (canActivate && url.indexOf("/question_create") != -1) {
       let targetId = url.split("/");
-      console.log(targetId);
       if (
         (targetId[5] == "single_choice" ||
           targetId[5] == "mutiple_choice" ||
@@ -413,17 +414,26 @@ export class AuthGuard implements CanActivate {
           canActivate = false;
         }
       }
+    }
 
-      // try {
-      //   let res: any = await this._questionCreateService.getQuestionInfo(this.questionId).toPromise();
-      //   if (res.data.length < 1) {
-      //     this.msg.error("试卷不存在");
-      //     canActivate = false;
-      //   }
-      // } catch (e) {
-      //   this.msg.error("试卷不存在");
-      //   canActivate = false;
-      // }
+    // 页面：计划任务，判断是否存在
+    if (canActivate && url.indexOf("/teaching_plan_page") != -1) {
+      let targetId = url.split("/");
+      let res: any = await this.courseManagementBackHalfService.getPlanBasicInfo(targetId[5]).toPromise();
+      if (res.data == null) {
+        this.msg.error("计划任务不存在");
+        canActivate = false;
+      }
+    }
+
+    // 页面：课程任务，判断是否存在
+    if (canActivate && url.indexOf("/task") != -1 && url.indexOf("/show") != -1) {
+      let targetId = url.split("/");
+      let res: any = await this.myteachingService.getCourseTask(parseInt(localStorage.getItem("id")), targetId[5]).toPromise();
+      if (res.data == null) {
+        this.msg.error("课程任务不存在");
+        canActivate = false;
+      }
     }
 
     if (!canActivate && this.router.url == "/") {

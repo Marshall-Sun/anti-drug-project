@@ -241,7 +241,7 @@ const routes: Routes = [
           { path: 'teaching_plan', component: TeachingPlanManagementComponent },       
         ]
       },
-      { path: 'course/:id/teaching_plan_page/:pid', component: TeachingPlanPageComponent,children: [
+      { path: 'course/:id/teaching_plan_page/:pid', component: TeachingPlanPageComponent, canActivate: [AuthGuard], children: [
         { path: '', redirectTo: 'tasks', pathMatch: 'full' },
         //{ path: 'overview', component: PlanOverviewComponent },
         { path: 'tasks', component: PlanTasksComponent },
@@ -253,7 +253,7 @@ const routes: Routes = [
         { path: 'papers/:paperid/resulttable', component: TestResultTableComponent },
       ] },
       { path: 'course/:courseid/analysis/:courseTaskId', component: PaperResultAnalysisComponent, canActivate: [AuthGuard]},
-      { path:'course/:id/task/:id/show',component:CourseTaskComponent}
+      { path:'course/:id/task/:id/show',component:CourseTaskComponent, canActivate: [AuthGuard]}
     ]
   },
   
