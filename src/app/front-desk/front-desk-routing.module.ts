@@ -147,9 +147,8 @@ const routes: Routes = [
       { path: 'courseinf/:id', component: CourseinfComponent, canActivate: [AuthGuard]},
       { path: 'courseinf/:id/teachplan/:pid', component: CourseinfComponent, canActivate: [AuthGuard] },
       { path: 'courseinf/:id/teachplan/:pid/task/:taskId', component: CoursevideoComponent, canActivate: [AuthGuard] },
-      { path: 'course_test/:courseId/task/:taskId/test/:testId',component:CourseExamComponent},
-      {path : 'courseId/:courseId/taskId/:taskId/testId/:testId/homework-exam',component:HomeworkExamComponent},
-      { path: 'classinf/:id', component: ClassinfComponent, canActivate: [AuthGuard] },
+      { path: 'course_test/:courseId/task/:taskId/test/:testId',component:CourseExamComponent, canActivate: [AuthGuard]},
+      {path : 'courseId/:courseId/taskId/:taskId/testId/:testId/homework-exam',component:HomeworkExamComponent, canActivate: [AuthGuard]},
       { path: 'teacher', component: TeacherComponent},
       { path: 'userpage/:id', component: UserPageComponent, canActivate: [AuthGuard], children:[
         {path: 'focus', component: FocusDetailComponent},
@@ -252,7 +251,6 @@ const routes: Routes = [
         { path: 'homeworkmarking',component:CoursepaperComponent},
         { path: 'papers/:paperid/resulttable', component: TestResultTableComponent },
       ] },
-      {path : 'courseId/:courseId/taskId/:taskId/testId/:testId/homework-exam',component:HomeworkExamComponent},
       { path:'course/:id/task/:id/show',component:CourseTaskComponent}
     ]
   },

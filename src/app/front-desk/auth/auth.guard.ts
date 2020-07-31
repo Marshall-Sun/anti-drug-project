@@ -12,6 +12,7 @@ import { UserManagementService } from "src/app/service/user-management/user-mana
 import { MyteachingService } from "src/app/service/myteaching/myteaching.service";
 import { CourseInfService } from "src/app/service/courseinf-frontend/courseinf-frontend.service";
 import { ClientCourseVideoService } from "src/app/service/client-course-video/client-course-video.service";
+import { PaperMarkingService } from 'src/app/service/paperMarking/paper-marking.service';
 
 @Injectable({
   providedIn: "root",
@@ -25,6 +26,7 @@ export class AuthGuard implements CanActivate {
     private myteachingService: MyteachingService,
     private courseinfservice: CourseInfService,
     private courseVideoService: ClientCourseVideoService,
+    private paperMarkingService: PaperMarkingService,
     private userManagementService: UserManagementService
   ) {}
 
@@ -110,6 +112,23 @@ export class AuthGuard implements CanActivate {
             this.msg.error("任务不存在");
             canActivate = false;
           }
+        }
+      }
+    }
+
+    // 页面：考试，判断关闭状态，需登录
+    if (url.indexOf("/course_test") != -1 || url.indexOf("/courseId") != -1) {
+      console.log(url);
+      
+      if (!this.authService.userLoginChecker()) {
+        this.msg.error("尚未登录");
+        canActivate = false;
+      } else {
+        let targetId = url.split("/");
+        let res: any = await this.paperMarkingService.getTestPaperContent(targetId[3], targetId[5], window.localStorage.getItem("id")).toPromise();
+        if (res.data == null) {
+          this.msg.error("考试不存在");
+          canActivate = false;
         }
       }
     }
