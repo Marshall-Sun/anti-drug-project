@@ -13,7 +13,7 @@
       <div class="left-content">
         <ul nz-menu nzMode="inline">
           <li nz-menu-item (click)="navigatTo('client/classroom/' + classroomId + '/manage')" [nzSelected]="location?.pathname.endsWith('manage')">管理首页</li>
-          <li nz-menu-group nzTitle="班级设置">
+          <li nz-menu-group nzTitle="班级设置" *ngIf="checkIdentity('SUPER_ADMIN')">
             <ul>
               <li nz-menu-item (click)="navigatTo('client/classroom/' + classroomId + '/basicinfo')" [nzSelected]="location?.pathname.endsWith('basicinfo')">基本信息</li>
               <li nz-menu-item (click)="navigatTo('client/classroom/' + classroomId + '/coversetting')" [nzSelected]="location?.pathname.endsWith('coversetting')">封面图片</li>

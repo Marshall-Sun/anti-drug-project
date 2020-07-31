@@ -16,15 +16,7 @@ export class ClassService {
       .set('showAble','1')
       .set('sortType',"hot")//orderkey)
     const uri = `/classroom/explore`;
-    return this.http.post(uri,{
-      classroomName:'',
-      classroomType:tag,
-      isClosed:0,
-      pageNum:page,
-      pageSize:12,
-      showAble:1,
-      sortType:orderkey
-    });
+    return this.http.get(uri);
     
     
     //.pipe(map(data => data.classes));

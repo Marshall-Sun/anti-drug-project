@@ -12,7 +12,8 @@ import { UserManagementService } from "src/app/service/user-management/user-mana
 import { MyteachingService } from "src/app/service/myteaching/myteaching.service";
 import { CourseInfService } from "src/app/service/courseinf-frontend/courseinf-frontend.service";
 import { ClientCourseVideoService } from "src/app/service/client-course-video/client-course-video.service";
-import { PaperMarkingService } from 'src/app/service/paperMarking/paper-marking.service';
+import { PaperMarkingService } from "src/app/service/paperMarking/paper-marking.service";
+import { ClientClassManagementService } from "src/app/service/client-class-management/client-class-management.service";
 
 @Injectable({
   providedIn: "root",
@@ -27,6 +28,7 @@ export class AuthGuard implements CanActivate {
     private courseinfservice: CourseInfService,
     private courseVideoService: ClientCourseVideoService,
     private paperMarkingService: PaperMarkingService,
+    private classManagementService: ClientClassManagementService,
     private userManagementService: UserManagementService
   ) {}
 
@@ -119,13 +121,19 @@ export class AuthGuard implements CanActivate {
     // 页面：考试，判断关闭状态，需登录
     if (url.indexOf("/course_test") != -1 || url.indexOf("/courseId") != -1) {
       console.log(url);
-      
+
       if (!this.authService.userLoginChecker()) {
         this.msg.error("尚未登录");
         canActivate = false;
       } else {
         let targetId = url.split("/");
-        let res: any = await this.paperMarkingService.getTestPaperContent(targetId[3], targetId[5], window.localStorage.getItem("id")).toPromise();
+        let res: any = await this.paperMarkingService
+          .getTestPaperContent(
+            targetId[3],
+            targetId[5],
+            window.localStorage.getItem("id")
+          )
+          .toPromise();
         if (res.data == null) {
           this.msg.error("考试不存在");
           canActivate = false;
@@ -155,6 +163,50 @@ export class AuthGuard implements CanActivate {
       if (res) {
         this.msg.error("班级未开放");
         canActivate = false;
+      }
+    }
+
+    // 页面：班级管理
+    if (url.indexOf("/classroom") != -1) {
+      let targetId = url.split("/");
+      let res: any = await this.classManagementService
+        .getClassroomDetail(targetId[3])
+        .toPromise();
+      if (res.data == null) {
+        this.msg.error("班级不存在");
+        canActivate = false;
+      } else {
+        if (this.authService.userIdentityChecker("SUPER_ADMIN")) {
+          canActivate = true;
+        } else if (this.checkIdentity("ROLE_TEACHER")) {
+          let targetUrl = targetId[4];
+          if (
+            targetUrl == "manage" ||
+            targetUrl == "basicinfo" ||
+            targetUrl == "headteacher" ||
+            targetUrl == "teachersetting" ||
+            targetUrl == "tutorsetting" ||
+            targetUrl == "coversetting"
+          ) {
+            this.msg.error("权限不足");
+            canActivate = false;
+          } else if (
+            targetUrl == "coursesetting" ||
+            targetUrl == "studentsetting" ||
+            targetUrl == "testpaper" ||
+            targetUrl == "homeworkmarking"
+          ) {
+            let res: any = await this.classManagementService.getClassTeachers(targetId[3]).toPromise();
+            let teacherList = [];
+            for (const item of res.data.teacherList) {
+              teacherList.push(item.id + "");
+            }
+            canActivate = teacherList.indexOf(window.localStorage.getItem("id")) != -1;
+          }
+        } else {
+          this.msg.error("权限不足");
+          canActivate = false;
+        }
       }
     }
 

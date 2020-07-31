@@ -157,6 +157,7 @@ const routes: Routes = [
         {path: 'fans', component: FansComponent,outlet:'r2'},
       ]},
       { path: 'classlist', component: ClasslistComponent },
+      { path: 'classinf/:id', component: ClassinfComponent, canActivate: [AuthGuard]},
       { path: 'openresource', component: OpenresourceComponent},
       { path: 'openresourcedetail/:id/:url', component: OpenresourcedetailComponent, canActivate: [AuthGuard] },
       {path: 'groupmainlist', component: GroupmainlistComponent,
@@ -180,7 +181,7 @@ const routes: Routes = [
       { path: 'newsdetails/:id', component: NewsDetailsModalComponent, canActivate: [AuthGuard]},
       { path: 'newstag/:id', component: NewsTagModalComponent, canActivate: [AuthGuard]},
       {
-        path: 'classroom/:id', component: ClassManagementComponent, children: [
+        path: 'classroom/:id', component: ClassManagementComponent, canActivate: [AuthGuard], children: [
           { path: '', redirectTo: 'manage', pathMatch: 'full' },
           { path: 'manage', component: ManagementDashboardComponent },
           { path: 'basicinfo', component: ClassInfoManagementComponent },
