@@ -196,7 +196,8 @@ const routes: Routes = [
          // { path: 'testpaper/:paperid/resulttable', component: ResultTableComponent }
         ]},
       { path: 'testpaper/:paperid/result/:studentid', component: PaperResultDetailComponent, canActivate: [AuthGuard] },
-      { path: 'tidings', component:TidingsComponent, children: [
+      { path: 'tidings', component:TidingsComponent, canActivate: [AuthGuard], children: [
+          { path: '', redirectTo: 'messages', pathMatch: 'full' },
           { path: 'messages', component: MessagesComponent },
           { path: 'notifications', component: NotificationsComponent },
           { path: 'privatechat/:name', component: PrivateChatComponent },

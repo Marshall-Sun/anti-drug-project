@@ -14,7 +14,8 @@ import { CourseInfService } from "src/app/service/courseinf-frontend/courseinf-f
 import { ClientCourseVideoService } from "src/app/service/client-course-video/client-course-video.service";
 import { PaperMarkingService } from "src/app/service/paperMarking/paper-marking.service";
 import { ClientClassManagementService } from "src/app/service/client-class-management/client-class-management.service";
-import { PaperResultDetailService } from 'src/app/service/paper-result-detail/paper-result-detail.service';
+import { PaperResultDetailService } from "src/app/service/paper-result-detail/paper-result-detail.service";
+import { PrivateChatService } from "src/app/service/private-chat/private-chat.service";
 
 @Injectable({
   providedIn: "root",
@@ -31,7 +32,8 @@ export class AuthGuard implements CanActivate {
     private paperMarkingService: PaperMarkingService,
     private classManagementService: ClientClassManagementService,
     private userManagementService: UserManagementService,
-    private paperResultDetailService: PaperResultDetailService,
+    private privateChatService: PrivateChatService,
+    private paperResultDetailService: PaperResultDetailService
   ) {}
 
   async canActivate(
@@ -198,12 +200,15 @@ export class AuthGuard implements CanActivate {
             targetUrl == "testpaper" ||
             targetUrl == "homeworkmarking"
           ) {
-            let res: any = await this.classManagementService.getClassTeachers(targetId[3]).toPromise();
+            let res: any = await this.classManagementService
+              .getClassTeachers(targetId[3])
+              .toPromise();
             let teacherList = [];
             for (const item of res.data.teacherList) {
               teacherList.push(item.id + "");
             }
-            canActivate = teacherList.indexOf(window.localStorage.getItem("id")) != -1;
+            canActivate =
+              teacherList.indexOf(window.localStorage.getItem("id")) != -1;
           }
         } else {
           this.msg.error("权限不足");
@@ -241,9 +246,38 @@ export class AuthGuard implements CanActivate {
         canActivate = false;
       } else {
         let targetId = url.split("/");
-        let res: any = await this.paperResultDetailService.getTestPaperDetail(targetId[3], targetId[5]).toPromise();
+        let res: any = await this.paperResultDetailService
+          .getTestPaperDetail(targetId[3], targetId[5])
+          .toPromise();
         if (res.data.SingleList.length < 1) {
           this.msg.error("考试详情不存在");
+          canActivate = false;
+        }
+      }
+    }
+
+    // 页面：私信、通知，需登录；对话判断是否存在
+    if (url.indexOf("/tidings") != -1) {
+      if (!this.authService.userLoginChecker()) {
+        this.msg.error("尚未登录");
+        canActivate = false;
+      } else {
+        try {
+          let targetId = url.split("/");
+          if (targetId[3] == "privatechat") {
+            let res: any = await this.privateChatService
+              .getConversationId(
+                localStorage.getItem("id"),
+                localStorage.getItem("contactId")
+              )
+              .toPromise();
+            if (res.data == null) {
+              this.msg.error("对话不存在");
+              canActivate = false;
+            }
+          }
+        } catch (e) {
+          this.msg.error("对话不存在");
           canActivate = false;
         }
       }
