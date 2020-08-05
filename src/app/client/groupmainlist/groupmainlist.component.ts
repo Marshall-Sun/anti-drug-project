@@ -39,7 +39,7 @@ export class GroupmainlistComponent implements OnInit {
   fans=2;
   focuson=3;
 
-  userId:string="1";
+  userId:string;
 
 
 
@@ -53,9 +53,10 @@ export class GroupmainlistComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userId = window.localStorage.getItem('id');
     this.getNewGroup();
     this.getJoinGroup();
-    this.getMyGroup()
+    this.getMyGroup();
   }
 
 

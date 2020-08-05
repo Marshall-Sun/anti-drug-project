@@ -52,6 +52,19 @@ export class LoginModalComponent implements OnInit {
             this.loginForm.value.password
           ).toPromise();
 
+        //保存用户token
+        let token: any = await this.loginService.getToken(
+          this.loginForm.value.username,
+          this.loginForm.value.password
+        ).toPromise();
+        window.localStorage.setItem("expires_in", token.expires_in);
+        window.localStorage.setItem("token", token.access_token);
+        let uncodedToken: any = await this.loginService
+          .checkToken(token.access_token).toPromise();
+        for (let [key, value] of Object.entries(uncodedToken)) {
+          window.localStorage.setItem(key, value + "");
+        }
+
         //保存用户基本信息
         window.localStorage.setItem("id", res);
         let personalDetail: any = await this.userManagementService
@@ -60,17 +73,6 @@ export class LoginModalComponent implements OnInit {
           window.localStorage.setItem(key, value + "");
         }
 
-        //保存用户token
-        let token: any = await this.loginService.getToken(
-            this.loginForm.value.username,
-            this.loginForm.value.password
-          ).toPromise();
-        window.localStorage.setItem("expires_in", token.expires_in);
-        let uncodedToken: any = await this.loginService
-          .checkToken(token.access_token).toPromise();
-        for (let [key, value] of Object.entries(uncodedToken)) {
-          window.localStorage.setItem(key, value + "");
-        }
 
         this.msg.success("登录成功");
         this.modal.triggerOk();

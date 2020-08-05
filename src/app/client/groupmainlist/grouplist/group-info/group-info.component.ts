@@ -46,7 +46,7 @@ export class GroupInfoComponent implements OnInit {
   nzValue=0;
   threadCreatingForm: FormGroup;
   title:string;
-  userId:string="1"
+  userId:string;
   toId:string
   isfocus:boolean;
   myGroup:[];
@@ -77,6 +77,7 @@ export class GroupInfoComponent implements OnInit {
 
   ngOnInit() {
 
+    this.userId = window.localStorage.getItem('id');
 
     this.getNewMember();
     // this.getMemberMessage();
@@ -177,7 +178,12 @@ export class GroupInfoComponent implements OnInit {
 
 //发布话题
   onclick() {
-    this.router.navigateByUrl("client/groupmainlist/"+this.groupId+"/groupthread/grouptopic")
+    if (this.userId) {
+      this.router.navigateByUrl("client/groupmainlist/"+this.groupId+"/groupthread/grouptopic")
+    } else {
+      this._notification.error('请先登录！', '')
+    }
+
 
   }
   //我的小组

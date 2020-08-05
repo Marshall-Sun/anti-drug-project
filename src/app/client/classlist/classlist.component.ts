@@ -89,17 +89,17 @@ export class ClasslistComponent implements OnInit {
       this.totalPage=  res.total;
     }
     //附加项，要删除
-    for(let i=0;i<this.classList.length;i++){
-      if(this.classList[i].smallPicture==undefined){
-        this.classList[i].smallPicture = "../../../../assets/img/timg.jpg";
-      }else if(this.classList[i].smallPicture==""){
-        this.classList[i].smallPicture = "../../../../assets/img/timg.jpg";
-      }else if(this.classList[i].smallPicture.substr(0,6)=="public"){
-        this.classList[i].smallPicture = "../../../../assets/img/timg.jpg";
-      }else if(this.classList[i].smallPicture.substr(7,7)=="edusoho"){
-        this.classList[i].smallPicture = "../../../../assets/img/timg.jpg";
-      }
-    }
+    // for(let i=0;i<this.classList.length;i++){
+    //   if(this.classList[i].smallPicture==undefined){
+    //     this.classList[i].smallPicture = "../../../../assets/img/timg.jpg";
+    //   }else if(this.classList[i].smallPicture==""){
+    //     this.classList[i].smallPicture = "../../../../assets/img/timg.jpg";
+    //   }else if(this.classList[i].smallPicture.substr(0,6)=="public"){
+    //     this.classList[i].smallPicture = "../../../../assets/img/timg.jpg";
+    //   }else if(this.classList[i].smallPicture.substr(7,7)=="edusoho"){
+    //     this.classList[i].smallPicture = "../../../../assets/img/timg.jpg";
+    //   }
+    // }
 
   }
 

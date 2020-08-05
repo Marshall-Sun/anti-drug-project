@@ -37,7 +37,6 @@ export class FrontDeskComponent implements OnInit {
       this.checkLoginStatus();
     }
     this.getNewAnnouncement();
-    this.search();
   }
 
   checkLoginStatus() {
@@ -114,9 +113,7 @@ export class FrontDeskComponent implements OnInit {
   }
 
   search() {
-    console.log('搜索内容: ', this.keyword);
     if ( this.keyword === '' || this.keyword == null) {
-      // alert('请输入关键词');
       return false;
     } else {
       this.router.navigateByUrl('/client/searchcourse?keyword=' + this.keyword);

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NotMarkedComponent } from './not-marked.component';
+import { CoursepaperComponent } from './coursepaper.component';
 
-describe('NotMarkedComponent', () => {
-  let component: NotMarkedComponent;
-  let fixture: ComponentFixture<NotMarkedComponent>;
+describe('CoursepaperComponent', () => {
+  let component: CoursepaperComponent;
+  let fixture: ComponentFixture<CoursepaperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NotMarkedComponent ]
+      declarations: [ CoursepaperComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NotMarkedComponent);
+    fixture = TestBed.createComponent(CoursepaperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

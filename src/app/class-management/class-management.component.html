@@ -1,7 +1,7 @@
 <nz-layout>
   <nz-header>
     <div class="header">
-      <img class="header-image" [src]="classroom?.smallpicture">
+      <img class="header-image" [src]="classroom?.smallpicture.startsWith('/image')? classroom?.smallpicture: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'">
       <div class="header-info">
         <div>{{classroom?.title}}<nz-tag style="margin-left: 5px;" [nzColor]="'#108ee9'">{{classroom?.status}}</nz-tag></div>
         <button nzSize="small" nz-button nzType="primary" (click)="navigatTo('/client/classinf/' + classroomId)">返回班级主页</button>
@@ -13,7 +13,7 @@
       <div class="left-content">
         <ul nz-menu nzMode="inline">
           <li nz-menu-item (click)="navigatTo('client/classroom/' + classroomId + '/manage')" [nzSelected]="location?.pathname.endsWith('manage')">管理首页</li>
-          <li nz-menu-group nzTitle="班级设置">
+          <li nz-menu-group nzTitle="班级设置" *ngIf="checkIdentity('SUPER_ADMIN')">
             <ul>
               <li nz-menu-item (click)="navigatTo('client/classroom/' + classroomId + '/basicinfo')" [nzSelected]="location?.pathname.endsWith('basicinfo')">基本信息</li>
               <li nz-menu-item (click)="navigatTo('client/classroom/' + classroomId + '/coversetting')" [nzSelected]="location?.pathname.endsWith('coversetting')">封面图片</li>

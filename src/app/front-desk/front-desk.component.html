@@ -46,7 +46,7 @@
         </ul>
       </li>
 
-      <li nz-submenu nzTitle="管理后台" *ngIf="isLogin">
+      <li nz-submenu nzTitle="管理后台" [style.display]="isLogin ? '' : 'none'">
         <ul>
           <li nz-menu-item (click)="navigateByUrl('/admin')"
             [style.display]="checkIdentity('SUPER_ADMIN') ? '' : 'none'">我的后台</li>
@@ -62,7 +62,7 @@
   </nz-sider>
   <nz-layout>
     <nz-header>
-      <div class="background-image" (window:resize)="onResize($event)">
+      <div class="background-image" (window:resize)="onResize()">
         <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
           (click)="isCollapsed = !isCollapsed"></i>
         <ul nz-menu nzMode="horizontal" class="menu">
@@ -130,7 +130,7 @@
         </ul>
       </div>
     </nz-header>
-    <nz-content>
+    <nz-content class="content-body">
       <router-outlet></router-outlet>
     </nz-content>
     <nz-footer>Powered by dongdong v8.2.32 ©2017-2019 课程存档<br />

@@ -49,9 +49,19 @@ export class ClassManagementService {
 
   getClassroomList(targetPage: number, pageSize: number, filterOptions: any): Observable<any> {
     if (filterOptions.className == '') {
-      return this._http.get(`/classroom/explore?pageNum=${targetPage}&pageSize=${pageSize}`)
+      return this._http.post(`/classroom/explore`, {
+        pageNum: targetPage,
+        pageSize: pageSize,
+        classroomName: '',
+        sortType: ''
+      })
     } else {
-      return this._http.get(`/classroom/explore?pageNum=${targetPage}&pageSize=${pageSize}&classroomName=${filterOptions.className}`)
+      return this._http.post(`/classroom/explore`, {
+        pageNum: targetPage,
+        pageSize: pageSize,
+        classroomName: filterOptions.className,
+        sortType: ''
+      })
     }
 
   }

@@ -105,7 +105,7 @@ import { SearchnewsComponent } from '../client/search/searchnews/searchnews.comp
 import { SearchopensorComponent } from '../client/search/searchopensor/searchopensor.component';
 import { SearchcourseComponent } from '../client/search/searchcourse/searchcourse.component';
 
-import {PaperMarkingComponent as MinePaperMarkingComponent} from "../client/mine-management/paper-marking/paper-marking.component"
+import {MinePaperMarkingComponent} from "../client/mine-management/paper-marking/paper-marking.component"
 import {HomeworkExamComponent} from "../client/homework-exam/homework-exam.component";
 import { MineHomeworkMarkingComponent } from '../client/mine-management/homework-marking/homework-marking.component';
 import { ClasspaperComponent } from '../client/mine-management/homework-marking/classpaper/classpaper.component';
@@ -146,10 +146,9 @@ const routes: Routes = [
       { path: 'courselist', component: CourselistComponent},
       { path: 'courseinf/:id', component: CourseinfComponent, canActivate: [AuthGuard]},
       { path: 'courseinf/:id/teachplan/:pid', component: CourseinfComponent, canActivate: [AuthGuard] },
-      { path: 'courseinf/:id/teachplan/:pid/task/:taskId', component: CoursevideoComponent, canActivate: [AuthGuard] },//******** */
-      { path: 'course_test/:courseId/task/:taskId/test/:testId',component:CourseExamComponent},
-      {path : 'courseId/:courseId/taskId/:taskId/testId/:testId/homework-exam',component:HomeworkExamComponent},
-      { path: 'classinf/:id', component: ClassinfComponent, canActivate: [AuthGuard] },
+      { path: 'courseinf/:id/teachplan/:pid/task/:taskId', component: CoursevideoComponent, canActivate: [AuthGuard] },
+      { path: 'course_test/:courseId/task/:taskId/test/:testId',component:CourseExamComponent, canActivate: [AuthGuard]},
+      {path : 'courseId/:courseId/taskId/:taskId/testId/:testId/homework-exam',component:HomeworkExamComponent, canActivate: [AuthGuard]},
       { path: 'teacher', component: TeacherComponent},
       { path: 'userpage/:id', component: UserPageComponent, canActivate: [AuthGuard], children:[
         {path: 'focus', component: FocusDetailComponent},
@@ -158,6 +157,7 @@ const routes: Routes = [
         {path: 'fans', component: FansComponent,outlet:'r2'},
       ]},
       { path: 'classlist', component: ClasslistComponent },
+      { path: 'classinf/:id', component: ClassinfComponent, canActivate: [AuthGuard]},
       { path: 'openresource', component: OpenresourceComponent},
       { path: 'openresourcedetail/:id/:url', component: OpenresourcedetailComponent, canActivate: [AuthGuard] },
       {path: 'groupmainlist', component: GroupmainlistComponent,
@@ -181,7 +181,7 @@ const routes: Routes = [
       { path: 'newsdetails/:id', component: NewsDetailsModalComponent, canActivate: [AuthGuard]},
       { path: 'newstag/:id', component: NewsTagModalComponent, canActivate: [AuthGuard]},
       {
-        path: 'classroom/:id', component: ClassManagementComponent, children: [
+        path: 'classroom/:id', component: ClassManagementComponent, canActivate: [AuthGuard], children: [
           { path: '', redirectTo: 'manage', pathMatch: 'full' },
           { path: 'manage', component: ManagementDashboardComponent },
           { path: 'basicinfo', component: ClassInfoManagementComponent },
@@ -195,9 +195,9 @@ const routes: Routes = [
           { path: 'homeworkmarking',component:ClasspaperComponent},
          // { path: 'testpaper/:paperid/resulttable', component: ResultTableComponent }
         ]},
-      { path: 'testpaper/:paperid/result/:studentid', component: PaperResultDetailComponent },
-      { path: 'course/:courseid/analysis/:courseTaskId', component: PaperResultAnalysisComponent},
-      { path: 'tidings', component:TidingsComponent, children: [
+      { path: 'testpaper/:paperid/result/:studentid', component: PaperResultDetailComponent, canActivate: [AuthGuard] },
+      { path: 'tidings', component:TidingsComponent, canActivate: [AuthGuard], children: [
+          { path: '', redirectTo: 'messages', pathMatch: 'full' },
           { path: 'messages', component: MessagesComponent },
           { path: 'notifications', component: NotificationsComponent },
           { path: 'privatechat/:name', component: PrivateChatComponent },
@@ -212,7 +212,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'course/:id', component: CourseManagementComponent, children: [
+        path: 'course/:id', component: CourseManagementComponent, canActivate: [AuthGuard], children: [
           { path: '', redirectTo: 'base', pathMatch: 'full' },
           { path: 'base', component: BaseInfoComponent },
           { path: 'detail', component: DetailInfoComponent },
@@ -241,7 +241,7 @@ const routes: Routes = [
           { path: 'teaching_plan', component: TeachingPlanManagementComponent },       
         ]
       },
-      { path: 'course/:id/teaching_plan_page/:pid', component: TeachingPlanPageComponent,children: [
+      { path: 'course/:id/teaching_plan_page/:pid', component: TeachingPlanPageComponent, canActivate: [AuthGuard], children: [
         { path: '', redirectTo: 'tasks', pathMatch: 'full' },
         //{ path: 'overview', component: PlanOverviewComponent },
         { path: 'tasks', component: PlanTasksComponent },
@@ -252,8 +252,8 @@ const routes: Routes = [
         { path: 'homeworkmarking',component:CoursepaperComponent},
         { path: 'papers/:paperid/resulttable', component: TestResultTableComponent },
       ] },
-      {path : 'courseId/:courseId/taskId/:taskId/testId/:testId/homework-exam',component:HomeworkExamComponent},
-      { path:'course/:id/task/:id/show',component:CourseTaskComponent}
+      { path: 'course/:courseid/analysis/:courseTaskId', component: PaperResultAnalysisComponent, canActivate: [AuthGuard]},
+      { path:'course/:id/task/:id/show',component:CourseTaskComponent, canActivate: [AuthGuard]}
     ]
   },
   

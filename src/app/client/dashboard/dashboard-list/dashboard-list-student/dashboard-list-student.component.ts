@@ -84,9 +84,11 @@ export class DashboardListStudentComponent implements OnInit {
 
   async initAvatar(itemList: any[]) {
     for (var item of itemList) {
-      let res: any = await this.userManagementService.getPersonalDetailById(item.id).toPromise();
-      let avatar = res.data.mediumAvatar.indexOf("public") == -1 ? res.data.mediumAvatar : "";
-      item.avatar = avatar;
+      if (item.id) {
+        let res: any = await this.userManagementService.getPersonalDetailById(item.id).toPromise();
+        let avatar = res.data.mediumAvatar.indexOf("public") == -1 ? res.data.mediumAvatar : "";
+        item.avatar = avatar;
+      }
     }
   }
 

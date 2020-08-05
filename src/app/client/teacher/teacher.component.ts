@@ -4,6 +4,7 @@ import { ManagementDashboardComponent } from 'src/app/class-management/managemen
 import { TeacherManagementService } from "src/app/service/teacher-management/teacher-management.service";
 import { FollowManagementService } from "src/app/service/follow-management/follow-management.service";
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
+import { AuthService } from 'src/app/front-desk/auth/auth.service';
 @Component({
   selector: 'app-teacher',
   templateUrl: './teacher.component.html',
@@ -24,6 +25,7 @@ export class TeacherComponent implements OnInit {
     private followmanagementService: FollowManagementService,
     private message: NzMessageService,
     private notification: NzNotificationService,
+    private authService: AuthService,
   ) {
   }
 
@@ -77,6 +79,11 @@ export class TeacherComponent implements OnInit {
 
   //关注
   follow_submit(item_id: any) {
+    if (!this.authService.userLoginChecker()) {
+      this.message.error("尚未登录");
+      return;
+    }
+
     console.log(this.fromID,item_id);
     if(this.fromID == item_id){
       this.message.create('error',"不能关注自己！");

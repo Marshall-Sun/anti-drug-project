@@ -7,7 +7,7 @@
     <div class="drag-list"  >
       <div *ngFor="let data of classroomList" class="drag-box" >
         <div class="list-info">
-          <img class="img-info" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+          <img class="img-info" [src]="data.largepicture.startsWith('/image')? data.largepicture: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
           <div class="text-info">
             <div class="info-header">
               <div class="course-title" nz-tooltip [nzTitle]="data.title">{{data.title}}</div>

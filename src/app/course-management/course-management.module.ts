@@ -35,10 +35,14 @@ import {CompletionComponent} from './question/question-create/completion/complet
 import {QuestionCreateComponent} from './question/question-create/question-create.component';
 import { TeachingPlanPageComponent } from './teaching-plan-page/teaching-plan-page/teaching-plan-page.component';
 import { HaveMarkedComponent } from './paper-marking/have-marked/have-marked.component';
-import { NotMarkedComponent } from './paper-marking/not-marked/not-marked.component';
 import { PaperListComponent } from './paper-marking/paper-list/paper-list.component';
 import { PaperMarkingTabComponent } from './paper-marking/paper-marking-tab/paper-marking-tab.component';
 import { TestPaperEditComponent } from './test-paper/test-paper-edit/test-paper-edit.component';
+import {CourseManagementHaveMarkedCoursepaperComponent} from './paper-marking/have-marked-coursepaper/have-marked-coursepaper.component';
+import {HomeworkMarkingComponent} from './homework-marking/homework-marking.component';
+import {CoursepaperComponent} from './homework-marking/coursepaper/coursepaper.component';
+import {HomeworkMarkingTabComponent} from './homework-marking/homework-marking-tab/homework-marking-tab.component';
+import {PlanTasksDownLoadComponent} from './plan-tasks/plan-tasks-down-load/plan-tasks-down-load.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +54,12 @@ import { TestPaperEditComponent } from './test-paper/test-paper-edit/test-paper-
     JudgementComponent, CompletionComponent, MaterialComponent,  QuestionCreateComponent, TeachingPlanManagementComponent,
     PaperMarkingComponent, TestResultTableComponent, StudentManagementComponent, StudentManagementTabComponent, FormalStudentTableComponent,
     InformalStudentTableComponent, StudentInvolveRecordComponent, StudentExitRecordComponent, TeacherManagementComponent, PlanSettingComponent, TeachingPlanPageComponent,
-    HaveMarkedComponent,NotMarkedComponent,PaperListComponent,PaperMarkingTabComponent,TestPaperEditComponent,PaperMarkingComponent],
+    CourseManagementHaveMarkedCoursepaperComponent,
+    HomeworkMarkingComponent,
+    CoursepaperComponent,
+    HomeworkMarkingTabComponent,
+    PlanTasksDownLoadComponent,
+    HaveMarkedComponent,PaperListComponent,PaperMarkingTabComponent,TestPaperEditComponent,PaperMarkingComponent],
   imports: [
     ShareModule,
     RouterModule,

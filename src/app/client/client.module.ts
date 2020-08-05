@@ -146,6 +146,7 @@ import { DashboardListStudentComponent } from './dashboard/dashboard-list/dashbo
 import { DashboardListTeacherComponent } from './dashboard/dashboard-list/dashboard-list-teacher/dashboard-list-teacher.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HaveMarkedClasspaperComponent } from './mine-management/paper-marking/have-marked-classpaper/have-marked-classpaper.component';
+import { ClassManagementHaveMarkedClasspaperComponent } from '../class-management/paper-marking/have-marked-classpaper/have-marked-classpaper.component';
 import { HaveMarkedCoursepaperComponent } from './mine-management/paper-marking/have-marked-coursepaper/have-marked-coursepaper.component';
 import { NotMarkedClasspaperComponent } from './mine-management/paper-marking/not-marked-classpaper/not-marked-classpaper.component';
 import { NotMarkedCoursepaperComponent } from './mine-management/paper-marking/not-marked-coursepaper/not-marked-coursepaper.component';
@@ -160,7 +161,8 @@ import { CoursepaperComponent } from './mine-management/homework-marking/coursep
 import { MineHomeworkMarkingComponent } from './mine-management/homework-marking/homework-marking.component';
 //答作业
 import { HomeworkExamComponent } from './homework-exam/homework-exam.component';
-import { PaperMarkingComponent } from './mine-management/paper-marking/paper-marking.component';
+import { MinePaperMarkingComponent } from './mine-management/paper-marking/paper-marking.component';
+import {CourseManagementHaveMarkedCoursepaperComponent} from '../course-management/paper-marking/have-marked-coursepaper/have-marked-coursepaper.component';
 
 
 
@@ -229,7 +231,8 @@ import { PaperMarkingComponent } from './mine-management/paper-marking/paper-mar
     DashboardMenuComponent, DashboardListComponent, DashboardListCourseComponent, DashboardListOpenresourceComponent, DashboardListStudentComponent, DashboardListTeacherComponent, 
     PageNotFoundComponent,HaveMarkedClasspaperComponent,HaveMarkedCoursepaperComponent,NotMarkedClasspaperComponent,
     NotMarkedCoursepaperComponent,CourseExamComponent,SearchclassComponent, SearchopensorComponent, SearchgroupComponent, SearchnewsComponent, SearchcourseComponent,
-    ClasspaperComponent,CoursepaperComponent,HomeworkExamComponent,MineHomeworkMarkingComponent,PaperMarkingComponent
+    ClasspaperComponent,CoursepaperComponent,HomeworkExamComponent,MineHomeworkMarkingComponent,MinePaperMarkingComponent,
+
   ],
   imports: [
     ShareModule,

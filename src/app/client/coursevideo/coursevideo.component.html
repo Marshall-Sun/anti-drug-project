@@ -24,31 +24,31 @@
                 [nzHeader]="'任务'+i+':'+getTaskByType(item,'lesson').title">
                 <div *ngIf="getTaskByType(item,'preparation')!=null" class="listitem courselink">
                   <a
-                    (click)="navigateByUrl('/client/courseinf/'+courseid+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'preparation').taskId)"><span>
+                    (click)="navigateByUrl('/client/courseinf/'+courseId+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'preparation').taskId)"><span>
                       <nz-tag [nzColor]="'#87d068'">预习</nz-tag>{{getTaskByType(item,'preparation').title}}
                     </span></a>
                 </div>
                 <div *ngIf="getTaskByType(item,'lesson')!=null" class="listitem courselink">
                   <a
-                    (click)="navigateByUrl('/client/courseinf/'+courseid+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'lesson').taskId)"><span>
+                    (click)="navigateByUrl('/client/courseinf/'+courseId+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'lesson').taskId)"><span>
                       <nz-tag [nzColor]="'#87d068'">任务学习</nz-tag>{{getTaskByType(item,'lesson').title}}
                     </span></a>
                 </div>
                 <div *ngIf="getTaskByType(item,'exercise')!=null" class="listitem courselink">
                   <a
-                    (click)="navigateByUrl('/client/courseinf/'+courseid+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'exercise').taskId)"><span>
+                    (click)="navigateByUrl('/client/courseinf/'+courseId+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'exercise').taskId)"><span>
                       <nz-tag [nzColor]="'#87d068'">练习</nz-tag>{{getTaskByType(item,'exercise').title}}
                     </span></a>
                 </div>
                 <div *ngIf="getTaskByType(item,'homework')!=null" class="listitem courselink">
                   <a
-                    (click)="navigateByUrl('/client/courseinf/'+courseid+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'homework').taskId)"><span>
+                    (click)="navigateByUrl('/client/courseinf/'+courseId+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'homework').taskId)"><span>
                       <nz-tag [nzColor]="'#87d068'">作业</nz-tag>{{getTaskByType(item,'homework').title}}
                     </span></a>
                 </div>
                 <div *ngIf="getTaskByType(item,'extraClass')!=null" class="listitem courselink">
                   <a
-                    (click)="navigateByUrl('/client/courseinf/'+courseid+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'extraClass').taskId)"><span>
+                    (click)="navigateByUrl('/client/courseinf/'+courseId+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'extraClass').taskId)"><span>
                       <nz-tag [nzColor]="'#87d068'">课外</nz-tag>{{getTaskByType(item,'extraClass').title}}
                     </span></a>
                 </div>
@@ -170,7 +170,7 @@
       </div>
     </nz-breadcrumb>
     <div *ngIf="taskType=='video'" class="video-content">
-      <app-video-player (outer)="setVideoLearingStatus($event)" [url]="videoUrl"></app-video-player>
+      <app-video-player (videoFinish)="setVideoLearingStatus($event)" [url]="videoUrl" [teachplanId]="teachplanId" [taskId]="taskId"></app-video-player>
     </div>
 
     <div *ngIf="taskType=='text'" class="text-content">
@@ -187,15 +187,15 @@
     </div>
 
 
-    <div *ngIf="videoLearingStatus=='doing'||videoLearingStatus=='start'; then thenBlock else elseBlock">
+    <div *ngIf="videoLearingStatus=='finish'; then thenBlock else elseBlock">
     </div>
     <ng-template #thenBlock>
-      <nz-alert nzType="info" nzMessage="任务完成条件" nzShowIcon class="myAlert" nz-popover nzPopoverTitle="满足以下条件"
-        nzPopoverContent="完整观看视频">
+      <nz-alert nzType="success" nzMessage="任务完成" nzShowIcon class="myAlert">
       </nz-alert>
     </ng-template>
     <ng-template #elseBlock>
-      <nz-alert nzType="success" nzMessage="任务完成" nzShowIcon class="myAlert">
+      <nz-alert nzType="info" nzMessage="任务完成条件" nzShowIcon class="myAlert" nz-popover nzPopoverTitle="满足以下条件"
+        nzPopoverContent="完整观看视频">
       </nz-alert>
     </ng-template>
   </div>

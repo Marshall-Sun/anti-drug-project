@@ -23,7 +23,7 @@
               <a (click)="navigateByUrl('/client/groupmainlist/' + itemhot.id)" >{{itemhot.groupTitle}} </a>
             </ng-template>
             <ng-template #nzAvater>
-              <nz-avatar [nzShape]="'square'" [nzSize]="64" nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">  </nz-avatar>
+              <nz-avatar [nzShape]="'square'" [nzSize]="64" [nzSrc]="itemhot.groupLogo.startsWith('/image')? itemhot.groupLogo: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'">  </nz-avatar>
             </ng-template>
             <ng-template #nzDescription>
                     <span >

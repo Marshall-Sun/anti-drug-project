@@ -25,7 +25,7 @@ export class UserInfoViewModalComponent implements OnInit {
   ngOnInit() {
     this.userManagementService$.getUserDetailById(this.userId).subscribe(result => {
       this.userInfo = result;
-      document.getElementById('introduction').innerHTML = this.userInfo.about
+      document.getElementById('introduction').innerHTML = this.userInfo.data.about
 
     }, error1 => this._notification.create(
       'error',

@@ -1,7 +1,7 @@
 <div class="clearfix">
   <h2>当前图标</h2>
   <nz-upload
-    nzAction="http://219.216.86.249:9013/material/uploadGroupCover"
+    [nzAction]="'/material/uploadGroupCover?groupId='+groupId"
     nzListType="picture-card"
     [(nzFileList)]="fileList"
     [nzShowButton]="fileList.length < 1"

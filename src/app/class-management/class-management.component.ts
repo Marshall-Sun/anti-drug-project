@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ClassManagementService} from '../service/class-management/class-management.service';
 import {ClientClassManagementService} from '../service/client-class-management/client-class-management.service';
 import {NzNotificationService} from 'ng-zorro-antd';
+import { AuthService } from '../front-desk/auth/auth.service';
 
 @Component({
   selector: 'app-class-management',
@@ -22,6 +23,7 @@ export class ClassManagementComponent implements OnInit {
     private routeInfo: ActivatedRoute,
     private router: Router,
     private _notification: NzNotificationService,
+    private authService: AuthService,
     private classManagementService$: ClientClassManagementService
   ) {
     this.location = location;
@@ -50,4 +52,7 @@ export class ClassManagementComponent implements OnInit {
     this.router.navigateByUrl(url)
   }
 
+  checkIdentity(identity: string): boolean {
+    return this.authService.userIdentityChecker(identity);
+  }
 }

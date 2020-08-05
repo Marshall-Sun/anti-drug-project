@@ -8,8 +8,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
 @Component({
   selector: 'app-coursevideo',
   templateUrl: './coursevideo.component.html',
-  styleUrls: ['./coursevideo.component.less'],
-  providers: [ClientCourseVideoService]
+  styleUrls: ['./coursevideo.component.less']
 })
 export class CoursevideoComponent implements OnInit {
   courseId: string;
@@ -97,9 +96,10 @@ export class CoursevideoComponent implements OnInit {
       this.currentTask = result.data;
       this.currentactivity = result.data["Activity"];
       this.taskType =  result.data.Activity.mediatype;
+      this.getTaskLearnStatus()
       if(this.taskType == "text"){
         //添加任务完成的函数
-        this.courseVideoService.finishTask(this.courseId.toString(), this.taskId.toString(), this.userId.toString());
+        this.finishTask()
       }
       if(this.taskType == "video"){
         this.videoUrl = result.data.ActivityVideo.mediauri
@@ -108,7 +108,7 @@ export class CoursevideoComponent implements OnInit {
         this.message.info('开始下载', { nzDuration: 1000 });
         window.open('http://172.16.10.94:9013/'+result.data.CourseMaterialV8s[0].fileuri);
         //添加任务完成的函数
-        this.courseVideoService.finishTask(this.courseId.toString(), this.taskId.toString(), this.userId.toString());
+        this.finishTask()
       }
       //下面的不用管
       if(this.taskType == "homework"){//如果是作业,跳转到作业页面，本页不处理作业,作业页面尚未处理好
@@ -154,11 +154,24 @@ export class CoursevideoComponent implements OnInit {
     });
   }
 
-  //任务完成相关
-  finishTask() {
-
+  //获取任务学习状态
+  getTaskLearnStatus() {
+    this.courseVideoService.getTaskLearnStatus(this.teachplanId, this.taskId, this.userId).subscribe(
+      result => {
+        this.setVideoLearingStatus(result.data)
+      }
+    );
   }
 
+
+  //任务完成相关
+  finishTask() {
+    this.courseVideoService.finishTask(this.teachplanId, this.taskId, this.userId).subscribe(
+      result =>{
+        this.setVideoLearingStatus("finish")
+      }
+    );
+  }
 
   //以前的代码
 

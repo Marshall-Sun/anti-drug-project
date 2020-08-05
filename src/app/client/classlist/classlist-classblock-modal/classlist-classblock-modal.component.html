@@ -12,7 +12,7 @@
 </nz-card>
 
 <ng-template #coverTemplate>
-    <img alt="example" src="{{classes.smallPicture}}" />
+    <img alt="example" [src]="classes.smallPicture.startsWith('/image')? classes.smallPicture: '../../../assets/img/timg.jpg'" />
 </ng-template>
 <ng-template #actionSetting>
   <i nz-icon nzType="read" nzTheme="outline"></i>

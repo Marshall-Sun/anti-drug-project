@@ -7,23 +7,22 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 export class ClassService {
   constructor(private http:HttpClient){}
   getClasses(page:number,orderkey:string,tag:string){
-    const params = new HttpParams()
-    // .set('classroomName','')
-      .set('classroomType',tag)
-      //.set('isClosed',"0") 不知为啥一查就报错500
-      .set('pageNum',page.toString())
-      .set('pageSize','12')
-      .set('showAble','1')
-      .set('sortType',"hot")//orderkey)
+    // const params = new HttpParams()
+    // // .set('classroomName','')
+    //   .set('classroomType',tag)
+    //   //.set('isClosed',"0") 不知为啥一查就报错500
+    //   .set('pageNum',page.toString())
+    //   .set('pageSize','12')
+    //   .set('showAble','1')
+    //   .set('sortType',"hot")//orderkey)
     const uri = `/classroom/explore`;
-    return this.http.post(uri,{
-      classroomName:'',
-      classroomType:tag,
-      isClosed:0,
-      pageNum:page,
-      pageSize:12,
-      showAble:1,
-      sortType:orderkey
+    return this.http.post(uri, {
+      pageNum: page.toString(),
+      pageSize: 12,
+      sortType: orderkey,
+      classroomType: tag,
+      showAble: '1',
+      classroomName: ''
     });
     
     

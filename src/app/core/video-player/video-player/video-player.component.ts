@@ -11,21 +11,22 @@ import { ClientCourseVideoService } from 'src/app/service/client-course-video/cl
   styleUrls: ['./video-player.component.less']
 })
 export class VideoPlayerComponent implements OnInit, OnDestroy {
+  userId: string = window.localStorage.getItem("id");  //必须拿到
   @Input()
-  userID: string = window.localStorage.getItem("id");
+  url: string;
   @Input()
-  url:string;
+  teachplanId: string;
+  @Input()
+  taskId: string;
   result: any;
   event: any; // 学习任务状态
   lastPosition: number = 0;  //上次时间
   lengthOfVideo: number = 0; // 视频长度
   maxTime: number = 0; //目前最新观看位置，快进大于这个值则后退
-  @Input()
-  courseTaskId: string;
-  @Input()
-  teachingPlanId: string;
+  isMousedown: boolean = false;
+  courseTaskId: any; 
   allogId: any; //学习任务ID
-  @Output() private outer = new EventEmitter<string>();
+  @Output() private videoFinish = new EventEmitter<string>();
   options = {
     bigPlayButton: true,
     textTrackDisplay: true,
@@ -33,35 +34,31 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
     errorDisplay: false,
     playbackRates: [0.5, 1, 1.5, 2],
     controlBar: {
-      customControlSpacer: true,
+      customControlSpacer: true
     },
     fluid: true,   // 添加自适应
   };
 
 
-  player: any = {
-    currentTime() { }
-  };
+  player: any;
 
 
   //,public videoService:VideoService
   constructor(private sanitizer: DomSanitizer, public http: HttpClient, private modalService: NzModalService, private el: ElementRef,
-    private renderer2: Renderer2 , private courseVideoService: ClientCourseVideoService) {
+    private renderer2: Renderer2, private courseVideoService: ClientCourseVideoService) {
   }
 
   ngOnInit() {
-    this.url = this.url.replace(/_/g,'/');
     // 页面刷新监听
     // window.onbeforeunload = () => {
     //   this.endPlay();
     // };
-    // this.getVideoLearnLog(this.userID, this.courseTaskId);  //初始化
-  }
+    
 
-  ngAfterViewInit() {
+  }
+  ngAfterViewInit(): void {
     this.onload();
   }
-
   ngOnDestroy() {
     // this.endPlay();
     this.player.dispose();
@@ -73,36 +70,44 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
   }
   onload() {
     var that = this;
-    that.player = videojs('my-video', this.options, function onPlayerReady() {  // 播放器内部监控
+    that.player = videojs('my-video', that.options, function onPlayerReady() {
+      this.play();// 播放器内部监控
 
       this.on('ended', function () {
+        that.finishVideo()
         that.success();
-        // that.changeLearnStatus(that.allogId, 'finish', parseInt(that.player.duration())); // 如果学习完了，学习位置设置为0还总长度
-        that.courseVideoService.finishTask(that.teachingPlanId, that.courseTaskId, that.userID).subscribe();
       });
-
-      // that.renderer2.listen(that.el.nativeElement.querySelector('.vjs-progress-control'), 'mouseup',
-      //   () => {
-      //     if (parseInt(that.player.currentTime()) > that.maxTime) {
-      //       that.onJump(that.maxTime)
-      //     }
-      //   });
-      // this.on('timeupdate', function () {
-      //     let currentTime:number=parseInt(that.player.currentTime())
-      //     if ((currentTime - that.maxTime) <= 1) {
-      //       that.maxTime = currentTime;
-      //     }
-      // });
+      //控制视频不能快进
+      that.renderer2.listen(that.el.nativeElement.querySelector('.vjs-progress-control'), 'mouseup',
+        () => {
+          if (parseInt(that.player.currentTime()) > that.maxTime) {
+            that.onJump(that.maxTime)
+          }
+        });
+      this.on('timeupdate', function () {
+          let currentTime:number=parseInt(that.player.currentTime())
+          if ((currentTime - that.maxTime) <= 1) {
+            that.maxTime = currentTime;
+          }
+      });
     });
   }
 
+  finishVideo() {
+    this.courseVideoService.finishTask(this.teachplanId, this.taskId, this.userId).subscribe()
+    this.videoFinish.emit("finish")
+  }
+
+  //以下为被弃用的方法
 
   // 获得该学习记录的状态和上次的位置
   getVideoLearnLog(userId: any, coursetaskid: any) {
-    this.http.get(`/course/video/getVideoLearnLog?coursetaskid=${coursetaskid}&userId=${userId}`).subscribe((response) => {
+    let params = new HttpParams().set('userId', userId).set('coursetaskid', coursetaskid);
+    this.http.get('/course/video/getVideoLearnLog', { params: params }).subscribe((response) => {
       this.result = response;
       this.event = this.result.data.event; // 直接使用response会报错
-      this.outer.emit(this.event)//向父组件传递学习状态
+      // this.outer.emit(this.event);
+      //向父组件传递学习状态
       this.maxTime = this.lastPosition = this.result.data.learnedtime;
       this.allogId = this.result.data.id;
       this.startPlay();

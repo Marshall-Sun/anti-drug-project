@@ -80,8 +80,8 @@ export class CoursepaperComponent implements OnInit {
           //对于每一个课程而言，获取课程相应的试卷批阅列表
           for (let course of this.teachingCourse) {
             //获取试卷批阅列表
-            if(course.coursesetid!=null){
-              this.paperMarkingService.getHomeworkCheckList(course.coursesetid).subscribe(result => {
+            if(course.id!=null){
+              this.paperMarkingService.getHomeworkCheckList(course.id).subscribe(result => {
                 this.paperMarkList = this.paperMarkList.concat(result.data);
                 console.log('里：', this.paperMarkList);
                 //等待试卷批阅列表加载完成，将其拷贝至paperListAfterSearch中

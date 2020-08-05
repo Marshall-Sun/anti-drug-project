@@ -25,15 +25,19 @@ import { PaperResultAnalysisComponent } from './testpaper-listing/paper-result-a
 import { PaperMarkingComponent } from './paper-marking/paper-marking.component';
 import { HomeworkMarkingTabComponent } from './homework-marking/homework-marking-tab/homework-marking-tab.component';
 import { HaveMarkedComponent } from './paper-marking/have-marked/have-marked.component';
-import { NotMarkedComponent } from './paper-marking/not-marked/not-marked.component';
 import { PaperListComponent } from './paper-marking/paper-list/paper-list.component';
 import { PaperMarkingTabComponent } from './paper-marking/paper-marking-tab/paper-marking-tab.component';
+import {ClassManagementHaveMarkedClasspaperComponent} from './paper-marking/have-marked-classpaper/have-marked-classpaper.component';
+import {CourseManagementHaveMarkedCoursepaperComponent} from '../course-management/paper-marking/have-marked-coursepaper/have-marked-coursepaper.component';
+import {ClasspaperComponent} from './homework-marking/classpaper/classpaper.component';
 
 @NgModule({
   declarations: [ClassManagementComponent, ManagementDashboardComponent, ClassInfoManagementComponent, HeadTeacherSettingComponent, TeacherSettingComponent,
     TutorSettingComponent, CourseSettingComponent, StudentSettingComponent, StudentSettingTabComponent, FormalStudentTableComponent, InformalStudentTableComponent, 
     StudentInvolveRecordComponent, StudentExitRecordComponent, CoverSettingComponent, HomeworkMarkingComponent, PaperMarkingComponent, TestpaperListingComponent, 
-    ResultTableComponent, PaperResultDetailComponent, PaperResultAnalysisComponent,HomeworkMarkingTabComponent,HaveMarkedComponent,NotMarkedComponent,PaperListComponent,
+    ResultTableComponent, PaperResultDetailComponent, PaperResultAnalysisComponent,HomeworkMarkingTabComponent,HaveMarkedComponent,PaperListComponent,
+    ClasspaperComponent,
+    ClassManagementHaveMarkedClasspaperComponent,
     PaperMarkingTabComponent],
   imports: [
     ShareModule,

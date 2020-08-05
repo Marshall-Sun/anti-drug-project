@@ -68,8 +68,8 @@
               <span *ngFor="let m of item.rightAnswer;let j = index">
                 <strong style="color: #67C23A" >{{characterList[m]}},</strong>
               </span>
-              <span *ngIf="item.selfAnswer.toString()==item.rightAnswer.toString()">回答正确</span>
-              <span *ngIf="item.selfAnswer.toString()!=item.rightAnswer.toString()">回答错误</span>
+              <span *ngIf="item.selfAnswer !== '' && item.selfAnswer.toString()==item.rightAnswer.toString()">回答正确</span>
+              <span *ngIf="item.selfAnswer == '' || item.selfAnswer.toString()!=item.rightAnswer.toString()">回答错误</span>
               <div style="float: right">
                 <a *ngIf="item.favorite == '0'" (click)="collectQuestion(item)"><span nz-icon nzType="heart" nzTheme="outline"></span>收藏</a>
                 <a *ngIf="item.favorite == '1'" (click)="cancelCollectQuestion(item.questionId)"><span nz-icon nzType="heart" nzTheme="twotone"></span>取消收藏</a>              </div>

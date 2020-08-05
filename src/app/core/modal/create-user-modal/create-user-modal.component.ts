@@ -49,11 +49,11 @@ export class CreateUserModalComponent implements OnInit {
       if (item.checked) {
         flag = true;
         roleString = roleString + item.value + '|';
-        updateRoleList.push(item.label)
+        updateRoleList.push(item.value)
       }
     });
     if (flag && !this.userCreatingForm.errors && username !== '') {
-      this.userManagementService$.createNewUser(this.userCreatingForm.controls.username.value, this.userCreatingForm.controls.password.value, roleString).subscribe(result => {
+      this.userManagementService$.createNewUser(this.userCreatingForm.controls.username.value, this.userCreatingForm.controls.password.value, updateRoleList).subscribe(result => {
         shouldBeClosed = true;
         this._message.success("新增用户成功！");
       }, error1 => {
