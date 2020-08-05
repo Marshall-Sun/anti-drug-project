@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FindPasswdModalComponent } from './find-passwd-modal.component';
+import { ClasspaperComponent } from './classpaper.component';
 
-describe('FindPasswdModalComponent', () => {
-  let component: FindPasswdModalComponent;
-  let fixture: ComponentFixture<FindPasswdModalComponent>;
+describe('ClasspaperComponent', () => {
+  let component: ClasspaperComponent;
+  let fixture: ComponentFixture<ClasspaperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FindPasswdModalComponent ]
+      declarations: [ ClasspaperComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FindPasswdModalComponent);
+    fixture = TestBed.createComponent(ClasspaperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

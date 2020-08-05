@@ -18,7 +18,7 @@ export class GroupmemberComponent implements OnInit {
   head:string;
   groupId:string;
   detail:any
-  Header: any;
+  Header = [];
   admin = [];
   member=[];
   userId: string = '1';
@@ -49,6 +49,7 @@ export class GroupmemberComponent implements OnInit {
                private authService: AuthService
                ) {
     this.groupId = this.routeInfo.snapshot.params['id'];
+    this.userId = window.localStorage.getItem('id')
   }
 
   ngOnInit() {
@@ -114,18 +115,25 @@ export class GroupmemberComponent implements OnInit {
         idList.push(parseInt(mapOfCheckedIdKey))
       }
     }
-    this.groupmemberService$.cancelViceOwner(idList, this.groupId).subscribe(result => {
-      this._notification.success(
-        '成功撤销副组长',
-        ''
-      );
-      this.getMember()
-    }, error1 => {
-      this._notification.create(
-        'error',
-        '撤销副组长失败',
-        `${error1.error}`)
-    })
+    if (this.admin.length == 0) {
+      this._notification.error('本小组暂无副组长！', '')
+    } else if (idList.length == 0) {
+      this._notification.error('请先选择成员！', '')
+    } else {
+      this.groupmemberService$.cancelViceOwner(idList, this.groupId).subscribe(result => {
+        this._notification.success(
+          '成功撤销副组长',
+          ''
+        );
+        this.getMember()
+      }, error1 => {
+        this._notification.create(
+          'error',
+          '撤销副组长失败',
+          `${error1.error}`)
+      })
+    }
+
   }
   //踢出成员
   delete_member(){
@@ -135,18 +143,25 @@ export class GroupmemberComponent implements OnInit {
         idList.push(parseInt(mapOfCheckedIdKey))
       }
     }
-    this.groupmemberService$.cancelMember(idList, this.groupId).subscribe(result => {
-      this._notification.success(
-        '成功踢出成员',
-        ''
-      );
-      this.getMember()
-    }, error1 => {
-      this._notification.create(
-        'error',
-        '踢出成员失败',
-        `${error1.error}`)
-    })
+    if (this.member.length == 0) {
+      this._notification.error('本小组暂无成员！', '')
+    } else if (idList.length == 0) {
+      this._notification.error('请先选择成员！', '')
+    } else {
+      this.groupmemberService$.cancelMember(idList, this.groupId).subscribe(result => {
+        this._notification.success(
+          '成功踢出成员',
+          ''
+        );
+        this.getMember()
+      }, error1 => {
+        this._notification.create(
+          'error',
+          '踢出成员失败',
+          `${error1.error}`)
+      })
+    }
+
   }
   //设置副组长
   setting(){
@@ -156,19 +171,25 @@ export class GroupmemberComponent implements OnInit {
         idList.push(parseInt(mapOfCheckedIdKey))
       }
     }
-    console.log(idList)
-    this.groupmemberService$.setlViceOwner(idList, this.groupId).subscribe(result => {
-      this._notification.success(
-        '成功设置副组长',
-        ''
-      );
-      this.getMember()
-    }, error1 => {
-      this._notification.create(
-        'error',
-        '设置副组长失败',
-        `${error1.error}`)
-    })
+    if (this.member.length == 0) {
+      this._notification.error('本小组暂无成员！', '')
+    } else if (idList.length == 0) {
+      this._notification.error('请先选择成员！', '')
+    } else {
+      this.groupmemberService$.setlViceOwner(idList, this.groupId).subscribe(result => {
+        this._notification.success(
+          '成功设置副组长',
+          ''
+        );
+        this.getMember()
+      }, error1 => {
+        this._notification.create(
+          'error',
+          '设置副组长失败',
+          `${error1.error}`)
+      })
+    }
+
   }
 
   message(data: any, template: TemplateRef<{}>) {

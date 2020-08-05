@@ -24,7 +24,7 @@
         <div *ngIf="NewMemberList">
           <div style="display: inline-block" *ngFor="let userSmallAvatar of NewMemberList">
             <nz-avatar
-              [nzSrc]="photo"
+              [nzSrc]="userSmallAvatar.userSmallAvatar.startsWith('/image')? userSmallAvatar.userSmallAvatar: ''"
               nz-popover
               [nzPopoverTitle]="tem"
               [nzPopoverContent]="content"

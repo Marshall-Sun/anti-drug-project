@@ -33,7 +33,7 @@
                             </div>
                             
                             <div>总分：{{paper.score}} · 创建时间：{{paper.createdTime}}</div>-->
-                            <div>总分：{{paper.score}} · 创建时间：{{paper.createdTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                            <div>总分：{{paper.score}} · 来自班级：《泰山路小学五年级四班》 · 创建时间：{{paper.createdTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
                         </ng-template>
                     </nz-list-item-meta>
                 </div>
@@ -71,6 +71,13 @@
 
         <div nz-row><nz-divider></nz-divider></div>
     </div>
-
+    <nz-table *ngIf="isHaveData">
+        <thead>
+            <tr></tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </nz-table>
 </div>
 

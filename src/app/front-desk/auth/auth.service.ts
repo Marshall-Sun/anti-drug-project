@@ -51,50 +51,38 @@ export class AuthService {
   }
 
   // 班级
-  async classClosedChecker(classId: string): Promise<boolean> {
-    let res: any = await this.http
-      .get(`/system/status/isClassDraftOrClosed?classId=${classId}`)
-      .toPromise();
-    return res.data;
+  classClosedChecker(classId: string) {
+    return this.http
+    .get(`/system/status/isClassDraftOrClosed?classId=${classId}`);
   }
 
   // 公开课
-  async openCourseClosedChecker(openCourseId: string): Promise<boolean> {
-    let res: any = await this.http
-      .get(`/system/status/isOpenCourseDraftOrClosed?openCourseId=${openCourseId}`)
-      .toPromise();
-    return res.data;
+  openCourseClosedChecker(openCourseId: string) {
+    return this.http
+    .get(`/system/status/isOpenCourseDraftOrClosed?openCourseId=${openCourseId}`);
   }
 
   // 普通课程
-  async courseClosedChecker(courseId: string): Promise<boolean> {
-    let res: any = await this.http
-      .get(`/system/status/isCourseDraftOrClosed?courseSetId=${courseId}`)
-      .toPromise();
-    return res.data;
+  courseClosedChecker(courseId: string) {
+    return this.http
+    .get(`/system/status/isCourseDraftOrClosed?courseSetId=${courseId}`);
   }
   
   // 小组
-  async groupClosedChecker(groupId: string): Promise<boolean> {
-    let res: any = await this.http
-      .get(`/system/status/isGroupClose?groupId=${groupId}`)
-      .toPromise();
-    return res.data;
+  groupClosedChecker(groupId: string) {
+    return this.http
+    .get(`/system/status/isGroupClose?groupId=${groupId}`);
   }
 
   // 小组话题
-  async groupThreadClosedChecker(groupThreadId: string): Promise<boolean> {
-    let res: any = await this.http
-      .get(`/system/status/isGroupThreadClose?groupTopicId=${groupThreadId}`)
-      .toPromise();
-    return res.data;
+  groupThreadClosedChecker(groupThreadId: string) {
+    return this.http
+    .get(`/system/status/isGroupThreadClose?groupTopicId=${groupThreadId}`);
   }
 
   // 新闻资讯
-  async newsClosedChecker(newsId: string): Promise<boolean> {
-    let res: any = await this.http
-      .get(`/system/status/isInfoUnpublishedOrTrash?articleId=${newsId}`)
-      .toPromise();
-    return res.data;
+  newsClosedChecker(newsId: string) {
+    return this.http
+    .get(`/system/status/isInfoUnpublishedOrTrash?articleId=${newsId}`);
   }
 }

@@ -1,6 +1,6 @@
 <nz-content>
     <nz-list [nzDataSource]="studentdata" [nzHeader]="'最新学员'" [nzRenderItem]="studentitem"
-        [nzGrid]="{ gutter: 16, xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }" [nzLoading]="loading">
+        [nzGrid]="{ gutter: 16, xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }">
         <ng-template #studentitem let-studentitem>
             <nz-list-item>
                 <nz-list-item-meta [nzTitle]="nzTitle">

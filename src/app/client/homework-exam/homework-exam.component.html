@@ -2,7 +2,7 @@
     <div class="outer-layout">
       <div class="header">
         <!--*******************************这里需要url，返回课程按钮-->
-        <a class="back" (click)="navigateByUrl()"><i nz-icon nzType="left" nzTheme="outline"></i>{{'返回课程'}}</a>
+        <a class="back" (click)="navigateByUrl('/client/courseinf/' + this.courseId)"><i nz-icon nzType="left" nzTheme="outline"></i>{{'返回课程'}}</a>
         <!--<span>{{'任务9-2: 阶段性测评'}}</span>-->
       </div>
       <div class="inner-layout">
@@ -219,4 +219,3 @@
       考试分数达到60分
     </ng-template>
   </div>
-  

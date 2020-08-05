@@ -105,7 +105,7 @@ import { SearchnewsComponent } from '../client/search/searchnews/searchnews.comp
 import { SearchopensorComponent } from '../client/search/searchopensor/searchopensor.component';
 import { SearchcourseComponent } from '../client/search/searchcourse/searchcourse.component';
 
-import {PaperMarkingComponent as MinePaperMarkingComponent} from "../client/mine-management/paper-marking/paper-marking.component"
+import {MinePaperMarkingComponent} from "../client/mine-management/paper-marking/paper-marking.component"
 import {HomeworkExamComponent} from "../client/homework-exam/homework-exam.component";
 import { MineHomeworkMarkingComponent } from '../client/mine-management/homework-marking/homework-marking.component';
 import { ClasspaperComponent } from '../client/mine-management/homework-marking/classpaper/classpaper.component';

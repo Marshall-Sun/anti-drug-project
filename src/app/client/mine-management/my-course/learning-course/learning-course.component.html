@@ -4,7 +4,7 @@
     <div *ngFor="let item of courseList">
       <div nz-row nzType="flex" nzJustify="space-around" nzAlign="middle">
         <div nz-col nzSpan="6">
-          <img class="img-info" [src]="item.smallPicture && !item.smallPicture.startsWith('public')? item.smallPicture: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" /><!--课程图片-->
+          <img class="img-info" [src]="item.cover.startsWith('/image')? item.cover: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" /><!--课程图片-->
         </div>
         <div nz-col nzSpan="12">
           <div class="info-header" >
@@ -15,8 +15,8 @@
           </div>
           <div class="course-describe">
             <span>学习进度</span>
-            <nz-progress [nzPercent]="item.num" [nzStrokeWidth]="LearnPro(item.learnTime,item.watchTime)"></nz-progress>
-          </div>
+            <nz-progress [nzPercent]="LearnPro(item.taskNum,item.learnedNum)" [nzStrokeColor]="{ '0%': '#108ee9', '100%': '#87d068' }"></nz-progress>
+        </div>
         </div>
         <div nz-col nzSpan="6">
           <button style="margin-right: 2%;" nz-button nzType="primary" (click)="viewCourse('/client/courseinf/' + item.courseSetId)"  >查看课程</button>

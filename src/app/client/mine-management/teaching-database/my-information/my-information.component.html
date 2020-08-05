@@ -71,67 +71,67 @@
   </div>
 </nz-modal>
 
-<nz-modal [(nzVisible)]="userShareVisible" nzTitle="分享资料" (nzOnCancel)="handleCancel_usershare()"
-  (nzOnOk)="handleOk_usershare()" nzOkText='确定' nzCancelText='取消' nzMaskClosable="false">
-  <div style="margin-top:10px;">
-    <b>分享资料给:</b>
-    <nz-select [nzMaxTagCount]="3" [nzMaxTagPlaceholder]="tagPlaceHolder" style="width: 100%" nzMode="multiple"
-      nzPlaceHolder="请添加标签" [(ngModel)]="shareUsers">
-      <nz-option *ngFor="let option of users" [nzLabel]="option.nickname" [nzValue]="option.id">
-      </nz-option>
-    </nz-select>
-    <ng-template #tagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>
-  </div>
-</nz-modal>
+<!--<nz-modal [(nzVisible)]="userShareVisible" nzTitle="分享资料" (nzOnCancel)="handleCancel_usershare()"-->
+<!--  (nzOnOk)="handleOk_usershare()" nzOkText='确定' nzCancelText='取消' nzMaskClosable="false">-->
+<!--  <div style="margin-top:10px;">-->
+<!--    <b>分享资料给:</b>-->
+<!--    <nz-select [nzMaxTagCount]="3" [nzMaxTagPlaceholder]="tagPlaceHolder" style="width: 100%" nzMode="multiple"-->
+<!--      nzPlaceHolder="请添加标签" [(ngModel)]="shareUsers">-->
+<!--      <nz-option *ngFor="let option of users" [nzLabel]="option.nickname" [nzValue]="option.id">-->
+<!--      </nz-option>-->
+<!--    </nz-select>-->
+<!--    <ng-template #tagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>-->
+<!--  </div>-->
+<!--</nz-modal>-->
 
-<nz-modal nzWidth="720" [(nzVisible)]="myShareVisible" nzTitle="我的分享历史" (nzOnCancel)="handleCancel_myshare()"
-  (nzOnOk)="handleOk_myshare()" nzOkText='确定' nzCancelText='取消' nzMaskClosable="false">
-  <div style="margin-top:10px;">
-    <nz-tabset>
-      <nz-tab nzTitle="我的分享">
-        <nz-table #basicTable [nzData]="listOfData">
-          <thead>
-            <tr>
-              <th>操作</th>
-              <th>时间</th>
-              <th>可执行操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of myshareuser">
-              <td>将资料分享给{{ data.nickname }}</td>
-              <td>{{ data.shareTime  * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
-              <td>
-                <a (click)="cancelShare(data.userID)">取消分享</a>
-              </td>
-            </tr>
-          </tbody>
-        </nz-table>
-        <div class="pagination">
-          <nz-pagination [(nzPageIndex)]="myshareusertotalpage" (nzPageIndexChange)="GetMyShareUser(myshareusertotalpage)"
-            [(nzTotal)]="myshareusercurrentpage" nzPageSize="10"></nz-pagination>
-        </div>
-      </nz-tab>
-      <nz-tab nzTitle="历史纪录">
-        <nz-table #basicTable [nzData]="listOfData">
-          <thead>
-            <tr>
-              <th>操作</th>
-              <th>时间</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of sharehistory">
-              <td>将资料分享给{{ data.nickname }}</td>
-              <td>{{ data.createdTime  * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
-            </tr>
-          </tbody>
-        </nz-table>
-        <div class="pagination">
-          <nz-pagination [(nzPageIndex)]="historycurrnetpage" (nzPageIndexChange)="GetMaterialSharingHistory(historycurrnetpage)"
-            [(nzTotal)]="historytotalpage" nzPageSize="10"></nz-pagination>
-        </div>
-      </nz-tab>
-    </nz-tabset>
-  </div>
-</nz-modal>
+<!--<nz-modal nzWidth="720" [(nzVisible)]="myShareVisible" nzTitle="我的分享历史" (nzOnCancel)="handleCancel_myshare()"-->
+<!--  (nzOnOk)="handleOk_myshare()" nzOkText='确定' nzCancelText='取消' nzMaskClosable="false">-->
+<!--  <div style="margin-top:10px;">-->
+<!--    <nz-tabset>-->
+<!--      <nz-tab nzTitle="我的分享">-->
+<!--        <nz-table #basicTable [nzData]="listOfData">-->
+<!--          <thead>-->
+<!--            <tr>-->
+<!--              <th>操作</th>-->
+<!--              <th>时间</th>-->
+<!--              <th>可执行操作</th>-->
+<!--            </tr>-->
+<!--          </thead>-->
+<!--          <tbody>-->
+<!--            <tr *ngFor="let data of myshareuser">-->
+<!--              <td>将资料分享给{{ data.nickname }}</td>-->
+<!--              <td>{{ data.shareTime  * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>-->
+<!--              <td>-->
+<!--                <a (click)="cancelShare(data.userID)">取消分享</a>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          </tbody>-->
+<!--        </nz-table>-->
+<!--        <div class="pagination">-->
+<!--          <nz-pagination [(nzPageIndex)]="myshareusertotalpage" (nzPageIndexChange)="GetMyShareUser(myshareusertotalpage)"-->
+<!--            [(nzTotal)]="myshareusercurrentpage" nzPageSize="10"></nz-pagination>-->
+<!--        </div>-->
+<!--      </nz-tab>-->
+<!--      <nz-tab nzTitle="历史纪录">-->
+<!--        <nz-table #basicTable [nzData]="listOfData">-->
+<!--          <thead>-->
+<!--            <tr>-->
+<!--              <th>操作</th>-->
+<!--              <th>时间</th>-->
+<!--            </tr>-->
+<!--          </thead>-->
+<!--          <tbody>-->
+<!--            <tr *ngFor="let data of sharehistory">-->
+<!--              <td>将资料分享给{{ data.nickname }}</td>-->
+<!--              <td>{{ data.createdTime  * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>-->
+<!--            </tr>-->
+<!--          </tbody>-->
+<!--        </nz-table>-->
+<!--        <div class="pagination">-->
+<!--          <nz-pagination [(nzPageIndex)]="historycurrnetpage" (nzPageIndexChange)="GetMaterialSharingHistory(historycurrnetpage)"-->
+<!--            [(nzTotal)]="historytotalpage" nzPageSize="10"></nz-pagination>-->
+<!--        </div>-->
+<!--      </nz-tab>-->
+<!--    </nz-tabset>-->
+<!--  </div>-->
+<!--</nz-modal>-->

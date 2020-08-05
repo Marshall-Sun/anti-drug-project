@@ -419,15 +419,14 @@
 </nz-modal>
 
 <!-- 任务界面 -->
-<nz-modal [(nzVisible)]="addchapter_visible" nzTitle="添加章" (nzOnCancel)="handleCancel_addchapter()"
-  (nzOnOk)="handleOk_addchapter()" nzOkText='确定' nzCancelText='取消' [nzMaskClosable]="false">
-  <div>
-    <input nz-input placeholder="请输入标题" [(ngModel)]="PrivatelettertTitle" />
-  </div>
-  <div style="margin-top:10px;">
-    <textarea rows="4" nz-input [(ngModel)]="PrivateletterContent" placeholder="请输入内容"></textarea>
-  </div>
-</nz-modal>
+<!--<nz-modal [(nzVisible)]="addchapter_visible" nzTitle="添加章" nzOkText='确定' nzCancelText='取消' [nzMaskClosable]="false">-->
+<!--  <div>-->
+<!--    <input nz-input placeholder="请输入标题" [(ngModel)]="PrivatelettertTitle" />-->
+<!--  </div>-->
+<!--  <div style="margin-top:10px;">-->
+<!--    <textarea rows="4" nz-input [(ngModel)]="PrivateletterContent" placeholder="请输入内容"></textarea>-->
+<!--  </div>-->
+<!--</nz-modal>-->
 
 <!-- 题目选择 -->
 <nz-modal [(nzVisible)]="addsubject_visible" nzTitle="选择题目" (nzOnCancel)="handleCancel_subject()"

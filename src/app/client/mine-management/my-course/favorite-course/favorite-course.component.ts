@@ -10,7 +10,7 @@ import {MyteachingService} from '../../../../service/myteaching/myteaching.servi
 })
 export class FavoriteCourseComponent implements OnInit {
 
-  userId:number =1;
+  userId;
   courseList = [];
   dataList = [];
   total: string;
@@ -27,6 +27,7 @@ export class FavoriteCourseComponent implements OnInit {
 
 
   ngOnInit() {
+    this.userId = window.localStorage.getItem('id');
     this.searchData()
   }
 

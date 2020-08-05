@@ -1,6 +1,5 @@
 <nz-content>
-    <nz-list [nzDataSource]="teachers" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" [nzHeader]="'授课教师'"
-        [nzLoading]="loading">
+    <nz-list [nzDataSource]="teachers" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" [nzHeader]="'授课教师'">
         <ng-template #item let-item>
             <nz-list-item>
                 <img class="round_icon" nz-popover [nzTitle]="titleTemplate" [nzContent]="contentTemplate"

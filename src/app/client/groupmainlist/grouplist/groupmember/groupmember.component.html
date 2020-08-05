@@ -1,7 +1,7 @@
 <div class="top">
   <div class="icons-list">
     <h2>组长</h2>
-    <nz-avatar [nzSize]="54" nzIcon="user" nz-popover [nzPopoverTitle]="tem" [nzPopoverContent]="content" (mouseenter)="getUserDetail(Header[0].userId)">
+    <nz-avatar *ngIf="Header.length > 0" [nzSize]="54"  [nzSrc]="Header[0].userMediumAvatar.startsWith('/image')? Header[0].userMediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" nz-popover [nzPopoverTitle]="tem" [nzPopoverContent]="content" (mouseenter)="getUserDetail(Header[0].userId)">
 <!--      <ng-template #photo>-->
 <!--        <nz-avatar [nzSize]="64">{{userMediumAvatar}}</nz-avatar>-->
 <!--      </ng-template>-->
@@ -29,7 +29,7 @@
           <div>{{detail?.job}} <span *ngIf="detail?.id!=userId"><button nz-button style="width: 50px; height: 20px; font-size: 12px; float: right;" nzSize="small" nzType="primary" (click)="message(detail, messageModal)">私信</button></span></div>
         </ng-template>
         <ng-template #avatarTemplate>
-          <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+          <nz-avatar [nzSrc]="detail?.mediumAvatar.startsWith('/image')? detail?.mediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"></nz-avatar>
         </ng-template>
         <ng-template #actionEdit>
           <a>{{detail?.followedNum}}</a>
@@ -58,7 +58,7 @@
     <div nz-col nzSpan="4" style="display: inline-block" *ngFor="let userMediumAvatar of admin">
       <div style="display: flex; flex-direction: row; justify-content: center">
       <nz-avatar
-        nzIcon="user"
+        [nzSrc]="userMediumAvatar?.userMediumAvatar.startsWith('/image')? userMediumAvatar?.userMediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"
         nz-popover
         [nzPopoverTitle]="tem"
         [nzPopoverContent]="content"
@@ -91,7 +91,7 @@
             <div>{{detail?.job}} <span *ngIf="detail?.id!=userId"><button nz-button style="width: 50px; height: 20px; font-size: 12px; float: right;" nzSize="small" nzType="primary" (click)="message(detail, messageModal)">私信</button></span></div>
           </ng-template>
           <ng-template #avatarTemplate>
-            <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+            <nz-avatar [nzSrc]="detail?.mediumAvatar.startsWith('/image')? detail?.mediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"></nz-avatar>
           </ng-template>
           <ng-template #actionEdit>
             <a>{{detail?.followedNum}}</a>
@@ -129,11 +129,49 @@
       <div nz-col nzSpan="4" style="display: inline-block" *ngFor="let userMediumAvatar of member">
         <div style="display: flex; flex-direction: row; justify-content: center">
           <nz-avatar
-            nzIcon="user"
+            [nzSrc]="userMediumAvatar?.userMediumAvatar.startsWith('/image')? userMediumAvatar?.userMediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"
             nz-popover
             [nzPopoverTitle]="tem"
             [nzPopoverContent]="content"
             (mouseenter)="getUserDetail(userMediumAvatar.userId)">
+            <ng-template #tem>
+              <nz-card style="width:300px;"  [nzActions]="[actionEdit,actionShow]">
+                <nz-card-meta
+                  [nzTitle]="nzTitle"
+                  [nzDescription]="nzDescription"
+                  [nzAvatar]="avatarTemplate"
+                ></nz-card-meta>
+              </nz-card>
+              <ng-template #nzTitle>
+                <div>{{detail?.nickName}}
+                  <span *ngIf="detail?.id!=userId">
+              <span *ngIf="isfocus==false">
+                      <button nzSize="small" style="width: 50px; height: 20px; font-size: 12px; float: right;" nz-button class="onebutton" nzType="primary"  (click)="focus()" >关注</button>
+                    </span>
+                    <span *ngIf="isfocus==true">
+                      <button nzSize="small" style="width: 50px; height: 20px; font-size: 12px; float: right;" nz-button class="onebutton" nzType="primary" (click)="cancelfocus()" >已关注</button>
+                  </span>
+            </span>
+                </div>
+              </ng-template>
+              <ng-template #nzDescription>
+                <div>{{detail?.job}} <span *ngIf="detail?.id!=userId"><button nz-button style="width: 50px; height: 20px; font-size: 12px; float: right;" nzSize="small" nzType="primary" (click)="message(detail, messageModal)">私信</button></span></div>
+              </ng-template>
+              <ng-template #avatarTemplate>
+                <nz-avatar [nzSrc]="detail?.mediumAvatar.startsWith('/image')? detail?.mediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"></nz-avatar>
+              </ng-template>
+              <ng-template #actionEdit>
+                <a>{{detail?.followedNum}}</a>
+                <p>关注</p>
+              </ng-template>
+              <ng-template #actionShow>
+                <a>{{detail?.fansNum}}</a>
+                <p>粉丝</p>
+              </ng-template>
+            </ng-template>
+            <ng-template #content>
+              <a style="color: gray">{{detail?.signature}}</a>
+            </ng-template>
           </nz-avatar>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: center">

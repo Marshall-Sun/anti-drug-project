@@ -22,6 +22,8 @@ export class CourseExamComponent implements OnInit {
   testPaperContent = {
     question: [],
     limitedTime: 0,
+    name: '',
+    description: ''
   };
   testQuestion = [];
   //题目内容
@@ -169,7 +171,7 @@ export class CourseExamComponent implements OnInit {
     } else {
       console.log("倒计时结束，系统自动交卷");
       this.submitTestPaper();
-      //this.navigateByUrl('client/testpaper/'+ paper.testId +'/result/'+st.userId)
+
       //***********************************************************这里需要url，交卷跳转 */
     }
   }
@@ -234,7 +236,8 @@ export class CourseExamComponent implements OnInit {
       //调用提交的接口
       this.paperMarkingService.submitTestPaper(this.totalAnswer, this.courseId, this.taskId, this.userId)
         .subscribe(result => {
-          this._notification.create('success', '交卷成功！', '', { nzDuration: 1000 })
+          this._notification.create('success', '交卷成功！', '', { nzDuration: 1000 });
+          this.navigateByUrl(`client/courseinf/${this.courseId}`)
         }, error1 => this._notification.create('error', '交卷失败！', `${error1.error}`, { nzDuration: 1000 }
         ))
 

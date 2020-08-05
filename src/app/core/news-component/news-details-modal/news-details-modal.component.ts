@@ -183,7 +183,7 @@ export class NewsDetailsModalComponent implements OnInit {
     this.articleLike = {
       articleId: this.id,
       isDelete: this.isDelete,
-      userId: 1,
+      userId: this.userId,
     };
     this.newsService$.setArticleLike(this.articleLike).subscribe(result => {
       this.getArticleLike();

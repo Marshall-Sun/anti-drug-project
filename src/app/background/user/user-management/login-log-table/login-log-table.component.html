@@ -32,7 +32,7 @@
       <tr *ngFor="let data of loginLogTable.data">
         <td>{{data.userName}}</td>
         <td>{{data.birthday}}</td>
-        <td>{{data.loginTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}<br/>
+        <td>{{data.createdTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}<br/>
           <span>{{data.loginIp}}</span></td>
         <td>{{data.loginIpArea}}</td>
 <!--        <td><i (click)="checkLoginLog(data.id, personalLoginLogTable)" nz-tooltip nzTitle="查看" nz-icon nzType="eye" nzTheme="outline"></i></td>-->

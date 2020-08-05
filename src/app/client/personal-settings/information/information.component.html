@@ -6,7 +6,7 @@
     <div nz-row>
       <nz-form-item>
         <nz-form-control>
-          <nz-upload class="avatar-uploader" nzAction="/material/uploadUserAvatar?userId=1" nzListType="picture-card"
+          <nz-upload class="avatar-uploader" [nzAction]="'/material/uploadUserAvatar?userId=' + userID" nzListType="picture-card"
             [nzShowUploadList]="false" [nzCustomRequest]="customReq">
             <ng-container *ngIf="!user.mediumAvatar">
               <i class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></i>

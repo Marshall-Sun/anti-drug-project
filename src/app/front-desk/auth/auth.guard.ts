@@ -101,8 +101,8 @@ export class AuthGuard implements CanActivate {
     // 页面：课程详情系列，判断关闭状态；任务、教学计划是否存在
     if (url.indexOf("/courseinf") != -1) {
       let targetId = url.split("/");
-      let res: any = await this.authService.courseClosedChecker(targetId[3]);
-      if (res) {
+      let res: any = await this.authService.courseClosedChecker(targetId[3]).toPromise();
+      if (res.data) {
         this.msg.error("课程未开放");
         canActivate = false;
       } else if (targetId[4] == "teachplan") {
@@ -158,8 +158,8 @@ export class AuthGuard implements CanActivate {
         canActivate = false;
       } else {
         let targetId = url.split("/")[3];
-        let res: any = await this.authService.openCourseClosedChecker(targetId);
-        if (res) {
+        let res: any = await this.authService.openCourseClosedChecker(targetId).toPromise();
+        if (res.data) {
           this.msg.error("公开课未开放");
           canActivate = false;
         }
@@ -169,8 +169,8 @@ export class AuthGuard implements CanActivate {
     // 页面：班级详情，判断关闭状态
     if (url.indexOf("/classinf") != -1) {
       let targetId = url.split("/")[3];
-      let res: any = await this.authService.classClosedChecker(targetId);
-      if (res) {
+      let res: any = await this.authService.classClosedChecker(targetId).toPromise();
+      if (res.data) {
         this.msg.error("班级未开放");
         canActivate = false;
       }
@@ -225,8 +225,8 @@ export class AuthGuard implements CanActivate {
     // 页面：新闻资讯详情，判断关闭状态
     if (url.indexOf("/newsdetails") != -1) {
       let targetId = url.split("/")[3];
-      let res: any = await this.authService.newsClosedChecker(targetId);
-      if (res) {
+      let res: any = await this.authService.newsClosedChecker(targetId).toPromise();
+      if (res.data) {
         this.msg.error("资讯未开放");
         canActivate = false;
       }
@@ -306,8 +306,8 @@ export class AuthGuard implements CanActivate {
     if (url.indexOf("/groupmainlist") != -1) {
       let targetUrl = url.split("/");
       if (parseInt(targetUrl[3]) > 0) {
-        let res: any = await this.authService.groupClosedChecker(targetUrl[3]);
-        if (res) {
+        let res: any = await this.authService.groupClosedChecker(targetUrl[3]).toPromise();
+        if (res.data) {
           this.msg.error("小组未开放");
           canActivate = false;
         }
@@ -338,8 +338,8 @@ export class AuthGuard implements CanActivate {
       } else if (parseInt(targetUrl[5]) > 0) {
         let res: any = await this.authService.groupThreadClosedChecker(
           targetUrl[5]
-        );
-        if (res) {
+        ).toPromise();
+        if (res.data) {
           this.msg.error("小组话题未开放");
           canActivate = false;
         }

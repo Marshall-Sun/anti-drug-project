@@ -40,6 +40,7 @@ export class CourseinfHeaderComponent implements OnInit {
     commitmentservice: [false, true, true, true],
     serializemode: "none",
     title: "无",
+    studentnum: 56
   };
   user: any;
   joinINf: any;

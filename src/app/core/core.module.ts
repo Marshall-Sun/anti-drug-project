@@ -37,7 +37,7 @@ import { RegisterModalComponent } from './modal/register-modal/register-modal.co
 import { FindPasswdModalComponent } from './modal/find-passwd-modal/find-passwd-modal.component';
 import { SelectQuestionComponent } from './modal/select-question/select-question.component';
 import { VideoPlayerComponent } from './video-player/video-player/video-player.component';
-
+import { VideoPlayerComponent as ParentVideoPlayerComponet } from './video-player/video-player.component';
 
 
 @NgModule({
@@ -71,7 +71,8 @@ import { VideoPlayerComponent } from './video-player/video-player/video-player.c
     RegisterModalComponent,
     FindPasswdModalComponent,
     SelectQuestionComponent,
-    VideoPlayerComponent
+    VideoPlayerComponent,
+    ParentVideoPlayerComponet
   ],
   imports: [
     ShareModule,

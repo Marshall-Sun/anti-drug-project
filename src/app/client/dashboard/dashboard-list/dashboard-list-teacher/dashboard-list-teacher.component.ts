@@ -21,7 +21,7 @@ export class DashboardListTeacherComponent implements OnInit {
   ngOnInit() {
     this.displayData = [];
     this.loading = true;
-    this.teacherManagementService.getTeacherList(3, 4).subscribe(
+    this.teacherManagementService.getTeacherList(1, 4).subscribe(
       (result) => {
         this.loading = false;
         this.displayData = result.data.teachers;

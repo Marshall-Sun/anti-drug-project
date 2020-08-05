@@ -47,4 +47,8 @@ export class ClientCourseVideoService {
   finishTask(courseid:string,taskid: string,userid:string): Observable<any> {
     return this.http.put(`/course/finishTask?courseId=${courseid}&taskId=${taskid}&userId=${userid}`, {})
   }
+
+  getTaskLearnStatus(courseId: string, taskId: string, userId: string): Observable<any>{
+    return this.http.get(`/course/getTaskLearnStatus?courseId=${courseId}&taskId=${taskId}&userId=${userId}`)
+  }
 }

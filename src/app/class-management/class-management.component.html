@@ -1,7 +1,7 @@
 <nz-layout>
   <nz-header>
     <div class="header">
-      <img class="header-image" [src]="classroom?.smallpicture">
+      <img class="header-image" [src]="classroom?.smallpicture.startsWith('/image')? classroom?.smallpicture: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'">
       <div class="header-info">
         <div>{{classroom?.title}}<nz-tag style="margin-left: 5px;" [nzColor]="'#108ee9'">{{classroom?.status}}</nz-tag></div>
         <button nzSize="small" nz-button nzType="primary" (click)="navigatTo('/client/classinf/' + classroomId)">返回班级主页</button>

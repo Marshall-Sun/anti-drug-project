@@ -18,7 +18,8 @@ export class CommonInterceptor implements HttpInterceptor {
         // }
         //需要加入请求头的是access_token(BASE64编码)
         if (window.localStorage.getItem('token') != undefined) {
-            const access_token = JSON.parse(window.localStorage.getItem('token')).access_token;
+
+            const access_token = window.localStorage.getItem('token');
             //每个请求发送前需要在Headers中需加入access_token（JWT协议）
             const authReq = req.clone({
                 headers: req.headers.set('Authorization', 'Bearer ' + access_token)

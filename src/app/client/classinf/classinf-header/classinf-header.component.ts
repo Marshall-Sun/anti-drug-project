@@ -22,7 +22,7 @@ export class ClassinfHeaderComponent implements OnInit {
       commitmentservice: [false, false, false, false, false, false],
 
       classroomCategory: "高中班级",
-      courseNum: 1,
+      coursenum: 1,
       id: 10,
       postNum: 2,
       recommended: 0,
@@ -32,7 +32,7 @@ export class ClassinfHeaderComponent implements OnInit {
       //service: "["event","liveAnswer","teacherAnswer","testpaperReview","homeworkReview"]",
       smallpicture: "../../../../assets/img/timg.jpg",
       status: "published",
-      studentNum: 56,
+      studentnum: 56,
       title: "沈阳市广全学校禁毒教学活动",
       totalNum: 1,
       ratingnum:1,

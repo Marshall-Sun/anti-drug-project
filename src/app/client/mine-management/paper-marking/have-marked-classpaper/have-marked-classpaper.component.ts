@@ -19,17 +19,21 @@ export class HaveMarkedClasspaperComponent implements OnInit {
 
   //classid
   classroomId: string='9';
-  testclassid:string;
+  //classid应该通过userid获得，由于登录没写好现在默认userid是1
+  //这种什么location的方式是课程模块那种的，就是url里有classid就可以通过这个获取
+  //testclassid:string;
   //试卷批阅列表
   paperMarkList=[];
   //单个试卷批阅详情列表
   paperSt=[];
   pageNum:number=1;
   pageSize:number=10;
-  userid:string="1";
+  userid:string='1';
   //userID:string=this.actrouter.snapshot.paramMap.get('id');
   //满足搜索条件的试卷
   paperListAfterSearch=[];
+  //是否有数据
+  isHaveData:boolean=false;
   //搜索试卷的名字
   searchPName: string='';
   //试卷的名字
@@ -54,6 +58,7 @@ export class HaveMarkedClasspaperComponent implements OnInit {
   LastClickValue:boolean=false;
 
 
+
   constructor( private router: Router,
     private paperMarkingService:PaperMarkingService,
     private actrouter:ActivatedRoute) {
@@ -61,28 +66,54 @@ export class HaveMarkedClasspaperComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.testclassid = location.pathname.split('/')[3];
-    console.log('classid:',this.testclassid);
+    //this.testclassid = location.pathname.split('/')[3];
+    //console.log('classid:',this.testclassid);
+    this.userid=window.localStorage.getItem("id");
+    //修改后
+    this.paperMarkingService.getClassroomTestpaper(this.userid).subscribe(result=>{
+      this.classroomTestPaper=result.data;
+      console.log('-------测试教室paper--------',this.classroomTestPaper);
+      if(this.isEmpty(this.classroomTestPaper)){
+        this.isHaveData=true;
+        console.log('无数据');
+      }else{
+        for(let test of this.classroomTestPaper){
+          this.paperMarkingService.getClassTestCheckList(test.testpaperid).subscribe(result => {
+            this.paperMarkList = this.paperMarkList.concat(result.data);
+            //等待试卷批阅列表加载完成，将其拷贝至paperListAfterSearch中
+            this.paperListAfterSearch=this.paperMarkList;
+            console.log('拷贝：',this.paperListAfterSearch);
+            if(this.isEmpty(this.paperMarkList)){
+              this.isHaveData=true;
+              console.log('无数据');
+            }
+          });
+        }
+      }
+
+
+    });
+
+
+    /*//原代码
+    this.paperMarkingService.getClassroomTestpaper(this.userid).subscribe(result=>{
+      this.classroomTestPaper=result.data;
+      console.log('-------测试教室paper--------',this.classroomTestPaper);
+      
+    });
     this.paperMarkingService.getClassTestCheckList(this.classroomId).subscribe(result => {
       this.paperMarkList = result.data;
       //等待试卷批阅列表加载完成，将其拷贝至paperListAfterSearch中
       this.paperListAfterSearch=this.paperMarkList;
       console.log('拷贝：',this.paperListAfterSearch);
-    });
-    /*
-    //获取试卷批阅列表
-    this.paperMarkingService.getTestCheckList(this.courseid).subscribe(result=>{
-      this.paperMarkList=result.data;
-      console.log('里：',this.paperMarkList);
-      //等待试卷批阅列表加载完成，将其拷贝至paperListAfterSearch中
-      this.paperListAfterSearch=this.paperMarkList;
-      console.log('拷贝：',this.paperListAfterSearch);
+      if(this.isEmpty(this.paperMarkList)){
+
+      }
     });
     */
-   this.paperMarkingService.getClassroomTestpaper(this.userid).subscribe(result=>{
-     this.classroomTestPaper=result.data;
-     console.log('-------测试教室paper--------',this.classroomTestPaper);
-   });
+
+
+
   }
 
   navigatTo(url: string) {

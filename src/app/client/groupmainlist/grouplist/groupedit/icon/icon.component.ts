@@ -23,7 +23,7 @@ export class IconComponent implements OnInit {
   previewVisible = false;
 
   groupId: string;
-  userId: string = '1';
+  userId: string;
 
   constructor(private imagesUploadingService$:ImagesUploadingService,
               private  _message: NzMessageService,
@@ -31,6 +31,7 @@ export class IconComponent implements OnInit {
               private _http: HttpClient,
               private routerInfo: ActivatedRoute) {
     this.groupId = this.routerInfo.snapshot.params['id'];
+    this.userId = window.localStorage.getItem('id')
   }
 
   ngOnInit() {
@@ -54,8 +55,8 @@ export class IconComponent implements OnInit {
   // }
   customReq = (item: UploadXHRArgs) => {
     const formData = new FormData();
-    formData.append('multipartFile', item.file as any);
-    formData.append('fileGroupId', this.groupId);
+    formData.append('file', item.file as any);
+    formData.append('groupId', this.groupId);
     formData.append('userId', this.userId);
     const req = new HttpRequest('POST', item.action, formData, {
       reportProgress: true,
