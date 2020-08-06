@@ -50,6 +50,20 @@ export class AuthService {
     return false;
   }
 
+  async teacherOwnClassChecker(id: string): Promise<boolean> {
+    let userId = window.localStorage.getItem("id");
+    if (userId) {
+      let res: any = await this.http
+      .get(`/user/getHeadTeacherClassroomId?userId=${userId}`).toPromise();
+      for (const classId of res.data) {
+        if (classId == id) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   // 班级
   classClosedChecker(classId: string) {
     return this.http

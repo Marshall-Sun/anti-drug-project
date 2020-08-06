@@ -18,7 +18,7 @@ import { PaperResultDetailService } from "src/app/service/paper-result-detail/pa
 import { PrivateChatService } from "src/app/service/private-chat/private-chat.service";
 import { CourseBaseInfoEditService } from "src/app/service/course-base-info-edit/course-base-info-edit.service";
 import { QuestionCreateService } from "src/app/service/question-create/question-create.service";
-import { CourseManagementBackHalfService } from 'src/app/service/course-management-back-half/course-management-back-half.service';
+import { CourseManagementBackHalfService } from "src/app/service/course-management-back-half/course-management-back-half.service";
 
 @Injectable({
   providedIn: "root",
@@ -101,7 +101,9 @@ export class AuthGuard implements CanActivate {
     // 页面：课程详情系列，判断关闭状态；任务、教学计划是否存在
     if (url.indexOf("/courseinf") != -1) {
       let targetId = url.split("/");
-      let res: any = await this.authService.courseClosedChecker(targetId[3]).toPromise();
+      let res: any = await this.authService
+        .courseClosedChecker(targetId[3])
+        .toPromise();
       if (res.data) {
         this.msg.error("课程未开放");
         canActivate = false;
@@ -158,7 +160,9 @@ export class AuthGuard implements CanActivate {
         canActivate = false;
       } else {
         let targetId = url.split("/")[3];
-        let res: any = await this.authService.openCourseClosedChecker(targetId).toPromise();
+        let res: any = await this.authService
+          .openCourseClosedChecker(targetId)
+          .toPromise();
         if (res.data) {
           this.msg.error("公开课未开放");
           canActivate = false;
@@ -169,7 +173,9 @@ export class AuthGuard implements CanActivate {
     // 页面：班级详情，判断关闭状态
     if (url.indexOf("/classinf") != -1) {
       let targetId = url.split("/")[3];
-      let res: any = await this.authService.classClosedChecker(targetId).toPromise();
+      let res: any = await this.authService
+        .classClosedChecker(targetId)
+        .toPromise();
       if (res.data) {
         this.msg.error("班级未开放");
         canActivate = false;
@@ -188,36 +194,24 @@ export class AuthGuard implements CanActivate {
       } else {
         if (this.authService.userIdentityChecker("SUPER_ADMIN")) {
           canActivate = true;
-        } else if (this.checkIdentity("ROLE_TEACHER")) {
+        } else {
           let targetUrl = targetId[4];
-          if (
-            targetUrl == "manage" ||
-            targetUrl == "basicinfo" ||
-            targetUrl == "headteacher" ||
-            targetUrl == "teachersetting" ||
-            targetUrl == "tutorsetting" ||
-            targetUrl == "coversetting"
-          ) {
+          if (this.authService.teacherOwnClassChecker(targetUrl)) {
+            if (
+              targetUrl == "manage" ||
+              targetUrl == "basicinfo" ||
+              targetUrl == "headteacher" ||
+              targetUrl == "teachersetting" ||
+              targetUrl == "tutorsetting" ||
+              targetUrl == "coversetting"
+            ) {
+              this.msg.error("权限不足");
+              canActivate = false;
+            }
+          } else {
             this.msg.error("权限不足");
             canActivate = false;
-          } else if (
-            targetUrl == "coursesetting" ||
-            targetUrl == "studentsetting" ||
-            targetUrl == "testpaper" ||
-            targetUrl == "homeworkmarking"
-          ) {
-            let res: any = await this.classManagementService
-              .getClassTeachers(targetId[3])
-              .toPromise();
-            let teacherList = [];
-            for (const item of res.data.teacherList) {
-              teacherList.push(item.id + "");
-            }
-            canActivate =
-              teacherList.indexOf(window.localStorage.getItem("id")) != -1;
           }
-        } else {
-          canActivate = false;
         }
       }
     }
@@ -225,7 +219,9 @@ export class AuthGuard implements CanActivate {
     // 页面：新闻资讯详情，判断关闭状态
     if (url.indexOf("/newsdetails") != -1) {
       let targetId = url.split("/")[3];
-      let res: any = await this.authService.newsClosedChecker(targetId).toPromise();
+      let res: any = await this.authService
+        .newsClosedChecker(targetId)
+        .toPromise();
       if (res.data) {
         this.msg.error("资讯未开放");
         canActivate = false;
@@ -306,7 +302,9 @@ export class AuthGuard implements CanActivate {
     if (url.indexOf("/groupmainlist") != -1) {
       let targetUrl = url.split("/");
       if (parseInt(targetUrl[3]) > 0) {
-        let res: any = await this.authService.groupClosedChecker(targetUrl[3]).toPromise();
+        let res: any = await this.authService
+          .groupClosedChecker(targetUrl[3])
+          .toPromise();
         if (res.data) {
           this.msg.error("小组未开放");
           canActivate = false;
@@ -336,9 +334,9 @@ export class AuthGuard implements CanActivate {
           canActivate = false;
         }
       } else if (parseInt(targetUrl[5]) > 0) {
-        let res: any = await this.authService.groupThreadClosedChecker(
-          targetUrl[5]
-        ).toPromise();
+        let res: any = await this.authService
+          .groupThreadClosedChecker(targetUrl[5])
+          .toPromise();
         if (res.data) {
           this.msg.error("小组话题未开放");
           canActivate = false;
@@ -419,7 +417,9 @@ export class AuthGuard implements CanActivate {
     // 页面：计划任务，判断是否存在
     if (canActivate && url.indexOf("/teaching_plan_page") != -1) {
       let targetId = url.split("/");
-      let res: any = await this.courseManagementBackHalfService.getPlanBasicInfo(targetId[5]).toPromise();
+      let res: any = await this.courseManagementBackHalfService
+        .getPlanBasicInfo(targetId[5])
+        .toPromise();
       if (res.data == null) {
         this.msg.error("计划任务不存在");
         canActivate = false;
@@ -427,9 +427,15 @@ export class AuthGuard implements CanActivate {
     }
 
     // 页面：课程任务，判断是否存在
-    if (canActivate && url.indexOf("/task") != -1 && url.indexOf("/show") != -1) {
+    if (
+      canActivate &&
+      url.indexOf("/task") != -1 &&
+      url.indexOf("/show") != -1
+    ) {
       let targetId = url.split("/");
-      let res: any = await this.myteachingService.getCourseTask(parseInt(localStorage.getItem("id")), targetId[5]).toPromise();
+      let res: any = await this.myteachingService
+        .getCourseTask(parseInt(localStorage.getItem("id")), targetId[5])
+        .toPromise();
       if (res.data == null) {
         this.msg.error("课程任务不存在");
         canActivate = false;

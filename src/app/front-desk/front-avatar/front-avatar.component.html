@@ -4,6 +4,7 @@
   [nzSrc]="avatar"
   [nzPopoverContent]="usercenter"
   nzPopoverPlacement="bottomRight"
+  nzPopoverTrigger="click"
 ></nz-avatar>
 
 <ng-template #usercenter>
@@ -15,10 +16,8 @@
       [nzSize]="80"
       (click)="navigateByUrl('/client/userpage/' + userId + '/focus')"
     >
-    </nz-avatar
-    >&nbsp;
-    <span slot="title" style="font-size: 24px;">{{ nickName }}</span>
-    <br />
+    </nz-avatar>
+    <div slot="title" id="nickname">{{ nickName }}</div>
     <nz-divider></nz-divider>
 
     <div
