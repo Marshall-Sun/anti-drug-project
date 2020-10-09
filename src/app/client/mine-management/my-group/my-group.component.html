@@ -8,11 +8,7 @@
     <nz-tabset nzLinkRouter class="computer-style" nzTabPosition="top">
       <nz-tab>
         <a nz-tab-link [routerLink]="['.']" [queryParams]="{tab: 'main'}" queryParamsHandling="merge">小组主页</a>
-          <p></p>
-          <p></p>
-          <p>我加入的小组</p>
-          <nz-divider></nz-divider>
-          <app-my-group-join></app-my-group-join>
+        <app-all-group></app-all-group>
       </nz-tab>
       <nz-tab>
         <a nz-tab-link [routerLink]="['.']" [queryParams]="{tab: 'my-manage'}" queryParamsHandling="merge">加入的小组</a>

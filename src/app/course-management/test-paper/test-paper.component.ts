@@ -52,8 +52,7 @@ export class TestPaperComponent implements OnInit {
 
   navigateByUrl(url) {
     console.log(url);
-    
-    // this.router.navigateByUrl(url);
+    this.router.navigateByUrl(url);
   }
 
   searchData() {

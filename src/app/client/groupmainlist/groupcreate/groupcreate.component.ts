@@ -15,13 +15,14 @@ export class GroupcreateComponent implements OnInit {
   content: string = '';
 
   threadCreatingForm: FormGroup;
-  userId:string="1";
+  userId;
   constructor(private groupcreateService$:GroupcreateService,
               private _notification: NzNotificationService,
               private fb: FormBuilder,
               private route: Router) { }
 
   ngOnInit() {
+    this.userId = window.localStorage.getItem('id');
     this.threadCreatingForm = this.fb.group({
       title: ['', Validators.required],
       content: ['', Validators.required]

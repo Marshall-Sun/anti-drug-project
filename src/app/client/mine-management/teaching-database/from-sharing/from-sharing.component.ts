@@ -53,7 +53,7 @@ export class FromSharingComponent implements OnInit {
 
 
   //获取资料相关
-  userId = 1;
+  userId = window.localStorage.getItem('id');
   searchKeyword: string = "";
   conditions = {
     materialType: "",

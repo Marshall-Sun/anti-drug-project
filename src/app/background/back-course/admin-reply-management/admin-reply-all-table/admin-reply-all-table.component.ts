@@ -53,7 +53,7 @@ export class AdminReplyAllTableComponent implements OnInit {
       author: this.inputValue
     };
     this.pageIndex = 1;
-    this.courseReplyAllService$.getNotReplyList(1, 10, this.filterOptions).subscribe(result => {
+    this.courseReplyAllService$.getReplyList(1, 10, this.filterOptions).subscribe(result => {
       this.loading = false;
       this.total = result.data.total;
       this.totalPage = Math.ceil(this.total / 10);
@@ -75,7 +75,7 @@ export class AdminReplyAllTableComponent implements OnInit {
   searchData(pageIndex: number = this.pageIndex) {
     this.displayData = [];
     this.loading = true;
-    this.courseReplyAllService$.getNotReplyList(pageIndex, 10, this.filterOptions).subscribe(result => {
+    this.courseReplyAllService$.getReplyList(pageIndex, 10, this.filterOptions).subscribe(result => {
       this.loading = false;
       this.total = result.data.total;
       this.totalPage = Math.ceil(this.total / 10);

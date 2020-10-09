@@ -12,7 +12,7 @@ import {TeacherRecommendModalComponent} from '../../../../core/modal/teacher-rec
 })
 export class AdminCourseManagementTableComponent implements OnInit {
 
-  userId: string = '1';
+  userId;
   options = [
     {
       value: '18',
@@ -108,6 +108,7 @@ export class AdminCourseManagementTableComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userId = window.localStorage.getItem('id');
     this.searchData();
   }
 

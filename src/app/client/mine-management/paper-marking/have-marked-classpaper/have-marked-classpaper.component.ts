@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PaperMarkingService } from "src/app/service/paperMarking/paper-marking.service";
 import { ResultTableComponent } from 'src/app/class-management/testpaper-listing/result-table/result-table.component';
+import { ActivatedRoute } from '@angular/router';
+import { th } from 'date-fns/locale';
 
 @Component({
   selector: 'app-have-marked-classpaper',
@@ -11,6 +13,13 @@ import { ResultTableComponent } from 'src/app/class-management/testpaper-listing
 })
 export class HaveMarkedClasspaperComponent implements OnInit {
 
+
+    //获取课程试卷需要的参数
+    type:string="testpaper";
+    userid:string='1';
+
+    coursePaperList=[];
+    ispaperMarkListHaveData:boolean=false;
 
   //试卷批阅：试卷的id，名字，课程，计划，时间;
   //各试卷学生答题情况：试卷id、学生姓名、交卷时间、用时、得分（是否有学生id来检索学生的答题网址)
@@ -28,7 +37,6 @@ export class HaveMarkedClasspaperComponent implements OnInit {
   paperSt=[];
   pageNum:number=1;
   pageSize:number=10;
-  userid:string='1';
   //userID:string=this.actrouter.snapshot.paramMap.get('id');
   //满足搜索条件的试卷
   paperListAfterSearch=[];
@@ -66,53 +74,18 @@ export class HaveMarkedClasspaperComponent implements OnInit {
    }
 
   ngOnInit() {
-    //this.testclassid = location.pathname.split('/')[3];
-    //console.log('classid:',this.testclassid);
     this.userid=window.localStorage.getItem("id");
-    //修改后
-    this.paperMarkingService.getClassroomTestpaper(this.userid).subscribe(result=>{
-      this.classroomTestPaper=result.data;
-      console.log('-------测试教室paper--------',this.classroomTestPaper);
-      if(this.isEmpty(this.classroomTestPaper)){
-        this.isHaveData=true;
-        console.log('无数据');
-      }else{
-        for(let test of this.classroomTestPaper){
-          this.paperMarkingService.getClassTestCheckList(test.testpaperid).subscribe(result => {
-            this.paperMarkList = this.paperMarkList.concat(result.data);
-            //等待试卷批阅列表加载完成，将其拷贝至paperListAfterSearch中
-            this.paperListAfterSearch=this.paperMarkList;
-            console.log('拷贝：',this.paperListAfterSearch);
-            if(this.isEmpty(this.paperMarkList)){
-              this.isHaveData=true;
-              console.log('无数据');
-            }
-          });
-        }
+    
+    //获取班级所有试卷
+    this.paperMarkingService.getClassroomTestPaperAndHomework(this.type,this.userid).subscribe(result=>{
+      this.coursePaperList=result.data;
+      console.log('--------------所有班级试卷-------------------',this.coursePaperList);
+      if(this.isEmpty(this.coursePaperList)){
+        this.ispaperMarkListHaveData=true;
       }
-
-
-    });
-
-
-    /*//原代码
-    this.paperMarkingService.getClassroomTestpaper(this.userid).subscribe(result=>{
-      this.classroomTestPaper=result.data;
-      console.log('-------测试教室paper--------',this.classroomTestPaper);
-      
-    });
-    this.paperMarkingService.getClassTestCheckList(this.classroomId).subscribe(result => {
-      this.paperMarkList = result.data;
       //等待试卷批阅列表加载完成，将其拷贝至paperListAfterSearch中
-      this.paperListAfterSearch=this.paperMarkList;
-      console.log('拷贝：',this.paperListAfterSearch);
-      if(this.isEmpty(this.paperMarkList)){
-
-      }
-    });
-    */
-
-
+      this.paperListAfterSearch = this.coursePaperList;
+    })
 
   }
 
@@ -127,9 +100,9 @@ export class HaveMarkedClasspaperComponent implements OnInit {
     this.paperListAfterSearch=[];
     console.log('搜索名字：'+this.searchPName);
 
-    for(let paper of this.paperMarkList){
+    for(let paper of this.coursePaperList){
       //如果某一个试卷满足试卷名字包含搜索字符串
-      this.paperNa=paper.number+paper.title;
+      this.paperNa=paper.testpaperName;
       if((this.paperNa.indexOf(this.searchPName))>-1){
         this.paperListAfterSearch.push(paper);
       }
@@ -141,14 +114,6 @@ export class HaveMarkedClasspaperComponent implements OnInit {
   clickShowButton(pid:number){
     this.clickCount++;
     this.clickPaperID=pid;
-    this.selectStudentById(pid);
-  }
-  
-  selectStudentById(pid: number) {
-    //根据试卷的testID获得相应的学生答题情况
-    //单个试卷详细信息
-    this.paperMarkingService.getTestPaperResult(this.pageNum,this.pageSize,pid)
-    .subscribe(result=>this.paperSt=result.data); 
   }
 
   showStudentOrNot(pid:number):boolean{

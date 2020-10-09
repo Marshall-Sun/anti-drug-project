@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NzModalService, NzNotificationService} from 'ng-zorro-antd';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MyteachingService} from '../../../../service/myteaching/myteaching.service';
+import {CourseManagementService} from '../../../../service/course-management/course-management.service';
 
 @Component({
   selector: 'app-favorite-course',
@@ -22,6 +23,7 @@ export class FavoriteCourseComponent implements OnInit {
     private routerInfo: ActivatedRoute,
     private _notification: NzNotificationService,
     private MyteachingService$:MyteachingService,
+    private courseManagementService$: CourseManagementService,
     private router: Router
   ) { }
 
@@ -34,7 +36,7 @@ export class FavoriteCourseComponent implements OnInit {
   searchData(pageIndex: number = this.pageIndex) {
     this.courseList = [];
     this.loading = true;
-    this.MyteachingService$.getMyCourseList(1,10,this.userId,"finished").subscribe(result=>{
+    this.courseManagementService$.getMyStars(this.userId).subscribe(result=>{
         this.loading = false;
         this.dataList = result.data;
         this.courseList = this.dataList;
@@ -60,7 +62,7 @@ export class FavoriteCourseComponent implements OnInit {
     }
   }
   LearnPro(learnTime: number, watchTime: number) {
-    return watchTime/learnTime;
+    return watchTime/learnTime * 100;
   }
 
   viewCourse(url: string) {

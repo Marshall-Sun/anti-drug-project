@@ -250,7 +250,7 @@ export class AuthGuard implements CanActivate {
         let res: any = await this.paperResultDetailService
           .getTestPaperDetail(targetId[3], targetId[5])
           .toPromise();
-        if (res.data.SingleList.length < 1) {
+        if (res.data.SingleList.length < 1 && res.data.ChoicelList.length < 1 && res.data.determineList.length < 1) {
           this.msg.error("考试详情不存在");
           canActivate = false;
         }

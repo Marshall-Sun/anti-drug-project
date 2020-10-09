@@ -51,7 +51,7 @@ export class AdminReplyManagementTableComponent implements OnInit {
       keyword: this.keyword
     };
     this.pageIndex = 1;
-    this.courseReplyService$.getReplyList(1, 10, this.filterOptions).subscribe(result => {
+    this.courseReplyService$.getNotReplyList(1, 10, this.filterOptions).subscribe(result => {
       this.loading = false;
       this.total = result.data.total;
       this.totalPage = Math.ceil(this.total / 10);
@@ -74,7 +74,7 @@ export class AdminReplyManagementTableComponent implements OnInit {
   searchData(pageIndex: number = this.pageIndex) {
     this.displayData = [];
     this.loading = true;
-    this.courseReplyService$.getReplyList(pageIndex, 10, this.filterOptions).subscribe(result => {
+    this.courseReplyService$.getNotReplyList(pageIndex, 10, this.filterOptions).subscribe(result => {
       this.loading = false;
       this.total = result.data.total;
       this.totalPage = Math.ceil(this.total / 10);

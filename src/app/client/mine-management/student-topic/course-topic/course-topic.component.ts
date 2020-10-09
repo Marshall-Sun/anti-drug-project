@@ -15,7 +15,7 @@ export class CourseTopicComponent implements OnInit {
   dataList = [];
   loading = false;
 
-teacherId:string = '1';
+  teacherId:string = window.localStorage.getItem('id');
   constructor(
     private _notification: NzNotificationService,
     private MyteachingService$: MyteachingService,

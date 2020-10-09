@@ -113,7 +113,7 @@
                 <a>{{owner?.userTitle}}</a>
               </ng-template>
               <ng-template #avatarTemplate>
-                <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                <nz-avatar [nzSrc]="owner?.userMediumAvatar.startsWith('/image')? owner?.userMediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"
                            nz-popover
                            [nzPopoverTitle]="tem"
                            [nzPopoverContent]="content"
@@ -134,7 +134,7 @@
                       <a>{{detail?.job}}</a>
                     </ng-template>
                     <ng-template #avatarTemplate>
-                      <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+                      <nz-avatar [nzSrc]="detail.mediumAvatar.startsWith('/image')? detail.mediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"></nz-avatar>
                     </ng-template>
                     <ng-template #actionEdit>
                       <a>{{detail?.followedNum}}</a>

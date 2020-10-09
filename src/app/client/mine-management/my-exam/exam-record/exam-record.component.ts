@@ -18,8 +18,10 @@ export class ExamRecordComponent implements OnInit {
   recordList :[];
   dataList:[];
   loading:boolean;
-  userId:number=1;
+  userId = parseInt(window.localStorage.getItem('id'));
   testPaperType:string = "finished";
+  pageIndex: number = 1;
+  total: number;
 
   constructor(private http: HttpClient,
               private msg: NzMessageService,
@@ -36,10 +38,11 @@ export class ExamRecordComponent implements OnInit {
   searchData() {
     this.loading = true;
     this.recordList = [];
-    this.MyteachingService$.getMyExamList(1, 10,this.testPaperType ,this.userId).subscribe(result => {
+    this.MyteachingService$.getMyExamList(this.pageIndex, 10,this.testPaperType ,this.userId).subscribe(result => {
         this.loading = false;
-        this.dataList = result.data;
+        this.dataList = result.data.list;
         this.recordList = this.dataList;
+        this.total = result.data.totalsize
       },
       error1 => {
         this.loading = false;

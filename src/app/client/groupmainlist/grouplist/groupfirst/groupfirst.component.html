@@ -36,7 +36,7 @@
             </div>
           </ng-template>
           <ng-template #nzDescription>
-            <span><nz-avatar nzSize="small" nzIcon="user"
+            <span><nz-avatar nzSize="small" [nzSrc]="itempost?.smallAvatar? itempost.smallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"
                               nz-popover
                               [nzPopoverTitle]="tem"
                               [nzPopoverContent]="content"
@@ -64,7 +64,7 @@
                       <div>{{detail?.job}} <span *ngIf="detail?.id!=userId"><button nz-button style="width: 50px; height: 20px; font-size: 12px; float: right;" nzSize="small" nzType="primary" (click)="message(detail, messageModal)">私信</button></span></div>
                      </ng-template>
                     <ng-template #avatarTemplate>
-                      <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
+                      <nz-avatar [nzSrc]="detail?.mediumAvatar? detail.mediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'">
                         <!--ng-template #member>
                           <nz-avatar>{{image}}</nz-avatar>
                         </ng-template-->

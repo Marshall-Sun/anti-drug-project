@@ -7,8 +7,8 @@
                         <img width="200" alt="logo"
                             src="{{courseitem.smallAvatar}}" />
                         <div style="margin-left: 20px;">
-                            <p><a (click)="navigateByUrl('/client/courseinf/'+courseitem.courseId)"><span
-                                        style="font-size: 20px;">{{ courseitem.courseSetTitle }}</span></a>
+                            <p><a (click)="navigateByUrl('/client/courseinf/'+courseitem.courseSetId+'/teachplan/'+courseitem.courseId)"><span
+                                        style="font-size: 20px;">{{ courseitem.courseSetTitle }}--{{ courseitem.title }}</span></a>
                             </p>
                             <nz-rate [ngModel]="3" nzDisabled>
                             </nz-rate>
@@ -21,7 +21,7 @@
 </nz-list>
 <nz-divider></nz-divider>
 <div class="pagination">
-    <nz-pagination [(nzPageIndex)]="coursepage_number"
+    <nz-pagination [(nzPageIndex)]="coursepage_number"  nzPageSize="6"
         [nzTotal]="total_course_p_num" (nzPageIndexChange)="onPageChange_course($event)">
     </nz-pagination>
 </div>

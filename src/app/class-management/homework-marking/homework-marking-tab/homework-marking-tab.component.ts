@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './homework-marking-tab.component.html',
   styleUrls: ['./homework-marking-tab.component.less']
 })
-export class HomeworkMarkingTabComponent implements OnInit {
+export class ClassManagementHomeworkMarkingTabComponent implements OnInit {
 
   constructor() { }
 

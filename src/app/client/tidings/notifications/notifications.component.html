@@ -65,10 +65,10 @@
                 </div>
                 <div [ngStyle]="{'font-weight':!item.isread? 'bold':'none'}" *ngIf="item.type=='truename-authenticate'">
                   <span *ngIf="dealRealNameAuthenticate(item.content)=='reject'">
-                    <a (click)="readNotification(item.id)">实名认证经{{note}}</a>
+                    <a (click)="readNotification(item.id)">实名认证失败：{{note}}</a>
                   </span>
                   <span *ngIf="dealRealNameAuthenticate(item.content)=='through'">
-                    <a (click)="readNotification(item.id)">实名认证以通过</a>
+                    <a (click)="readNotification(item.id)">实名认证已通过</a>
                   </span>
                 </div>
                 <a style="float: right" *ngIf="item.needDel"

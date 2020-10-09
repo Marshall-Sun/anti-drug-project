@@ -1,14 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, ViewEncapsulation} from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ClientCourseVideoService } from 'src/app/service/client-course-video/client-course-video.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CourseManagementBackHalfService } from 'src/app/service/course-management-back-half/course-management-back-half.service';
 import { NzNotificationService } from 'ng-zorro-antd';
+import {async} from 'rxjs/internal/scheduler/async';
 @Component({
   selector: 'app-coursevideo',
   templateUrl: './coursevideo.component.html',
-  styleUrls: ['./coursevideo.component.less']
+  styleUrls: ['./coursevideo.component.less'],
+  providers: [ClientCourseVideoService]
 })
 export class CoursevideoComponent implements OnInit {
   courseId: string;
@@ -27,7 +29,7 @@ export class CoursevideoComponent implements OnInit {
   questionForm: FormGroup;
   videoLearingStatus: string;
 
-  videoUrl:any;
+  videoUrl: any;
 
   currentTask: any;
   currentactivity: any;
@@ -99,16 +101,16 @@ export class CoursevideoComponent implements OnInit {
       this.getTaskLearnStatus()
       if(this.taskType == "text"){
         //添加任务完成的函数
-        this.finishTask()
+        this.finishTask();
       }
       if(this.taskType == "video"){
         this.videoUrl = result.data.ActivityVideo.mediauri
       }
       if(this.taskType == "download"){//如果是下载,打开下载链接
         this.message.info('开始下载', { nzDuration: 1000 });
-        window.open('http://172.16.10.94:9013/'+result.data.CourseMaterialV8s[0].fileuri);
+        window.open(result.data.CourseMaterialV8s[0].fileuri);
         //添加任务完成的函数
-        this.finishTask()
+        this.finishTask();
       }
       //下面的不用管
       if(this.taskType == "homework"){//如果是作业,跳转到作业页面，本页不处理作业,作业页面尚未处理好
@@ -122,13 +124,20 @@ export class CoursevideoComponent implements OnInit {
 
   //页面跳转
   navigateByUrl(url: string) {
-    this.route.navigateByUrl(url)
+    this.route.navigateByUrl(url).then(() => {
+      this.ngOnInit()
+    });
+
+  }
+
+  backToCourse(url: string) {
+    this.router.navigateByUrl(url)
   }
 
   //下载资料
-  downloadMaterial(){
+  downloadMaterial() {
     this.message.info('开始下载', { nzDuration: 1000 });
-    window.open('http://172.16.10.94:9013/'+this.currentTask.CourseMaterialV8s[0].fileuri);
+    window.open(this.currentTask.CourseMaterialV8s[0].fileuri);
   }
 
   //记笔记
@@ -153,7 +162,7 @@ export class CoursevideoComponent implements OnInit {
       }
     });
   }
-
+  
   //获取任务学习状态
   getTaskLearnStatus() {
     this.courseVideoService.getTaskLearnStatus(this.teachplanId, this.taskId, this.userId).subscribe(
@@ -163,7 +172,6 @@ export class CoursevideoComponent implements OnInit {
     );
   }
 
-
   //任务完成相关
   finishTask() {
     this.courseVideoService.finishTask(this.teachplanId, this.taskId, this.userId).subscribe(
@@ -172,6 +180,7 @@ export class CoursevideoComponent implements OnInit {
       }
     );
   }
+
 
   //以前的代码
 

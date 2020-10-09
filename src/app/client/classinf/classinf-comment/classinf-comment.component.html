@@ -11,8 +11,8 @@
     <nz-list [nzDataSource]="comments" [nzRenderItem]="commentsitem" [nzItemLayout]="'horizontal'">
         <ng-template #commentsitem let-commentsitem>
             <nz-comment [nzAuthor]="commentsitem.nickName" [nzDatetime]="commentsitem.createdTimeString">
-               <!-- <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="commentsitem.avatar">
-                </nz-avatar>-->
+               <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="commentsitem.smallAvatar">
+                </nz-avatar>
                 <nz-comment-content>
                     <div [innerHTML]="commentsitem.content"></div>
                     <nz-rate [ngModel]="commentsitem.rating" nzDisabled></nz-rate>
@@ -23,7 +23,7 @@
     </nz-list>
     <nz-divider></nz-divider>
     <div class="pagination">
-        <nz-pagination [(nzPageIndex)]="current_comment_page" [nzTotal]="total_comment_pages"
+        <nz-pagination [(nzPageIndex)]="current_comment_page" [nzTotal]="total_comment_pages" nzPageSize="6"
             (nzPageIndexChange)="onPageChange_comments($event)"></nz-pagination>
     </div>
 </ng-template>
@@ -57,10 +57,10 @@
         <ng-template #reponseitem let-reponseitem>
             <nz-list-item>
                 <nz-list-item-meta [nzTitle]="nzTitle"
-                    nzAvatar="{{reponseitem.largeAvatar}}"
+                    nzAvatar="{{reponseitem.smallAvatar}}"
                     [nzDescription]="nzDescription">
                     <ng-template #nzTitle>
-                        {{reponseitem.nickName}}· {{reponseitem.createdTimeString* 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
+                        {{reponseitem.nickName}} 回复于 {{reponseitem.createdTime* 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
                     </ng-template>
                     <ng-template #nzDescription>
                             <div [innerHTML]="reponseitem.content"></div>

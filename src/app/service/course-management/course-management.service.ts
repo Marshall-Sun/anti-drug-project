@@ -20,10 +20,8 @@ export class CourseManagementService {
     })
   }
 
-  getMyStars(targetPage: number, pageSize: number, userId: string): Observable<any> {
+  getMyStars(userId: string): Observable<any> {
     const httpParam = new HttpParams()
-      .set('pageNum', `${targetPage}`)
-      .set('pageSize', `${pageSize}`)
       .set('userId',`${userId}`);
     return this.http.get(`/user/getLikeCourse`, {
       params: httpParam

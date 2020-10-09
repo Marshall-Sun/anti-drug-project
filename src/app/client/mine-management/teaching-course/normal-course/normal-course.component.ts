@@ -22,7 +22,7 @@ export class NormalCourseComponent implements OnInit {
   pageIndex: number = 1;
   status:string;
 
-  teacherId: string = "1";
+  teacherId;
   i: number =1;
   dataList = [];
   displayData = [];
@@ -36,6 +36,7 @@ export class NormalCourseComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.teacherId = window.localStorage.getItem('id');
     this.searchData()
   }
 

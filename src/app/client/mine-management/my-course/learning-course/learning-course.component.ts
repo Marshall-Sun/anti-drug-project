@@ -63,7 +63,7 @@ export class LearningCourseComponent implements OnInit {
   }
 
   LearnPro(learnTime: number, watchTime: number) {
-    return watchTime/learnTime;
+    return watchTime/learnTime * 100;
   }
 
   viewCourse(url: string) {

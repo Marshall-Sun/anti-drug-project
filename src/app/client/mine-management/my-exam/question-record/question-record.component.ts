@@ -18,7 +18,7 @@ export class QuestionRecordComponent implements OnInit {
   FavoriteList :[];
   dataList:[];
   loading:boolean;
-  userId:number=1;
+  userId:number= parseInt(window.localStorage.getItem('id'));
   detail:any;
   type: string;
 

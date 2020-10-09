@@ -78,9 +78,12 @@
         [nzRenderItem]="commentItem">
         <ng-template #commentItem let-item>
           <nz-list-item>
-            <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="item.content">
+            <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="nzContent">
               <ng-template #nzTitle>
                 <div style="display: flex; flex-direction: row; justify-content: space-between"><span>{{item.nickName}}</span><span>{{item.createdTimeString}}</span></div>
+              </ng-template>
+              <ng-template #nzContent>
+                <div [innerHTML]="item.content"></div>
               </ng-template>
             </nz-list-item-meta>
 

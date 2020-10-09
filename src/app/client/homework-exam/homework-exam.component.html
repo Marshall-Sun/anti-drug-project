@@ -2,7 +2,7 @@
     <div class="outer-layout">
       <div class="header">
         <!--*******************************这里需要url，返回课程按钮-->
-        <a class="back" (click)="navigateByUrl('/client/courseinf/' + this.courseId)"><i nz-icon nzType="left" nzTheme="outline"></i>{{'返回课程'}}</a>
+        <a class="back" (click)="navigateByUrl('client/courseinf/'+this.testId+'/teachplan/'+this.courseId)"><i nz-icon nzType="left" nzTheme="outline"></i>{{'返回课程'}}</a>
         <!--<span>{{'任务9-2: 阶段性测评'}}</span>-->
       </div>
       <div class="inner-layout">
@@ -171,9 +171,9 @@
                       nzPopoverPlacement="bottom"></i></a></div>
               </div>
               <ng-template #contentTmpl>
-                本次考试共{{singleChoices.length+multChoices.length+uncertainChoices.length+determineChoices.length}}题,
-                总分为{{singleTotalScore+multTotalScore+uncertaionTotalScore+determineTotalScore}}分,及格<br>
-                分为60分,请在{{testPaperContent.limitedTime}}分钟内作答。
+                本次作业共{{singleChoices.length+multChoices.length+uncertainChoices.length+determineChoices.length}}题,
+                总分为{{singleTotalScore+multTotalScore+uncertaionTotalScore+determineTotalScore}}分<p *ngIf="testPaperContent.limitedTime>0">
+                ,请在{{testPaperContent.limitedTime}}分钟内作答。</p>
               </ng-template>
               <div class="exam-card">
                 <div  *ngIf="!isEmpty(singleChoices)">
@@ -211,8 +211,8 @@
           </div>
         </div>
       </div>
-      <div class="footer"><a class="help-info" nz-popover [nzPopoverContent]="helptTmpl" nzPopoverPlacement="top"><i
-            nz-icon nzType="question-circle" nzTheme="fill"></i>任务完成条件</a></div>
+      <div class="footer" *ngIf="testPaperContent.finishType=='score'"><a class="help-info" nz-popover [nzPopoverContent]="helptTmpl" nzPopoverPlacement="top"><i
+        nz-icon nzType="question-circle" nzTheme="fill"></i>任务完成条件</a></div>
     </div>
     <ng-template #helptTmpl>
       满足以下条件:<br>

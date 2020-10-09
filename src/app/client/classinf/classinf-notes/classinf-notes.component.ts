@@ -45,7 +45,7 @@ export class ClassinfNotesComponent implements OnInit {
 
   ngOnInit() {
 
-    this.classinfservice.getclassNotes(this.classid).subscribe((res: any) => {
+    this.classinfservice.getclassNotes(this.classid,6).subscribe((res: any) => {
       this.setclassNotes(res);
     }, error => {
       this.notification.create(
@@ -54,7 +54,7 @@ export class ClassinfNotesComponent implements OnInit {
         `${error.error}`)
     })
 
-    this.classinfservice.getclassCourses(this.classid,0).subscribe((res: any) => {
+    this.classinfservice.getclassCourses(this.classid,0,6).subscribe((res: any) => {
       this.setclassCourses(res);
     }, error => {
       this.notification.create(
@@ -91,7 +91,7 @@ export class ClassinfNotesComponent implements OnInit {
 
   changeOrder_Note(order: string): void {
     this.noteorder = order;
-    this.classinfservice.getclassNotes(this.classid, this.select_note, this.noteorder).subscribe((res: any) => {
+    this.classinfservice.getclassNotes(this.classid,6, this.select_note, this.noteorder).subscribe((res: any) => {
       this.setclassNotes(res);
     }, error => {
       this.notification.create(
@@ -104,7 +104,7 @@ export class ClassinfNotesComponent implements OnInit {
   changeselect_Note(select: string,courseSetTitle:string): void {
     this.select_note = select;
     this.courseSetTitle = courseSetTitle;
-    this.classinfservice.getclassNotes(this.classid, this.select_note, this.noteorder).subscribe((res: any) => {
+    this.classinfservice.getclassNotes(this.classid,6, this.select_note, this.noteorder).subscribe((res: any) => {
       this.setclassNotes(res);
     }, error => {
       this.notification.create(
@@ -115,19 +115,19 @@ export class ClassinfNotesComponent implements OnInit {
   }
 
   //笔记点赞 ------未完成
-  notelike(){
-    this.classinfservice.note_like('','').subscribe((res: any) => {
-      this.notification.create(
-        'success',
-        '提交成功！',
-        `提交成功`)
-    }, error => {
-      this.notification.create(
-        'error',
-        '发生错误！',
-        `${error.error}`)
-    })
-  }
+  // notelike(){
+  //   this.classinfservice.note_like('','').subscribe((res: any) => {
+  //     this.notification.create(
+  //       'success',
+  //       '提交成功！',
+  //       `提交成功`)
+  //   }, error => {
+  //     this.notification.create(
+  //       'error',
+  //       '发生错误！',
+  //       `${error.error}`)
+  //   })
+  // }
 
 
 }

@@ -23,13 +23,13 @@
     <tr *ngFor="let data of studentListTable.data">
       <td>
         <div style="display: flex; flex-direction: row; justify-content: flex-start">
-          <img class="avatar" [src]="'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
+          <img class="avatar" [src]="data.smallavatar? data.smallavatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
           <div style="display: flex; flex-direction: column; justify-content: space-between">
             <span style="cursor: pointer; font-size: 14px; color: rgba(0, 0, 0, .75);" (click)="navigateTo('/client/userpage' + data?.id)">
               {{data?.nickname}}
               <span style="font-size: 12px; color: rgba(0, 0, 0, .55);" *ngIf="data?.comment">({{data?.comment}})</span>
             </span>
-            <span style="font-size: 12px; color: rgba(0, 0, 0, .55);">加入时间：{{data?.enrollTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+            <span style="font-size: 12px; color: rgba(0, 0, 0, .55);">加入时间：{{data?.createdTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
           </div>
         </div>
       </td>

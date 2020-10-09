@@ -25,7 +25,7 @@ export class OpenresourceComponent implements OnInit {
   }
   navigateByUrl(url) {
     // this.router.navigateByUrl(url);
-    window.open(url,'_blank')
+    this.router.navigateByUrl(url)
   }
   searchData() {
     this.openService$.getOpenCourseList().subscribe(result => {

@@ -112,8 +112,12 @@ export class QuestionComponent implements OnInit {
 
   deleteQuestion(questionId: number = 1) {
     this._questionCreateService.deleteQuestion(questionId).subscribe(res => {
-      this._nzNotificationService.success('删除成功!', '');
-      this.searchData();
+      if(res.code==200){
+        this._nzNotificationService.success('删除成功!', '');
+        this.searchData();
+      }else{
+        this._nzNotificationService.error('删除失败!', '');
+      }
     }, err => {
       this._nzNotificationService.error('删除失败!', '');
     })

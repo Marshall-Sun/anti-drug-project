@@ -33,7 +33,7 @@ export class MyInformationComponent implements OnInit {
   //分享历史--操作
   sharehistory: any;
   historycurrnetpage = 1;
-  historytotalpage = 1
+  historytotalpage = 1;
 
   //批量处理功能
   isbatcheditable = false;
@@ -80,8 +80,6 @@ export class MyInformationComponent implements OnInit {
     ).subscribe((res: any) => {
       this.dataList = res.data.data;
       this.totalpage = res.data.total;
-      console.log(this.dataList);
-      console.log(this.totalpage);
     }, error => {
       this._notification.create(
         'error',

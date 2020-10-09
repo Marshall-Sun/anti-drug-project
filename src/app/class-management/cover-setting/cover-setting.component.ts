@@ -22,6 +22,7 @@ export class CoverSettingComponent implements OnInit {
 
   ngOnInit() {
     this.classroomId = location.pathname.split('/')[3];
+    this.userId = window.localStorage.getItem('id')
   }
 
   customReq = (item: UploadXHRArgs) => {

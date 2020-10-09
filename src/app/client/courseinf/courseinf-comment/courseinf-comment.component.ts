@@ -7,7 +7,7 @@ import { CourseInfService } from 'src/app/service/courseinf-frontend/courseinf-f
   selector: 'app-courseinf-comment',
   templateUrl: './courseinf-comment.component.html',
   styleUrls: ['./courseinf-comment.component.less'],
-  inputs: ["comments","courseid","teachplanId","userId"],
+  inputs: ["comments","courseid","teachplanId","userId","total_comment_pages"],
 })
 export class CourseinfCommentComponent implements OnInit {
   courseid = "0";
@@ -65,17 +65,6 @@ export class CourseinfCommentComponent implements OnInit {
 
   setCoursesComments(res: any) {
     this.comments = res;
-
-    for (var i = 0; i < this.comments.length; i++) {
-      this.comments[i].userSmallAvatar = ""
-      if (this.comments[i].userSmallAvatar == "") {
-        this.comments[i].userSmallAvatar = "../../../../assets/img/timg2.jpg";
-      } else if (this.comments[i].userSmallAvatar.substr(0, 6) == "public") {
-        this.comments[i].userSmallAvatar = "../../../../assets/img/timg2.jpg";
-      } else if (this.comments[i].userSmallAvatar.substr(7, 7) == "edusoho") {
-        this.comments[i].userSmallAvatar = "../../../../assets/img/timg2.jpg";
-      }
-    }
     //this.total_comment_pages = res.data.total;
   }
 

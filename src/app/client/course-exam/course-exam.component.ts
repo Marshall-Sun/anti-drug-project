@@ -4,14 +4,17 @@ import { Router } from '@angular/router';
 import { NzMessageService, NzModalService, NzNotificationService, UploadFile } from 'ng-zorro-antd';
 import { th } from 'date-fns/locale';
 import { PaperMarkingService } from 'src/app/service/paperMarking/paper-marking.service';
+import { ClientCourseVideoService } from 'src/app/service/client-course-video/client-course-video.service';
 
 @Component({
   selector: 'app-course-exam',
   templateUrl: './course-exam.component.html',
-  styleUrls: ['./course-exam.component.less']
+  styleUrls: ['./course-exam.component.less'],
+  providers: [ClientCourseVideoService]
 })
 
 export class CourseExamComponent implements OnInit {
+
 
   //26,31 
   courseId: string = '31';
@@ -23,7 +26,8 @@ export class CourseExamComponent implements OnInit {
     question: [],
     limitedTime: 0,
     name: '',
-    description: ''
+    description: '',
+    finishType: ''
   };
   testQuestion = [];
   //题目内容
@@ -74,7 +78,9 @@ export class CourseExamComponent implements OnInit {
       score: '5.0',
       metas: { choices: ["正确", "错误"] }
     }]*/
-  constructor(private router: Router, private paperMarkingService: PaperMarkingService,
+  constructor(private router: Router, private courseVideoService: ClientCourseVideoService,
+    private paperMarkingService: PaperMarkingService,
+    private _modal: NzModalService,
     private _notification: NzNotificationService) { }
 
   ngOnInit() {
@@ -143,18 +149,23 @@ export class CourseExamComponent implements OnInit {
       console.log("不定项：", this.uncertainChoices);
       console.log("判断：", this.determineChoices);
       //console.log('题目：', this.testQuestion);
-      this.totalSeconds = this.testPaperContent.limitedTime;
-      this.countDown(this.totalSeconds * 60);
+      this.totalSeconds = this.testPaperContent.limitedTime* 60;
+      this.countDown();
     });
+    let that = this;
+    window.onbeforeunload = function(event) {
+      var dialogText = '刷新将会自动交卷！';
+      event.returnValue = dialogText;
+      return dialogText;
+    }
   }
-
-  countDown(totalSeconds) {
-    if (totalSeconds > 0) {
+  countDown() {
+    if (this.totalSeconds > 0) {
       //相差的总秒数
-      this.hour = Math.floor(totalSeconds / (60 * 60)) >= 10 ?
-        Math.floor(totalSeconds / (60 * 60)) :
-        '0' + Math.floor(totalSeconds / (60 * 60));
-      let tmp = totalSeconds % (60 * 60);
+      this.hour = Math.floor(this.totalSeconds / (60 * 60)) >= 10 ?
+        Math.floor(this.totalSeconds / (60 * 60)) :
+        '0' + Math.floor(this.totalSeconds / (60 * 60));
+      let tmp = this.totalSeconds % (60 * 60);
       //分钟
       this.minute = Math.floor(tmp / 60) >= 10 ?
         Math.floor(tmp / 60) :
@@ -163,18 +174,17 @@ export class CourseExamComponent implements OnInit {
       this.second = tmp % 60 >= 10 ?
         tmp % 60 : '0' + tmp % 60;
 
-      totalSeconds--;
+        this.totalSeconds--;
       //延迟一秒执行自己
       setTimeout(() => {
-        this.countDown(totalSeconds);
+        this.countDown();
       }, 1000)
     } else {
       console.log("倒计时结束，系统自动交卷");
       this.submitTestPaper();
-
-      //***********************************************************这里需要url，交卷跳转 */
     }
   }
+
   navigateByUrl(url: string) {
     this.router.navigateByUrl(url);
   }
@@ -237,12 +247,15 @@ export class CourseExamComponent implements OnInit {
       this.paperMarkingService.submitTestPaper(this.totalAnswer, this.courseId, this.taskId, this.userId)
         .subscribe(result => {
           this._notification.create('success', '交卷成功！', '', { nzDuration: 1000 });
-          this.navigateByUrl(`client/courseinf/${this.courseId}`)
+          this.courseVideoService.finishTask(this.courseId, this.taskId, this.userId).subscribe(re=>{
+            //交卷成功返回
+            this.navigateByUrl('client/courseinf/'+this.testId+"/teachplan/"+this.courseId);
+          });
         }, error1 => this._notification.create('error', '交卷失败！', `${error1.error}`, { nzDuration: 1000 }
         ))
 
-      //交卷成功返回
-      //this.navigateByUrl('client/mine');
+      
+      
     } else {
       console.log("已提交，不需要再次重复提交");
     }
@@ -273,5 +286,12 @@ export class CourseExamComponent implements OnInit {
     document.getElementById(i).style.color = "white";
     document.getElementById(i).style.backgroundColor = "green";
   }
+
+  ReturnButton(){
+    console.log("返回按钮");
+    this.totalSeconds=0;
+  }
+
+
 
 }

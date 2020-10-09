@@ -13,7 +13,7 @@ export class CreateCourseComponent implements OnInit {
 
   location: Location;
 
-  userId:number =1;
+  userId = parseInt(window.localStorage.getItem('id'));
   classroomId: string;
   title:string;
   type:string = '';

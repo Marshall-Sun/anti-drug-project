@@ -22,7 +22,7 @@ export class NoticeManagementComponent implements OnInit {
   time: string = '';
   noticeContent: string = '';
 
-  userId = 1;
+  userId;
 
   constructor(
     private noticeManagementService$: NoticeManagementService ,
@@ -37,7 +37,8 @@ export class NoticeManagementComponent implements OnInit {
     this.newNoticeForm = this.fb.group({
       title: ['', Validators.required],
       content: ['', Validators.required]
-    })
+    });
+    this.userId = window.localStorage.getItem('id')
   }
 
   searchData(pageIndex: number = this.pageIndex) {

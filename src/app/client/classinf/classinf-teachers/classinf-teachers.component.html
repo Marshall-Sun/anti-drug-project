@@ -11,7 +11,7 @@
     </nz-list>
     <nz-divider></nz-divider>
     <div class="pagination">
-        <nz-pagination [(nzPageIndex)]="current_teachers_page" [nzTotal]="total_teachers_pages"
+        <nz-pagination [(nzPageIndex)]="current_teachers_page" [nzTotal]="total_teachers_pages" nzPageSize="6"
             (nzPageIndexChange)="onPageChange_teacher($event)">
         </nz-pagination>
     </div>

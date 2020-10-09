@@ -33,3 +33,7 @@
         </nz-list-item>
       </ng-template>
     </nz-list>
+
+<div style="display: flex; flex-direction: row; justify-content: flex-end; margin-top: 5%;">
+  <nz-pagination [nzPageIndex]="pageIndex" [nzTotal]="total" nzPageSize="10" (nzPageIndexChange)="searchData()"></nz-pagination>
+</div>

@@ -22,9 +22,10 @@
 </ng-template>
 <ng-template #actionEllipsis>
     <div>
-        <i nz-icon nzType="setting" nzTheme="outline"  nz-dropdown [nzDropdownMenu]="topic_menu"></i>
+        <div  nz-dropdown [nzDropdownMenu]="topic_menu"><i nz-icon nzType="setting" nzTheme="outline" ></i><span nz-dropdown>其他</span></div>
+        
         <nz-dropdown-menu #topic_menu="nzDropdownMenu">
-            <span nz-dropdown>其他</span>
+
             <ul nz-menu nzSelectable>
                 <li nz-menu-item *ngIf="userId==data.createdUserID" (click)="showeditfirm()"> <i nz-icon nzType="edit" nzTheme="outline"></i>编辑</li>
                 <li nz-menu-item (click)="downloadMessage()"><i nz-icon nzType="download" nzTheme="outline"></i>下载</li>

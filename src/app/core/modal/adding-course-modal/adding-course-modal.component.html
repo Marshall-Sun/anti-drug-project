@@ -32,7 +32,7 @@
         [(nzChecked)]="mapOfCheckedId[data.courseSetId]"
         (nzCheckedChange)="refreshStatus()"
       ></td>
-      <td><img [src]="data?.imgUrl" />{{ data.courseSetTitle }}</td>
+      <td><img [src]="data?.cover? data?.cover: '../../assets/img/timg.jpg'" />{{ data.courseSetTitle }}</td>
       <td>
         <nz-select [(ngModel)]="selectedValue[data.courseSetId]">
           <nz-option *ngFor="let coursePlan of data.courseVOJOList" [nzValue]="coursePlan.courseId" [nzLabel]="coursePlan.courseTitle"></nz-option>

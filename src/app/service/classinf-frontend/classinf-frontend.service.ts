@@ -33,53 +33,53 @@ export class ClassInfService {
     return this.http.get(uri, { params });
   }
 
-  getclassCourses(id: string, page: number) {
+  getclassCourses(id: string, page: number,pageSize:number) {
     const params = new HttpParams()
       .set('orderBy', "createdTime DESC")
       .set('pageNum', page.toString())
-      .set('pageSize', "10")
+      .set('pageSize', pageSize.toString())
     const uri = `
         /classroom/management/get_courses/${id}`;
     return this.http.get(uri, { params });
   }
 
-  getclassTeachers(id: string, page: number) {
+  getclassTeachers(id: string, page: number,pageSize:number) {
     const params = new HttpParams()
       .set('classroomId', `${id}`)
       .set('pageNum', page.toString())
-      .set('isClosed', '10')
+      .set('isClosed', pageSize.toString())
     const uri = `/classroom/getClassroonTeacher`;
     return this.http.get(uri, { params });
   }
 
-  getclassTopics(id: string, nice: string = "0", orderBy: string = "createdTime", page: number = 1) {
+  getclassTopics(id: string,pageSize:number, nice: string = "0", orderBy: string = "createdTime", page: number = 1) {
     const params = new HttpParams()
       .set('classroomId', `${id}`)
       .set('nice', `${nice}`)
       .set('orderBy', `${orderBy}`)
       .set('pageNum', page.toString())
-      .set('pageSize', '10')
+      .set('pageSize', pageSize.toString())
       .set('type', `classroom`)
     const uri = `/classroom/getClassroomThread`;
     return this.http.get(uri, { params });
   }
 
-  getclassNotes(id: string, courseid: string = "", orderBy: string = "createdTime") {
+  getclassNotes(id: string,pageSize:number, courseid: string = "", orderBy: string = "createdTime") {
     const params = new HttpParams()
       .set('classroomId', id)
       .set('courseId', courseid)
       .set('orderBy', orderBy)
       .set('pageNum', '1')
-      .set('pageSize', '10')
+      .set('pageSize', pageSize.toString())
     const uri = `/classroom/getClassroomNote`;
     return this.http.get(uri, { params });
   }
 
-  getclassComments(id: string, page: number) {
+  getclassComments(id: string, page: number,pageSize:number) {
     const params = new HttpParams()
       .set('classroomId', `${id}`)
       .set('pageNum', page.toString())
-      .set('pageSize', '10')
+      .set('pageSize', pageSize.toString())
     const uri = `/classroom/getClassroomReview`;
     return this.http.get(uri, { params });
   }
@@ -128,7 +128,7 @@ export class ClassInfService {
         threadId: 0,
         title: title,
         type: "话题",
-        userId: "1"
+        userId: userId
       });
   }
 
@@ -145,12 +145,12 @@ export class ClassInfService {
         threadId: 0,
         title: title,
         type: "问题",
-        userId: "1"
+        userId: userId
       });
   }
 
 
-  question_response_submit(classroomId: string, threadid:string,parentId: string, content: string) {
+  question_response_submit(classroomId: string, threadid:string,parentId: string, content: string,userId:string) {
     const uri = `/classroom/setClassroomThreadPost`;
     return this.http.post(uri,
       {
@@ -160,7 +160,7 @@ export class ClassInfService {
         parentId: parentId,
         threadId: threadid,
         threadPostId: parentId,
-        userId: "1",
+        userId: userId,
       });
   }
 
@@ -179,7 +179,7 @@ export class ClassInfService {
         rating: rate,
         title: content,
         updateTime: 0,
-        userId: "1"
+        userId: userId
       });
   }
 
@@ -194,7 +194,7 @@ export class ClassInfService {
         rating: rate,
         title: content,
         updateTime: 0,
-        userId: "1"
+        userId: userId
       });
   }
 
@@ -226,9 +226,9 @@ export class ClassInfService {
 
 
   //笔记点赞
-  note_like(courseNoteid: string, courseNotelikeid: string) {
+  note_like(courseNoteid: string, courseNotelikeid: string,userId:string) {
     const uri = `/classroom/setClassroomNoteNice`;
-    return this.http.post(uri, { courseNoteId: courseNoteid, courseNoteLikeId: courseNotelikeid, createdTime: 0, userId: "1", })
+    return this.http.post(uri, { courseNoteId: courseNoteid, courseNoteLikeId: courseNotelikeid, createdTime: 0, userId: userId, })
   }
 
   //取消关注

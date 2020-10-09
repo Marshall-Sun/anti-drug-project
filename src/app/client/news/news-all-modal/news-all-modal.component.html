@@ -13,17 +13,6 @@
   <nz-divider ></nz-divider>
   <nz-content>
     <div class="left-content">
-      <div class="card">
-        <nz-card style="height: 450px" [nzCover]="coverTemplate1"  [nzHoverable]="true" (click)="navigateByUrl('/client/newsdetails/'+informationCard_1?.id)">
-          <nz-card-meta
-            [nzDescription]="informationCard_1?.categoryname"
-            [nzTitle]="informationCard_1?.title"
-          ></nz-card-meta>
-        </nz-card>
-        <ng-template #coverTemplate1>
-          <img class="large-picture" alt="example" [src]="informationCard_1?.smallAvatar? informationCard_1?.smallAvatar: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'">
-        </ng-template>
-      </div>
 
       <nz-divider ></nz-divider>
       <div class="listview">
@@ -32,28 +21,6 @@
     </div>
 
     <div class="right-content">
-      <div class="card">
-        <nz-card style="height: 200px"  [nzCover]="coverTemplate2"  [nzHoverable]="true" (click)="navigateByUrl('/client/newsdetails/'+informationCard_1?.id)">
-          <nz-card-meta
-            [nzDescription]="informationCard_1?.categoryname"
-            [nzTitle]= "informationCard_1?.title"
-          ></nz-card-meta>
-        </nz-card>
-        <ng-template #coverTemplate2>
-          <img class="small-picture" alt="example" [src]="informationCard_1?.smallAvatar? informationCard_1?.smallAvatar: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'">
-        </ng-template>
-
-        <nz-divider></nz-divider>
-        <nz-card style="height: 200px" [nzCover]="coverTemplate3" [nzHoverable]="true" (click)="navigateByUrl('/client/newsdetails/'+informationCard_2?.id)">
-          <nz-card-meta
-            [nzDescription]="informationCard_2?.categoryname"
-            [nzTitle]="informationCard_2?.title"
-          ></nz-card-meta>
-        </nz-card>
-        <ng-template #coverTemplate3>
-          <img class="small-picture" alt="example" [src]="informationCard_2?.smallAvatar? informationCard_2?.smallAvatar: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'">
-        </ng-template>
-      </div>
       <nz-divider></nz-divider>
       <div class="classlist-container">
         <app-news-classification-modal ></app-news-classification-modal>

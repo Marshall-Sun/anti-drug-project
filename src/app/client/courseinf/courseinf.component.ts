@@ -36,6 +36,13 @@ export class CourseinfComponent implements OnInit {
   materials = null;
   teachers = null;
   studentdata = null;
+  studentNum = 0;
+
+  //各种数据总数
+  total_course_top_page = 0;
+  total_notes_page = 0;
+  total_comment_pages = 0;
+  total_material_pages = 0;
 
 
   @ViewChild('header', null) HeaderComponent: any
@@ -66,12 +73,19 @@ export class CourseinfComponent implements OnInit {
         if (this.userId != null) {
           this.courseinfservice.get_course_isJoin(this.userId, this.courseid).subscribe((res: any) => {
             this.joinINf = res.data;
+            this.joinINf.hasLearned =  Math.floor(this.joinINf.taskProportion * this.joinINf.taskNum);
             if (this.joinINf.courseId != 0 && this.teachplanId == undefined) {
               this.teachplanId = this.joinINf.courseId;
               this.reLoadData();
             } else if (this.teachplanId == undefined) {
               this.courseinfservice.get_teaching_plan(this.courseid).subscribe((res: any) => {
-                this.teachplanId = res.data[0].id;
+                for(let ind = 0;ind<res.data.length;ind++){
+                  if(res.data[ind].status=='published'){
+                    this.teachplanId = res.data[ind].id;
+                    break;
+                  }
+                }
+                
                 this.reLoadData();
               }, error => {
                 this.notification.create(
@@ -99,9 +113,13 @@ export class CourseinfComponent implements OnInit {
           });
         } else {
           this.courseinfservice.get_teaching_plan(this.courseid).subscribe((res: any) => {
-            console.log(this.teachplanId)
             if (this.teachplanId == undefined){
-              this.teachplanId = res.data[0].id;
+              for(let ind = 0;ind<res.data.length;ind++){
+                if(res.data[ind].status=='published'){
+                  this.teachplanId = res.data[ind].id;
+                  break;
+                }
+              }
             }
             this.reLoadData();
           }, error => {
@@ -126,6 +144,15 @@ export class CourseinfComponent implements OnInit {
     if(this.userId!=null){
       this.courseinfservice.get_course_isJoin(this.userId, this.courseid).subscribe((res: any) => {
         this.joinINf = res.data;
+        if(this.joinINf!=null){
+          if(this.joinINf.taskProportion!=null&&this.joinINf.taskNum!=null){
+            this.joinINf.hasLearned = Math.floor(this.joinINf.taskProportion * this.joinINf.taskNum);
+          }else{
+            this.joinINf.hasLearned = 0;
+          }
+        }
+
+
         //this.reLoadData();
       }, error => {
         this.joinINf = null;
@@ -263,6 +290,7 @@ export class CourseinfComponent implements OnInit {
       return;
     }
     this.introduces = res.data;
+    this.studentNum = res.data.studentNum;
   }
 
   setCoursesCatalog(res: any) {
@@ -283,7 +311,7 @@ export class CourseinfComponent implements OnInit {
       return;
     }
     this.notes = res.data;
-    //this.total_notes_page = res.data.total;
+    this.total_notes_page = res.total;
 
     for (let i = 0; i < this.notes.length; i++) {
       if (this.notes[i].userSmallAvatar == undefined) {
@@ -304,7 +332,7 @@ export class CourseinfComponent implements OnInit {
       return;
     }
     this.comments = res;
-
+    this.total_comment_pages = res.total||0;
     for (var i = 0; i < this.comments.length; i++) {
       this.comments[i].userSmallAvatar = ""
       if (this.comments[i].userSmallAvatar == "") {
@@ -325,6 +353,7 @@ export class CourseinfComponent implements OnInit {
       return;
     }
     this.topics = res.data;
+    this.total_course_top_page = res.total;
     //this.total_course_top_page = res.data.total;
     if (this.topics != undefined) {
       for (var i = 0; i < this.topics.length; i++) {
@@ -347,6 +376,7 @@ export class CourseinfComponent implements OnInit {
       return;
     }
     this.materials = res;
+    this.total_material_pages = res.total||0;
   }
 
   setCourseTeachers(res: any) {

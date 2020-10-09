@@ -4,7 +4,7 @@
   <div class="content">
     <div class="task-list-header">
       <div>
-        <span style="margin: 3px;">任务总数:</span><span class="color-warning">{{tasklist.length}}</span>
+        <span style="margin: 3px;">任务总数:</span><span class="color-warning">{{getTaskNum()}}</span>
       </div>
       <div>
         <button nz-button nzType="primary" (click)="handleOpen_addtask(0,'lesson')"><i nz-icon nzType="plus"
@@ -57,7 +57,9 @@
                 <ng-template #extraTpl>
                   <!-- You can use stopPropagation if you don't want the panel to toggle -->
                   <nz-button-group nzSize='small'>
-                    <button nz-button><i nz-icon nzType="eye" nzTheme="outline"></i>预览</button>
+                    <button nz-button
+                    (click)="navigateByUrl('/client/courseinf/'+courseId+'/teachplan/'+teachplanId+'/previewtask/'+ getTaskByType(panel,'lesson').taskId)"
+                    ><i nz-icon nzType="eye" nzTheme="outline"></i>预览</button>
                     <button nz-button (click)="editTask(getTaskByType(panel,'lesson'),'lesson')"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</button>
                     <button *ngIf="getTaskByType(panel,'lesson').status!='published'"
                       (click)="publishTask(getTaskByType(panel,'lesson').taskId)" nz-button><i nz-icon nzType="upload"
@@ -197,6 +199,12 @@
               <ng-template #suffixButtonBase>
                 <button nz-button nzType="primary" nzSize="large" (click)="searchMaterials()">Search</button>
               </ng-template>
+              <nz-radio-group [(ngModel)]="material_from" style="margin: 20px;" (ngModelChange)="searchMaterials()">
+                <label nz-radio nzValue="mymaterial">我的资料</label>
+                <label nz-radio nzValue="upload">来自收藏</label>
+                <label nz-radio nzValue="share">来自分享</label>
+                <label nz-radio nzValue="public">公共资料</label>
+              </nz-radio-group>
               <nz-divider></nz-divider>
               <nz-table #basicTable nzFrontPagination="false" [nzData]="soursedata">
                 <thead>
@@ -268,7 +276,9 @@
           <nz-form-label nzSpan="3" nzRequired>试卷选择</nz-form-label>
           <nz-form-control nzSpan="21" nzExtra="如果找不到试卷，请先确定该试卷已经发布">
             <nz-select style="width: 100%" nzPlaceHolder="请选择试卷" id="testpaperId" formControlName="testpaperId">
-              <nz-option *ngFor="let item of testpaper" [nzValue]="item.id" [nzLabel]="item.testPaperName"></nz-option>
+              <div *ngFor="let item of testpaper">
+                <nz-option *ngIf="item.status=='open'"  [nzValue]="item.id" [nzLabel]="item.testPaperName"></nz-option>
+              </div>
             </nz-select>
           </nz-form-control>
         </nz-form-item>
@@ -382,7 +392,7 @@
     </div>
     <div *ngIf="addtssk_currenttype=='testpaper'&&radioTestValue == 'score'" style="margin-top: 10px;">
       分数("0分，表示无限制。")
-      <nz-input-number [ngModel]="testfinisheScore" nzMin="0" [nzStep]="1">
+      <nz-input-number [(ngModel)]="testfinisheScore" nzMin="0" [nzStep]="1">
       </nz-input-number>
     </div>
 
@@ -399,7 +409,7 @@
     </div>
 
     <div *ngIf="addtssk_currenttype=='download'" style="margin-top: 10px;">
-      <p>完成条件：观看下载资料</p>
+      <p>完成条件：下载资料</p>
     </div>
 
     <!-- <div>

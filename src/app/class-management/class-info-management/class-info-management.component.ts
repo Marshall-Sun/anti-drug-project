@@ -26,7 +26,7 @@ export class ClassInfoManagementComponent implements OnInit {
   usefulLife: number;
   expirationDate: Date;
   
-  userId: string = '1';
+  userId;
 
   constructor(
     private routerInfo: ActivatedRoute,
@@ -39,6 +39,7 @@ export class ClassInfoManagementComponent implements OnInit {
 
   ngOnInit() {
     this.classroomId = location.pathname.split('/')[3];
+    this.userId = window.localStorage.getItem('id');
     this.classInfoEditForm = this.fb.group({
       name: ['', Validators.required],
       intro: [''],

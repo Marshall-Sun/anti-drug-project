@@ -144,7 +144,8 @@ export class TeachingPlanManagementComponent implements OnInit {
       nzTitle: '创建教学计划',
       nzContent: TeachingPlanAddingModalComponent,
       nzComponentParams: {
-        courseId: this.courseId
+        courseId: this.courseId,
+        courseSetTitle:this.planList[0].coursesettitle
       },
       nzWidth: 600,
       nzOkText: '创建',

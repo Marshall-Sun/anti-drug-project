@@ -11,15 +11,6 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "less"
-        },
-        "architect": {
-          "build": {
-            "options": {
-              "scripts": [
-                "node_modules/echarts/dist/echarts.min.js"
-              ]
-            }
-          }
         }
       },
       "architect": {
@@ -43,19 +34,23 @@
             "styles": [
               "node_modules/quill/dist/quill.snow.css",
               "src/styles.less",
-              "src/theme.less"
+              "src/theme.less",
+              "node_modules/video.js/dist/video-js.min.css"
             ],
             "scripts": [
-              "node_modules/echarts/dist/echarts.min.js"
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/video.js/dist/video.min.js"
             ],
             "es5BrowserSupport": true
           },
           "configurations": {
             "production": {
-              "fileReplacements": [{
-                "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.prod.ts"
-              }],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -68,8 +63,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "6mb",
-                  "maximumError": "7mb"
+                  "maximumWarning": "15mb",
+                  "maximumError": "20mb"
                 }
               ]
             }
@@ -152,8 +147,5 @@
       }
     }
   },
-  "defaultProject": "anti-drug-project",
-  "cli": {
-    "analytics": false
-  }
+  "defaultProject": "anti-drug-project"
 }

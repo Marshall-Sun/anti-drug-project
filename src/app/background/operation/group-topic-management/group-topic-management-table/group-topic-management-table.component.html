@@ -50,7 +50,6 @@
             <span *ngIf="data.groupStatus == 'open'" (click)="closeGroup(data.groupId)"><i nz-icon nzType="close" nzTheme="outline"></i>关闭小组</span>
             <span *ngIf="data.groupStatus == 'close'" (click)="openGroup(data.groupId)"><i nz-icon nzType="check" nzTheme="outline"></i>开启小组</span>
           </div>
-          <div><span (click)="exchangeGroup(data, setNewLeader)"><i nz-icon nzType="team" nzTheme="outline"></i>转移小组</span></div>
         </div>
       </ng-template>
     </tr>

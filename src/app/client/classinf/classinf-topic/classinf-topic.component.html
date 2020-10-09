@@ -41,8 +41,8 @@
                 <nz-list-item-meta [nzTitle]="nzTitle" nzAvatar="{{topicitem.largeAvatar}}"
                     nzDescription="{{topicitem.userNickName}} 发起了问题（话题）时间 {{topicitem.createdTime* 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}">
                     <ng-template #nzTitle>
-                        <!--({{topicitem.type}})--><b> {{topicitem.title}}</b>
-                        <!-- <a href="https://ng.ant.design">{{ topicitem.title }}</a>-->
+                        <!--({{topicitem.type}})--><p><b>{{topicitem.title}}</b> </p>
+                        <div [innerHTML]="topicitem.content"></div>
                     </ng-template>
                 </nz-list-item-meta>
             </nz-list-item>
@@ -50,7 +50,7 @@
     </nz-list>
     <nz-divider></nz-divider>
     <div class="pagination">
-        <nz-pagination [(nzPageIndex)]="currenttopicpage" [nzTotal]="total_course_top_page"
+        <nz-pagination [(nzPageIndex)]="currenttopicpage" [nzTotal]="total_course_top_page" nzPageSize="6"
             (nzPageIndexChange)="onPageChange_topic($event)"></nz-pagination>
     </div>
 </ng-template>
@@ -96,13 +96,13 @@
         <ng-template #reponseitem let-reponseitem>
             <nz-list-item>
                 <nz-list-item-meta [nzTitle]="nzTitle"
-                    nzAvatar="{{reponseitem.largeAvatar}}"
+                    nzAvatar="{{reponseitem.smallAvatar}}"
                     [nzDescription]="nzDescription">
                     <ng-template #nzDescription>
                         <div [innerHTML]="reponseitem.content"></div>
                     </ng-template>
                     <ng-template #nzTitle>
-                        <b> {{reponseitem.nickName}}· {{reponseitem.createdTime}}</b>
+                        <b> {{reponseitem.nickName}} 回复于 {{reponseitem.createdNewTime*1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</b>
                     </ng-template>
                 </nz-list-item-meta>
             </nz-list-item>

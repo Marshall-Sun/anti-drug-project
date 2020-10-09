@@ -62,8 +62,11 @@ export class InformationComponent implements OnInit {
     formData.append('file', item.file as any);
     return this._http.post(item.action, formData).subscribe(
       (event: any) => {
-        console.log(event);
-        console.log(HttpEventType);
+        this.user.mediumAvatar = event.data;
+        window.localStorage.setItem('mediumAvatar', event.data);
+        let i;
+        this.personInfoEditService.changeStatus.subscribe(value => i = value);
+        this.personInfoEditService.changeStatus.next(i + 1);
         if (event.message === 'SUCCESS') {
           item.onSuccess!(event.body, item.file!, event);
         } else if (event instanceof HttpResponse) {

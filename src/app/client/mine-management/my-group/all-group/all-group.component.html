@@ -1,0 +1,27 @@
+<nz-list [nzDataSource]="MyGroupList" [nzRenderItem]="item" [nzGrid]="{ gutter: 4, xs: 12, sm: 12, md: 8, lg: 8, xl: 6 }">
+  <ng-template #item let-item>
+    <nz-list-item [nzContent]="nzContent">
+      <ng-template #nzContent>
+        <nz-card style="width: 180px;margin-top: 16px; cursor: pointer" (click)="navigateTo('/client/groupmainlist/' + item.id)" [nzLoading]="loading" nzType="vertical">
+          <nz-card-meta
+            [nzAvatar]="avatarTemplate"
+            [nzTitle] = "item.groupTitle"
+          ></nz-card-meta>
+          <div class="cardbottom">
+            <div>
+              <i nz-icon nzType="team" nzTheme="outline"></i>
+              <span>{{item.memberNum}}  | </span>
+
+              <i nz-icon nzType="message" nzTheme="outline"></i>
+              <span>{{item.threadNum}}</span>
+            </div>
+          </div>
+          <ng-template #avatarTemplate>
+            <nz-avatar nzIcon="user" [nzSrc]="item?.groupLogo? item?.groupLogo: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"></nz-avatar>
+          </ng-template>
+        </nz-card>
+      </ng-template>
+    </nz-list-item>
+  </ng-template>
+</nz-list>
+

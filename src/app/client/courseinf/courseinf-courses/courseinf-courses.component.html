@@ -2,7 +2,7 @@
 
     <ng-container *ngFor="let item of courses;let i = index;">
         <nz-collapse-panel *ngIf="getTaskByType(item,'lesson').status=='published'"
-            [nzHeader]="'任务'+i+':'+getTaskByType(item,'lesson').title">
+            [nzHeader]="'任务'+(i+1)+':'+getTaskByType(item,'lesson').title">
             <div *ngIf="getTaskByType(item,'preparation')!=null" class="listitem courselink">
                 <a
                     (click)="navigateByUrl('/client/courseinf/'+courseid+'/teachplan/'+teachplanId+'/task/'+ getTaskByType(item,'preparation').taskId)"><span>

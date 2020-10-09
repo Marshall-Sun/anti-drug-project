@@ -73,7 +73,7 @@ export class ClassinfCommentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.classinfservice.getclassComments(this.classid, this.current_comment_page).subscribe((res: any) => {
+    this.classinfservice.getclassComments(this.classid, this.current_comment_page,6).subscribe((res: any) => {
       this.setclassComments(res);
     }, error => {
       this.notification.create(
@@ -87,22 +87,10 @@ export class ClassinfCommentComponent implements OnInit {
   setclassComments(res: any) {
     this.comments = res.data.classReviewList;
     this.total_comment_pages = res.data.total;
-
-
-    for (var i = 0; i < this.comments.length; i++) {
-      this.comments[i].avator = ""
-      if (this.comments[i].avator == "") {
-        this.comments[i].avator = "../../../../assets/img/timg2.jpg";
-      } else if (this.comments[i].avator.substr(0, 6) == "public") {
-        this.comments[i].avator = "../../../../assets/img/timg2.jpg";
-      } else if (this.comments[i].avator.substr(7, 7) == "edusoho") {
-        this.comments[i].avator = "../../../../assets/img/timg2.jpg";
-      }
-    }
   }
 
   onPageChange_comments(event?: any) {
-    this.classinfservice.getclassComments(this.classid, this.current_comment_page).subscribe((res: any) => {
+    this.classinfservice.getclassComments(this.classid, this.current_comment_page,6).subscribe((res: any) => {
       this.setclassComments(res);
     }, error => {
       this.notification.create(
@@ -206,16 +194,6 @@ export class ClassinfCommentComponent implements OnInit {
       if (this.comments[i].id == this.currentcommitid) {
         this.currentCommentResponse = this.comments[i].childClassReview;
         break;
-      }
-    }
-    for (var i = 0; i < this.currentCommentResponse.length; i++) {
-      this.currentCommentResponse[i].largeAvatar = ""
-      if (this.currentCommentResponse[i].largeAvatar == "") {
-        this.currentCommentResponse[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-      } else if (this.currentCommentResponse[i].largeAvatar.substr(0, 6) == "public") {
-        this.currentCommentResponse[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-      } else if (this.currentCommentResponse[i].largeAvatar.substr(7, 7) == "edusoho") {
-        this.currentCommentResponse[i].largeAvatar = "../../../../assets/img/timg2.jpg";
       }
     }
     this.commentcontainer.clear();

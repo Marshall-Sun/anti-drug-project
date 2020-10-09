@@ -8,7 +8,7 @@
       <div *ngFor="let data of classroomList" class="drag-box">
         <div class="list-info">
 <!--          data.smallPicture && data.smallPicture.startsWith('/image')? data.smallPicture:-->
-          <img class="img-info" [src]="'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"/>
+          <img class="img-info" [src]="data.smallPicture? data.smallPicture: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"/>
           <div class="text-info">
             <div class="info-header">
               <div class="course-title" nz-tooltip [nzTitle]="data.title" (click)="navigatTo('client/classinf/'+ data.id)">{{data.title}}</div>

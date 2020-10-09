@@ -15,7 +15,7 @@ export class CourseSettingComponent implements OnInit {
   courseList = [];
   classroomId: string;
 
-  userId: string = '1';
+  userId;
 
   constructor(
     private _modal: NzModalService,
@@ -66,7 +66,8 @@ export class CourseSettingComponent implements OnInit {
     //     taskNum: '2',
     //     expireTime: '永久'
     //   });
-    this.getCourseList()
+    this.getCourseList();
+    this.userId = window.localStorage.getItem('id')
   }
 
   openAddingCourseModal() {

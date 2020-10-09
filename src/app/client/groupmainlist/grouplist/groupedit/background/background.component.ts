@@ -19,13 +19,7 @@ export class BackgroundComponent implements OnInit {
   groupId: string;
   userId: string = '1';
 
-  fileList = [
-    {
-      uid: -1,
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-    }
-  ];
+  fileList: UploadFile[] = [];
 
   previewImage: string | undefined = '';
   previewVisible = false;
@@ -65,8 +59,8 @@ export class BackgroundComponent implements OnInit {
   // }
   customReq = (item: UploadXHRArgs) => {
     const formData = new FormData();
-    formData.append('multipartFile', item.file as any);
-    formData.append('fileGroupId', this.groupId);
+    formData.append('file', item.file as any);
+    formData.append('groupId', this.groupId);
     formData.append('userId', this.userId);
     const req = new HttpRequest('POST', item.action, formData, {
       reportProgress: true,
@@ -84,6 +78,9 @@ export class BackgroundComponent implements OnInit {
         } else if (event instanceof HttpResponse) {
           item.onSuccess!(event.body, item.file!, event);
         }
+        let i;
+        this.imagesUploadingService$.changeStatus.subscribe(value => i = value);
+        this.imagesUploadingService$.changeStatus.next(i + 1)
       },
       err => {
         item.onError!(err, item.file!);

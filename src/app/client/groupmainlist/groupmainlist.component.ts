@@ -30,8 +30,8 @@ export class GroupmainlistComponent implements OnInit {
   totalPage: number;
   pageIndex: number = 1;
   loading: boolean = false;
-  detail:any
-  Header:[]
+  detail:any;
+  Header: any;
 
   team=1;
   message=2;
@@ -61,7 +61,7 @@ export class GroupmainlistComponent implements OnInit {
 
 
   tclick(){
-    this.router.navigateByUrl("client/mine/mygroup")
+    this.router.navigateByUrl("client/mine/mygroup?tab=my-manage")
   }
   oclick(){
     this.router.navigateByUrl("client/groupcreate")

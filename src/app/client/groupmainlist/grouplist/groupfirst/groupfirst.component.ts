@@ -21,7 +21,7 @@ export class GroupfirstComponent implements OnInit {
   nzValueQB=1
   nzValueJ=0
   nzValueQBJ:boolean = false;
-  detail:[];
+  detail: any;
   toId:string
   isfocus:boolean;
   groupId:string;

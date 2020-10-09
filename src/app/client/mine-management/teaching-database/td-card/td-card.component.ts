@@ -18,7 +18,7 @@ export class TdCardComponent implements OnInit {
   updatedata: EventEmitter<any[]>;
 
   data: any;
-  userId = 1;
+  userId = undefined;
 
   //对话框开关
   //预览
@@ -39,6 +39,7 @@ export class TdCardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userId =  window.localStorage.getItem('id');
   }
 
   //对话框操作
@@ -85,7 +86,7 @@ export class TdCardComponent implements OnInit {
   collectMaterial(): void {
     this.materialservice.collectMaterial(
       this.data.fileID,
-      "1",
+      this.userId,
     ).subscribe((res: any) => {
       this.data.isCollected = 1;
       this._notification.create(
@@ -103,7 +104,7 @@ export class TdCardComponent implements OnInit {
   UncollectMaterial(): void {
     this.materialservice.UncollectMaterial(
       this.data.fileID,
-      "1",
+      this.userId,
     ).subscribe((res: any) => {
       this.data.isCollected = 0;
       this._notification.create(
@@ -180,7 +181,7 @@ export class TdCardComponent implements OnInit {
   }
   //下载
   downloadMessage(): void {
-    window.open('http://172.16.10.94:9013'+this.data.fileURL);
+    window.open('http://localhost:9013'+this.data.fileURL);
     this.message.info('开始下载', { nzDuration: 1000 });
   }
   //共享

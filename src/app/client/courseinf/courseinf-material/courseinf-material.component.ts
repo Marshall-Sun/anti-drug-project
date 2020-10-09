@@ -6,7 +6,7 @@ import { NzMessageService } from 'ng-zorro-antd';
   selector: 'app-courseinf-material',
   templateUrl: './courseinf-material.component.html',
   styleUrls: ['./courseinf-material.component.less'],
-  inputs:["materials","courseid","teachplanId"]
+  inputs:["materials","courseid","teachplanId","total_material_pages"]
 })
 export class CourseinfMaterialComponent implements OnInit {
   courseid = "0";

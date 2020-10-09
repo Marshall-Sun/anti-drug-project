@@ -34,8 +34,9 @@ export class CourseManagementBackHalfService {
     return this._http.post(`/teachingPlan/addTeachingPlan`, {
       courseSetId: contentBody.courseSetId,
       creator: contentBody.creator,
+      courseSetTitle:contentBody.courseSetTitle,
       expiryMode: contentBody.expiryMode,
-      title: contentBody.courseSetTitle,
+      title: contentBody.title,
       learnMode: contentBody.learnMode,
       expiryDays: contentBody.expiryDays,
       expiryEndDate: contentBody.expiryEndDate,
@@ -177,6 +178,10 @@ export class CourseManagementBackHalfService {
 
   getTaskDetail(courseid:string,taskid: string,userid:string): Observable<any> {
     return this._http.get(`/course/getTaskDetail?courseId=${courseid}&taskId=${taskid}&userId=${userid}`)
+  }
+
+  getTaskContent(courseid:string,taskid: string,userid:string): Observable<any> {
+    return this._http.get(`/course/getTaskContent?courseId=${courseid}&taskId=${taskid}&userId=${userid}`)
   }
 
   edit_text(taskId:any,tx_form:any){

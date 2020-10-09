@@ -38,10 +38,14 @@ export class BaseInfoComponent implements OnInit {
 
     if (!(this.validateForm.controls.title.errors)) {
       const baseInfo = this.validateForm.value;
-      let tags = '|';
-      tags = tags + this.validateForm.controls.tags.value.join('|');
-      baseInfo.tags = tags + "|";
-      baseInfo.courseId = this.courseId;
+      let tags = '';
+      console.log(this.validateForm.controls.tags.value)
+      if (this.validateForm.controls.tags.value !== [""]) {
+        tags = '|';
+        tags = tags + this.validateForm.controls.tags.value.join('|');
+        baseInfo.tags = tags + "|";
+        baseInfo.courseId = this.courseId;
+      }
       this._courseBaseInfoEditService.setBaseInfo(baseInfo).subscribe(result => {
         this.isLoading = false;
         this.promptVisable = true;
@@ -68,11 +72,11 @@ export class BaseInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      title: [null, [Validators.required]],
-      subtitle: [null, [Validators.nullValidator]],
-      serializeMode: [null, [Validators.nullValidator]],
+      title: ['', [Validators.required]],
+      subtitle: ['', [Validators.nullValidator]],
+      serializeMode: ['', [Validators.nullValidator]],
       tags: [[""], [Validators.nullValidator]],
-      categoryId: [null, [Validators.nullValidator]]
+      categoryId: ['', [Validators.nullValidator]]
     });
     this.location = location;
     this.courseId = this._courseManagementUtilService.setCourseIdFrom(this.location);

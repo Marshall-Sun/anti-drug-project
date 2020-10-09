@@ -3,11 +3,13 @@ import { Router } from '@angular/router';
 import { PaperMarkingService } from "src/app/service/paperMarking/paper-marking.service";
 import {NzMessageService, NzModalService, NzNotificationService, UploadFile} from 'ng-zorro-antd';
 import { th } from 'date-fns/locale';
+import { ClientCourseVideoService } from 'src/app/service/client-course-video/client-course-video.service';
 
 @Component({
   selector: 'app-homework-exam',
   templateUrl: './homework-exam.component.html',
-  styleUrls: ['./homework-exam.component.less']
+  styleUrls: ['./homework-exam.component.less'],
+  providers: [ClientCourseVideoService]
 })
 export class HomeworkExamComponent implements OnInit {
 
@@ -22,7 +24,8 @@ export class HomeworkExamComponent implements OnInit {
     question:[],
     limitedTime:0,
     name: '',
-    description: ''
+    description: '',
+    finishType: ''
   };
   testQuestion=[];
   //题目内容
@@ -73,7 +76,7 @@ export class HomeworkExamComponent implements OnInit {
       score: '5.0',
       metas: { choices: ["正确", "错误"] }
     }]*/
-  constructor(private router: Router,private paperMarkingService:PaperMarkingService,
+  constructor(private router: Router,private paperMarkingService:PaperMarkingService,private courseVideoService: ClientCourseVideoService,
     private _notification: NzNotificationService,private elementRef:ElementRef,private renderer:Renderer) { }
 
   ngOnInit() {
@@ -173,6 +176,7 @@ export class HomeworkExamComponent implements OnInit {
     }else{
       console.log("倒计时结束，系统自动交卷");
       this.submitHomework();
+      this.navigateByUrl(`/client/courseinf/${this.courseId}`)
       //***********************************************************这里需要url，交卷跳转 */
     }
   }
@@ -239,10 +243,14 @@ export class HomeworkExamComponent implements OnInit {
       this.paperMarkingService.submitHomework(this.totalAnswer,this.courseId,this.taskId,this.userId)
       .subscribe(result=>{
         this._notification.create('success', '交卷成功！', '', {nzDuration: 1000});
+        this.courseVideoService.finishTask(this.courseId, this.taskId, this.userId).subscribe(re=>{
         //交卷成功返回
-        this.navigateByUrl(`/client/courseinf/${this.courseId}`)
+        this.navigateByUrl('client/courseinf/'+this.testId+"/teachplan/"+this.courseId);
+        })
       }, error1 => this._notification.create('error', '交卷失败！', `${error1.error}`, {nzDuration: 1000}
-      ));
+      ))
+
+      
     }else{
       console.log("已提交，不需要再次重复提交");
     }

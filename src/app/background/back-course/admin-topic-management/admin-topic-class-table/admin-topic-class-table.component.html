@@ -47,7 +47,7 @@
       <td>
         <div style="color: #108ee9; cursor: pointer;" (click)="navigateTo(data.threadId)">{{data.threadTitle}}</div>
         <div [innerHTML]="data.content"></div>
-        <span *ngIf="data.classroomTitle !== ''"><span (click)="navigateTo(data.classroomId)" style="color: #6dd2ee; cursor: pointer; font-size: 14px;">{{data.classroomTitle}}</span><span style="font-size: 12px;"></span></span>
+        <span *ngIf="data.classroomTitle !== ''"><span (click)="navigateTo('/client/classinf/'+data.classroomId)" style="color: #6dd2ee; cursor: pointer; font-size: 14px;">{{data.classroomTitle}}</span><span style="font-size: 12px;"></span></span>
       </td>
       <td>
         <span>{{data.postNum}}</span>/

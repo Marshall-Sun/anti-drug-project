@@ -44,7 +44,7 @@
           </div>
         </nz-card>
         <ng-template #coverTemplate>
-          <img alt="example" [src]="course.picture.startsWith('/image')? course.picture: '../../../../../assets/img/timg.jpg'" />
+          <img alt="example" [src]="course.picture !== ''? course.picture: '../../../../../assets/img/timg.jpg'" />
         </ng-template>
       </nz-list-item>
     </ng-template>

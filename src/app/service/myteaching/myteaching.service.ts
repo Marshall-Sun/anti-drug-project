@@ -148,6 +148,10 @@ export class MyteachingService {
   getUser(userId: string): Observable<any> {
     return this._http.get(`/user/getPersonalDetail?userId=${userId}`)
   }
+
+  showAllGroup(): Observable<any> {
+    return this._http.get(`/groupGate/showAllGroup`)
+  }
 }
 
 

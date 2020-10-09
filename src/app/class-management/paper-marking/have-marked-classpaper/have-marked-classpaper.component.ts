@@ -63,7 +63,6 @@ export class ClassManagementHaveMarkedClasspaperComponent implements OnInit {
   ngOnInit() {
     this.testclassid = location.pathname.split('/')[3];
     this.userid = window.localStorage.getItem('id');
-    console.log('classid:',this.testclassid);
     this.paperMarkingService.getClassTestCheckList(this.classroomId).subscribe(result => {
       this.paperMarkList = result.data;
       //等待试卷批阅列表加载完成，将其拷贝至paperListAfterSearch中

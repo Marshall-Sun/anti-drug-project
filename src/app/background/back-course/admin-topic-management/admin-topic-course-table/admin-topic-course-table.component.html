@@ -61,10 +61,10 @@
         (nzCheckedChange)="refreshStatus()"
       ></td>
       <td>
-        <div style="color: #108ee9; cursor: pointer; font-size: 16px;" (click)="navigateToTopic(data.id)">{{data.title}}</div>
+        <div style="color: #108ee9; cursor: pointer; font-size: 16px;">{{data.title}}</div>
         <div [innerHTML]="data.content"></div>
-        <span *ngIf="data.courseSetTitle !== ''"><span (click)="navigateToTopic(data.courseSetId)" style="color: #6dd2ee; cursor: pointer; font-size: 14px;">{{data.courseSetTitle}}</span><span style="font-size: 12px;">></span></span>
-        <span *ngIf="data.courseTitle !== ''" (click)="navigateToTopic(data.courseId)" style="color: #6dd2ee; cursor: pointer;">{{data.courseTitle}}</span>
+        <span *ngIf="data.courseSetTitle !== ''"><span (click)="navigateToTopic('/client/courseinf/' + data.courseSetId)" style="color: #6dd2ee; cursor: pointer; font-size: 14px;">{{data.courseSetTitle}}</span><span style="font-size: 12px;">></span></span>
+        <span *ngIf="data.courseTitle !== ''" style="color: #6dd2ee; cursor: pointer;">{{data.courseTitle}}</span>
       </td>
       <td>
         <span>{{data.postNum}}</span>/

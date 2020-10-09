@@ -17,26 +17,26 @@ import { StudentInvolveRecordComponent } from './student-setting/student-involve
 import { StudentExitRecordComponent } from './student-setting/student-exit-record/student-exit-record.component';
 import { QuillModule } from 'ngx-quill';
 import { CoverSettingComponent } from './cover-setting/cover-setting.component';
-import { HomeworkMarkingComponent } from './homework-marking/homework-marking.component';
+import { ClassManagementHomeworkMarkingComponent } from './homework-marking/homework-marking.component';
 import { TestpaperListingComponent } from './testpaper-listing/testpaper-listing.component';
 import { ResultTableComponent } from './testpaper-listing/result-table/result-table.component';
 import { PaperResultDetailComponent } from './testpaper-listing/paper-result-detail/paper-result-detail.component';
 import { PaperResultAnalysisComponent } from './testpaper-listing/paper-result-analysis/paper-result-analysis.component';
 import { PaperMarkingComponent } from './paper-marking/paper-marking.component';
-import { HomeworkMarkingTabComponent } from './homework-marking/homework-marking-tab/homework-marking-tab.component';
+import { ClassManagementHomeworkMarkingTabComponent } from './homework-marking/homework-marking-tab/homework-marking-tab.component';
 import { HaveMarkedComponent } from './paper-marking/have-marked/have-marked.component';
 import { PaperListComponent } from './paper-marking/paper-list/paper-list.component';
 import { PaperMarkingTabComponent } from './paper-marking/paper-marking-tab/paper-marking-tab.component';
 import {ClassManagementHaveMarkedClasspaperComponent} from './paper-marking/have-marked-classpaper/have-marked-classpaper.component';
 import {CourseManagementHaveMarkedCoursepaperComponent} from '../course-management/paper-marking/have-marked-coursepaper/have-marked-coursepaper.component';
-import {ClasspaperComponent} from './homework-marking/classpaper/classpaper.component';
+import {ClassManagementClasspaperComponent} from './homework-marking/classpaper/classpaper.component';
 
 @NgModule({
   declarations: [ClassManagementComponent, ManagementDashboardComponent, ClassInfoManagementComponent, HeadTeacherSettingComponent, TeacherSettingComponent,
     TutorSettingComponent, CourseSettingComponent, StudentSettingComponent, StudentSettingTabComponent, FormalStudentTableComponent, InformalStudentTableComponent, 
-    StudentInvolveRecordComponent, StudentExitRecordComponent, CoverSettingComponent, HomeworkMarkingComponent, PaperMarkingComponent, TestpaperListingComponent, 
-    ResultTableComponent, PaperResultDetailComponent, PaperResultAnalysisComponent,HomeworkMarkingTabComponent,HaveMarkedComponent,PaperListComponent,
-    ClasspaperComponent,
+    StudentInvolveRecordComponent, StudentExitRecordComponent, CoverSettingComponent, ClassManagementHomeworkMarkingComponent, PaperMarkingComponent, TestpaperListingComponent,
+    ResultTableComponent, PaperResultDetailComponent, PaperResultAnalysisComponent,ClassManagementHomeworkMarkingTabComponent,HaveMarkedComponent,PaperListComponent,
+    ClassManagementClasspaperComponent,
     ClassManagementHaveMarkedClasspaperComponent,
     PaperMarkingTabComponent],
   imports: [

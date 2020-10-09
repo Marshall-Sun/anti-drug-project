@@ -14,7 +14,7 @@ export class GrouptopicComponent implements OnInit {
   content: string = '';
   threadCreatingForm: FormGroup;
   groupId:string;
-  userId:string='1';
+  userId:string= window.localStorage.getItem('id');
 
   constructor(
     private grouptopicService$:GrouptopicService,

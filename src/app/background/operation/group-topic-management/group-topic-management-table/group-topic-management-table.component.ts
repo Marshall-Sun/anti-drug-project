@@ -16,7 +16,7 @@ export class GroupTopicManagementTableComponent implements OnInit {
   selectedStateFilterValue = '';
   groupName: string = '';
   leader: string = '';
-  userId: string = '1';
+  userId;
 
   dataList = [];
   displayData = [];
@@ -44,6 +44,7 @@ export class GroupTopicManagementTableComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userId = window.localStorage.getItem('id');
     this.searchData();
 
   }

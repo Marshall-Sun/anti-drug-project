@@ -13,6 +13,13 @@ import { ActivatedRoute } from '@angular/router';
 export class ClasspaperComponent implements OnInit {
 
 
+
+    //获取课程作业需要的参数
+    type:string="homework";
+    userid:string='2';
+
+    courseHomework=[];  //所有课程作业
+
   //试卷批阅：试卷的id，名字，课程，计划，时间;
   //各试卷学生答题情况：试卷id、学生姓名、交卷时间、用时、得分（是否有学生id来检索学生的答题网址)
 
@@ -28,7 +35,7 @@ export class ClasspaperComponent implements OnInit {
   paperSt=[];
   pageNum:number=1;
   pageSize:number=10;
-  userid:string='1';
+
   //满足搜索条件的试卷
   paperListAfterSearch=[];
   //搜索试卷的名字
@@ -62,31 +69,17 @@ export class ClasspaperComponent implements OnInit {
   ngOnInit() {
     
     this.userid=window.localStorage.getItem("id");
-    //获取在教班级
-    this.paperMarkingService.getTeachingClassroom(this.pageNum, this.pageSize, this.userid).subscribe(re => {
-      this.teachingCourse = re.data;
-      console.log('班级班级班级：', this.teachingCourse);
-      if (this.isEmpty(this.teachingCourse)) {
-        this.ispaperMarkListHaveData = true;
-        console.log('班级班级暂无数据:', this.ispaperMarkListHaveData);
-      } else {
-        //对于每一个课程而言，获取课程相应的试卷批阅列表
-        for (let course of this.teachingCourse) {
-          //获取试卷批阅列表
-          if(course.id!=null){
-            this.paperMarkingService.getClassHomeworkCheckList(course.id).subscribe(result => {
-              this.paperMarkList = this.paperMarkList.concat(result.data);
-              console.log('班级里：', this.paperMarkList);
-              //等待试卷批阅列表加载完成，将其拷贝至paperListAfterSearch中
-              this.paperListAfterSearch = this.paperMarkList;
-              console.log('拷贝：', this.paperListAfterSearch);
-            });
-          }
 
-        }
+    //获取班级所有作业
+    this.paperMarkingService.getClassroomTestPaperAndHomework(this.type,this.userid).subscribe(result=>{
+      this.courseHomework=result.data;
+      console.log('--------------所有班级作业-------------------',this.courseHomework);
+      if(this.isEmpty(this.courseHomework)){
+        this.ispaperMarkListHaveData=true;
       }
-
-    });
+      //等待试卷批阅列表加载完成，将其拷贝至paperListAfterSearch中
+      this.paperListAfterSearch = this.courseHomework;
+    })
 
 
   }
@@ -102,9 +95,9 @@ export class ClasspaperComponent implements OnInit {
     this.paperListAfterSearch=[];
     console.log('搜索名字：'+this.searchPName);
 
-    for(let paper of this.paperMarkList){
+    for(let paper of this.courseHomework){
       //如果某一个试卷满足试卷名字包含搜索字符串
-      this.paperNa=paper.number+paper.title;
+      this.paperNa=paper.testpaperName;
       if((this.paperNa.indexOf(this.searchPName))>-1){
         this.paperListAfterSearch.push(paper);
       }
@@ -116,17 +109,6 @@ export class ClasspaperComponent implements OnInit {
   clickShowButton(pid:number){
       this.clickCount++;
       this.clickPaperID=pid;
-      this.selectStudentById(pid);
-  }
-  
-  selectStudentById(pid: number) {
-    //根据试卷的testID获得相应的学生答题情况
-    //单个试卷详细信息
-    if(pid!=null){
-      this.paperMarkingService.getTestPaperResult(this.pageNum,this.pageSize,pid)
-    .subscribe(result=>this.paperSt=result.data);
-    }
-     
   }
 
   showStudentOrNot(pid:number):boolean{

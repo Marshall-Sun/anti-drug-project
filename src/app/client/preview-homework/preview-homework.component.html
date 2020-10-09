@@ -1,0 +1,191 @@
+<div class="exam-layout">
+    <div class="outer-layout">
+      <div class="header">
+        <!--*******************************这里需要url，返回按钮-->
+        <a class="back" (click)="goBack()"><i nz-icon nzType="left" nzTheme="outline"></i>{{'返回'}}</a>
+      </div>
+      <div class="inner-layout">
+        <div class="main">
+          <div class="content">
+            <div class="exam-header">
+              <div class="header-up">
+                <h1 class="header-title">{{testPaperContent.name}}</h1>
+              </div>
+              <div [innerHTML]="testPaperContent?.description"></div>
+            </div>
+            <form nz-form>
+              <div>
+                <div class="container"  *ngIf="!isEmpty(singleChoices)">
+                  <div class="container-heading">
+                    <strong style="margin-right:5px;">{{'单选题'}}</strong>
+                    <small>共{{singleChoices.length}}题,共{{singleTotalScore}}分</small>
+                    <div></div>
+                  </div>
+                  <div class="container-body">
+                    <div *ngFor="let question of singleChoices;let i=index" class="exam-question">
+                      <div class="exam-question-body">
+                        <div class="body-up">
+                          <div class="question-seq">
+                            <div class="seq">{{i+1}}</div>
+                            <nz-tag style="font-size: 12px;">{{question.score}}分</nz-tag>
+                          </div>
+                          <div class="question-stem" [innerHTML]="question?.stem"></div>
+                        </div>
+                        <ul class="question-choices">
+                          <li class="question-choice-item" *ngFor="let choice of question.choices" [innerHTML]="choice"></li>
+                        </ul>
+                      </div>
+                      <div class="exam-question-footer">
+                        <div class="input-question-choice">
+                          <nz-form-control>
+                            
+                            <nz-radio-group [nzName]="question.id" [(ngModel)]="singleAnswer[i].answers" [ngModelOptions]="{standalone: true}">
+                              <label *ngFor="let choice of question.choices;let j = index" nz-radio [nzValue]="j" (click)="ChangeStyle(i)">{{changeNumberToLetter(j)}}</label>
+                            </nz-radio-group>
+                          </nz-form-control>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="container"   *ngIf="!isEmpty(multChoices)">
+                  <div class="container-heading">
+                    <strong style="margin-right:5px;">{{'多选题'}}</strong>
+                    <small>共{{multChoices.length}}题,共{{multTotalScore}}分,漏选得{{multTotalScore/2}}分</small>
+                  </div>
+                  <div class="container-body">
+                    <div class="exam-question" *ngFor="let question of multChoices;let i=index">
+                      <div class="exam-question-body">
+                        <div class="body-up">
+                          <div class="question-seq">
+                            <div class="seq">{{i+1}}</div>
+                            <nz-tag style="font-size: 12px;">{{question.score}}分</nz-tag>
+                          </div>
+                          <div class="question-stem" [innerHTML]="question?.stem"></div>
+                        </div>
+                        <ul class="question-choices">
+                          <li *ngFor="let choice of question.choices" class="question-choice-item" [innerHTML]="choice"></li>
+                        </ul>
+                      </div>
+                      <div class="exam-question-footer">
+                        <div class="input-question-choice">
+                          <nz-form-control>
+                            <nz-checkbox-wrapper (click)="ChangeStyle(i+singleChoices.length)">
+                              <label nz-checkbox  *ngFor="let choice of question.choices;let j = index" [nzValue]="j" [(ngModel)]="testMUltAnswer[i].answers[j]" [ngModelOptions]="{standalone: true}" (click)="ChangeStyle(i+singleChoices.length)">{{changeNumberToLetter(j)}}</label>
+                            </nz-checkbox-wrapper>
+                          </nz-form-control>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="container" *ngIf="!isEmpty(uncertainChoices)">
+                  <div class="container-heading">
+                    <strong style="margin-right:5px;">{{'不定项选择题'}}</strong>
+                    <small>共{{uncertainChoices.length}}题,共{{uncertaionTotalScore}}分</small>
+                  </div>
+                  <div class="container-body">
+                    <div class="exam-question" *ngFor="let question of uncertainChoices;let i=index">
+                      <div class="exam-question-body">
+                        <div class="body-up">
+                          <div class="question-seq">
+                            <div class="seq">{{i+1}}</div>
+                            <nz-tag style="font-size: 12px;">{{question.score}}分</nz-tag>
+                          </div>
+                          <div class="question-stem" [innerHTML]="question?.stem"></div>
+                        </div>
+                        <ul class="question-choices">
+                          <li *ngFor="let choice of question.choices" class="question-choice-item" [innerHTML]="choice"></li>
+                        </ul>
+                      </div>
+                      <div class="exam-question-footer">
+                        <div class="input-question-choice">
+                          <nz-form-control>
+                            <nz-radio-group>
+                              <nz-checkbox-wrapper>
+                                <label nz-checkbox  *ngFor="let choice of question.choices;let j = index" [nzValue]="j" [(ngModel)]="testUncerAnswer[i].answers[j]" [ngModelOptions]="{standalone: true}" (click)="ChangeStyle(i+singleChoices.length+multChoices.length)">{{changeNumberToLetter(j)}}</label>
+                              </nz-checkbox-wrapper>
+                            </nz-radio-group>
+                          </nz-form-control>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="container"  *ngIf="!isEmpty(determineChoices)">
+                  <div class="container-heading">
+                    <strong style="margin-right:5px;">{{'判断题'}}</strong>
+                    <small>共{{determineChoices.length}}题,共{{determineTotalScore}}分</small>
+                  </div>
+                  <div class="container-body">
+                    <div class="exam-question" *ngFor="let question of determineChoices;let i=index">
+                      <div class="exam-question-body">
+                        <div class="body-up">
+                          <div class="question-seq">
+                            <div class="seq">{{i+1}}</div>
+                            <nz-tag style="font-size: 12px;">{{question.score}}分</nz-tag>
+                          </div>
+                          <div class="question-stem" [innerHTML]="question?.stem"></div>
+                        </div>
+                      </div>
+                      <div class="exam-question-footer">
+                        <div class="input-question-choice">
+                          <nz-form-control>
+                            <nz-radio-group [nzName]="question.id" [(ngModel)]="determineAnswer[i].answers" [ngModelOptions]="{standalone:true}">
+                              <label nz-radio [nzValue]="1"  (click)="ChangeStyle(i+singleChoices.length+multChoices.length+uncertainChoices.length)">正确</label>
+                              <label nz-radio [nzValue]="0"  (click)="ChangeStyle(i+singleChoices.length+multChoices.length+uncertainChoices.length)">错误</label>
+                            </nz-radio-group>
+                          </nz-form-control>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </form>
+          </div>
+          
+          <div class="timer-container">
+            <div class="container">
+              <div class="card-heading"><span>答题卡</span>
+                <div><a><i nz-icon nzType="info-circle" nzTheme="outline" nz-popover [nzPopoverContent]="contentTmpl"
+                      nzPopoverPlacement="bottom"></i></a></div>
+              </div>
+              <ng-template #contentTmpl>
+                本次作业共{{singleChoices.length+multChoices.length+uncertainChoices.length+determineChoices.length}}题,
+                总分为{{singleTotalScore+multTotalScore+uncertaionTotalScore+determineTotalScore}}分
+              </ng-template>
+              <div class="exam-card">
+                <div  *ngIf="!isEmpty(singleChoices)">
+                  <p>单选题</p>
+                  <div class="questions-layout">
+                    <div class="index" *ngFor="let question of singleChoices;let i=index" style="color: #5c5c5c;" id="{{i}}">{{i+1}}</div>
+                  </div>
+                </div>
+                <div *ngIf="!isEmpty(multChoices)">
+                  <p>多选题</p>
+                  <div class="questions-layout">
+                    <div class="index" *ngFor="let question of multChoices;let i=index"  style="color: #5c5c5c;" id="{{i+singleChoices.length}}">{{i+1}}</div>
+                  </div>
+                </div>
+                <div *ngIf="!isEmpty(uncertainChoices)">
+                  <p>不定项选择题</p>
+                  <div class="questions-layout">
+                    <div class="index" *ngFor="let question of uncertainChoices;let i=index"   style="color: #5c5c5c;" id="{{i+singleChoices.length+multChoices.length}}">{{i+1}}</div>
+                  </div>
+                </div>
+                <div *ngIf="!isEmpty(determineChoices)">
+                  <p>判断题</p>
+                  <div class="questions-layout">
+                    <div class="index" *ngFor="let question of determineChoices;let i=index"    style="color: #5c5c5c;" id="{{i+singleChoices.length+multChoices.length+uncertainChoices.length}}">{{i+1}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+

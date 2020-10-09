@@ -9,7 +9,7 @@ import { MaterialService } from 'src/app/service/material/material.service';
   styleUrls: ['./public-information.component.less']
 })
 export class PublicInformationComponent implements OnInit {
-  userId = 1;
+  userId = window.localStorage.getItem('id');
   None: any;
   dataList = [
     { id: "001", name: "Test1", date: "2020.2.4", type: "None" },

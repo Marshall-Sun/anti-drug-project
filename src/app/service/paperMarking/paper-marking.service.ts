@@ -120,4 +120,33 @@ export class PaperMarkingService {
     })
   }
 
+  //通过userid获取所有的课程试卷和作业
+  getCourseTestPaperAndHomework(type:string,userId:string):Observable<any>{
+    const httpParam = new HttpParams()
+      .set('type', `${type}`)
+      .set('userId', `${userId}`);
+    return this._http.get(`/user/getCourseTestPaperAndHomework`, {
+      params: httpParam
+    })
+  }
+
+  //通过testid预览作业和试卷
+  previewTestPaper(testId:string):Observable<any>{
+    const httpParam = new HttpParams()
+      .set('testId', `${testId}`);
+    return this._http.get(`/course/previewTestPaper`, {
+      params: httpParam
+    })
+  }
+
+  //通过userid获取所有的班级试卷和作业
+  getClassroomTestPaperAndHomework(type:string,userId:string):Observable<any>{
+    const httpParam = new HttpParams()
+      .set('type', `${type}`)
+      .set('userId', `${userId}`);
+    return this._http.get(`/user/getClassroomTestPaperAndHomework`, {
+      params: httpParam
+    })
+  }
+
 }

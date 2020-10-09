@@ -12,7 +12,7 @@ export class MyClassComponent implements OnInit {
 
   classroomId: string;
 
-  userId:string="1";
+  userId:string= window.localStorage.getItem('id');
   classroomList = [];
   title: string;
 

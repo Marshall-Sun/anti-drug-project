@@ -16,7 +16,7 @@ export class WebsitesAnnouncementManagementComponent implements OnInit {
   totalPage: number;
   pageIndex: number = 1;
 
-  userId = '1';
+  userId;
   constructor(
     private websitesAnnouncementService$: WebsitesAnnouncementService ,
     private _message: NzMessageService,
@@ -25,6 +25,7 @@ export class WebsitesAnnouncementManagementComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userId = window.localStorage.getItem('id');
     this.searchData();
   }
 

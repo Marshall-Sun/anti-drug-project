@@ -17,7 +17,7 @@ export class DashboardListCourseComponent implements OnInit {
 
   ngOnInit() {
     //服务器请求---待替换
-    this.courseservice.getCourses(4, "latest", "0")
+    this.courseservice.getCourses(1, "latest", "0")
       .subscribe((res: any) => {
         this.renderResulsts(res);
       }, error => {

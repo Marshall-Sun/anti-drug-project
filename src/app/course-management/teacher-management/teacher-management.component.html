@@ -11,7 +11,7 @@
       <div class="drag-list" cdkDropList  (cdkDropListDropped)="drop($event)">
         <div *ngFor="let item of teacherList" class="drag-box" cdkDrag>
           <div class="list-info">
-            <img class="avatar" [src]="item.smallAvatar.startsWith('public')? 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png': item.smallAvatar" />
+            <img class="avatar" [src]="item.smallAvatar && item.smallAvatar.startsWith('/image')?item.smallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
             <span>{{item.nickName}}</span>
           </div>
           <i style="cursor: pointer" nz-icon nzType="close" (click)="close(item.id)"></i>

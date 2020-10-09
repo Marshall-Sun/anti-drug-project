@@ -21,7 +21,7 @@
                 <!--<i nz-icon nzType="dislike"
                 nzTheme="fill"></i>（数量）-->
             </ng-template>
-            <nz-list-item-meta [nzTitle]="nzTitle" nzAvatar="{{notesitem.userSmallAvatar}}"
+            <nz-list-item-meta [nzTitle]="nzTitle" nzAvatar="{{notesitem.logo}}"
                 nzDescription="{{notesitem.authorName}} · {{notesitem.time* 1000 | date: 'yyyy-MM-dd HH:mm:ss'}} · {{notesitem.taskTitle}}">
                 <ng-template #nzTitle>
                     <div [innerHTML]="notesitem.content"></div>
@@ -33,7 +33,7 @@
 </nz-list>
 <nz-divider></nz-divider>
 <div class="pagination">
-    <nz-pagination [(nzPageIndex)]="current_notespage" [nzTotal]="total_notes_page"
+    <nz-pagination [(nzPageIndex)]="current_notespage" [nzTotal]="total_notes_page" nzPageSize="20"
         (nzPageIndexChange)="onPageChange_note($event)">
     </nz-pagination>
 </div>

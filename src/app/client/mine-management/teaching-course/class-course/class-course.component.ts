@@ -21,7 +21,7 @@ export class ClassCourseComponent implements OnInit {
   displayData = [];
   totalPage: number;
 
-   teacherId:string='1';
+   teacherId;
   constructor(
     private _notification: NzNotificationService,
     private MyteachingService$:MyteachingService,
@@ -29,7 +29,7 @@ export class ClassCourseComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    this.teacherId = window.localStorage.getItem('id');
     this.searchData()
   }
 

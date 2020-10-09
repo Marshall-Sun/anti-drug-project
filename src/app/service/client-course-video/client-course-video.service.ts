@@ -43,6 +43,10 @@ export class ClientCourseVideoService {
     return this.http.get(`/course/getTaskDetail?courseId=${courseid}&taskId=${taskid}&userId=${userid}`)
   }
 
+  getCurrentTaskContent(courseid:string,taskid: string,userid:string): Observable<any> {
+    return this.http.get(`/course/getTaskContent?courseId=${courseid}&taskId=${taskid}&userId=${userid}`)
+  }
+
   //告知服务器任务完成
   finishTask(courseid:string,taskid: string,userid:string): Observable<any> {
     return this.http.put(`/course/finishTask?courseId=${courseid}&taskId=${taskid}&userId=${userid}`, {})

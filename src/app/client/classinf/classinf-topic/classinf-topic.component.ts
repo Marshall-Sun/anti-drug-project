@@ -6,7 +6,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   selector: 'app-classinf-topic',
   templateUrl: './classinf-topic.component.html',
   styleUrls: ['./classinf-topic.component.less'],
-  inputs: ["classid","userId"]
+  inputs: ["classid", "userId"]
 })
 export class ClassinfTopicComponent implements OnInit {
   classid = "0";
@@ -57,7 +57,7 @@ export class ClassinfTopicComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.classinfservice.getclassTopics(this.classid).subscribe((res: any) => {
+    this.classinfservice.getclassTopics(this.classid,6).subscribe((res: any) => {
       this.setclassTopics(res);
     }, error => {
       this.notification.create(
@@ -70,32 +70,9 @@ export class ClassinfTopicComponent implements OnInit {
   setclassTopics(res: any) {
     this.topics = res.data.classroomThreadList;
     this.total_course_top_page = res.data.total;
-    console.log(this.topics);
-    for (var i = 0; i < this.topics.length; i++) {
-      if (this.topics[i].largeAvatar == "") {
-        this.topics[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-      } else if (this.topics[i].largeAvatar.substr(0, 6) == "public") {
-        this.topics[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-      } else if (this.topics[i].largeAvatar.substr(7, 7) == "edusoho") {
-        this.topics[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-      }
-    }
   }
   setclassTopicsResponses(res: any) {
     this.currentTopicResponse = res.data;
-
-    for (var i = 0; i < this.currentTopicResponse.length; i++) {
-      if (this.currentTopicResponse[i].largeAvatar == undefined) {
-        this.currentTopicResponse[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-      } else
-        if (this.currentTopicResponse[i].largeAvatar == "") {
-          this.currentTopicResponse[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-        } else if (this.currentTopicResponse[i].largeAvatar.substr(0, 6) == "public") {
-          this.currentTopicResponse[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-        } else if (this.currentTopicResponse[i].largeAvatar.substr(7, 7) == "edusoho") {
-          this.currentTopicResponse[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-        }
-    }
   }
 
   // setTopicResponses(res: any) {
@@ -156,7 +133,7 @@ export class ClassinfTopicComponent implements OnInit {
   currentopicid = "0";
   response_submit() {
     if (this.editorContent != "") {
-      this.classinfservice.question_response_submit(this.classid,"0",this.currentopicid ,this.editorContent).subscribe((res: any) => {
+      this.classinfservice.question_response_submit(this.classid,  this.currentopicid, "0", this.editorContent,this.userId).subscribe((res: any) => {
         this.notification.create(
           'success',
           '提交成功！',
@@ -180,7 +157,7 @@ export class ClassinfTopicComponent implements OnInit {
   //界面跳转-------------------------------------------------------------------------------
   return_topic() {
     //重新获取信息
-    this.currentopicid="";
+    this.currentopicid = "";
     this.onPageChange_topic();
     this.from_init();
     this.topiccontainer.clear();
@@ -234,7 +211,7 @@ export class ClassinfTopicComponent implements OnInit {
       this.topicytpe = "1";
     }
     this.currenttopicpage = 1;
-    this.classinfservice.getclassTopics(this.classid, this.topicytpe, this.topicorder, this.currenttopicpage).subscribe((res: any) => {
+    this.classinfservice.getclassTopics(this.classid,6, this.topicytpe, this.topicorder, this.currenttopicpage).subscribe((res: any) => {
       this.setclassTopics(res);
     }, error => {
       this.notification.create(
@@ -247,7 +224,7 @@ export class ClassinfTopicComponent implements OnInit {
   changeOrder_Topic(order: string): void {
     this.topicorder = order;
     this.currenttopicpage = 1;
-    this.classinfservice.getclassTopics(this.classid, this.topicytpe, this.topicorder, this.currenttopicpage).subscribe((res: any) => {
+    this.classinfservice.getclassTopics(this.classid,6, this.topicytpe, this.topicorder, this.currenttopicpage).subscribe((res: any) => {
       this.setclassTopics(res);
     }, error => {
       this.notification.create(
@@ -258,7 +235,7 @@ export class ClassinfTopicComponent implements OnInit {
   }
 
   onPageChange_topic(event?: any) {
-    this.classinfservice.getclassTopics(this.classid, this.topicytpe, this.topicorder, this.currenttopicpage).subscribe((res: any) => {
+    this.classinfservice.getclassTopics(this.classid,6, this.topicytpe, this.topicorder, this.currenttopicpage).subscribe((res: any) => {
       this.setclassTopics(res);
     }, error => {
       this.notification.create(

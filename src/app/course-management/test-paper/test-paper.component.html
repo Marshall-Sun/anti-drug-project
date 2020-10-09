@@ -49,7 +49,7 @@
           <ng-template #operationTemplate>
             <div class="user-management-operation">
               <div>
-                <span (click)="navigateByUrl(data)"><i nz-icon nzType="eye" nzTheme="outline"></i>预览</span>
+                <span (click)="navigateByUrl('/client/testId/' + data.id + '/preview_testpaper')"><i nz-icon nzType="eye" nzTheme="outline"></i>预览</span>
               </div>
               <div>
                 <span *ngIf="data.status !== 'open'" (click)="publish(data.id)"><i nz-icon nzType="check-circle" nzTheme="outline"></i>发布试卷</span>

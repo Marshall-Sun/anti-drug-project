@@ -22,7 +22,7 @@ export class RecordCourseComponent implements OnInit {
   displayData = [];
   totalPage: number;
 
-  teacherId:string='1';
+  teacherId;
 
   constructor(
     private routerInfo: ActivatedRoute,
@@ -32,6 +32,7 @@ export class RecordCourseComponent implements OnInit {
   ) {
   }
   ngOnInit() {
+    this.teacherId = window.localStorage.getItem('id');
     this.searchData()
   }
 
@@ -46,7 +47,7 @@ export class RecordCourseComponent implements OnInit {
         this.loading = false;
         this.dataList = result.data;
         this.recordList = this.dataList;
-        this.total = this.recordList[0].totalNum
+        this.total = this.recordList[0]? this.recordList[0].totalNum: 0
       },
       error1 => {
         this.loading = false;

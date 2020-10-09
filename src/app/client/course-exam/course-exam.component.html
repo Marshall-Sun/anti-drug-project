@@ -2,7 +2,7 @@
   <div class="outer-layout">
     <div class="header">
       <!--*******************************这里需要url，返回课程按钮-->
-      <a class="back" (click)="navigateByUrl('/client/courseinf/'+testId+'/teachplan/'+ courseId)"><i nz-icon nzType="left" nzTheme="outline"></i>{{'返回课程'}}</a>
+      <button nz-button class="back" nz-popconfirm nzPopconfirmTitle="返回后将自动交卷！" (nzOnConfirm)="ReturnButton()" nzPopconfirmPlacement="bottom"><i nz-icon nzType="left" nzTheme="outline"></i>{{'返回课程'}}</button>
       <!--<span>{{'任务9-2: 阶段性测评'}}</span>-->
     </div>
     <div class="inner-layout">
@@ -14,6 +14,7 @@
               <nz-tag [nzColor]="'#2db7f5'" class="header-status">{{'答题中'}}</nz-tag>
             </div>
             <div [innerHTML]="testPaperContent?.description"></div>
+            <p style="color: red;">说明：考试途中不得返回，一旦点击返回按钮系统将自动交卷</p>
             <!--
             <div class="header-bottom">
               <p>{{testPaperContent.description}}</p>
@@ -162,7 +163,8 @@
         </div>
         <div class="timer-container">
           <div class="exam-timer">
-            <div style="font-size: 16px;"><br>倒计时:{{hour}}:{{minute}}:{{second}}</div>
+            <div style="font-size: 16px;" *ngIf="testPaperContent.limitedTime"><br>倒计时:{{hour}}:{{minute}}:{{second}}</div>
+            <div style="font-size: 16px;" *ngIf="!testPaperContent.limitedTime">无时间限制</div>
           </div>
           <div class="container">
             <div class="card-heading"><span>答题卡</span>
@@ -171,8 +173,8 @@
             </div>
             <ng-template #contentTmpl>
               本次考试共{{singleChoices.length+multChoices.length+uncertainChoices.length+determineChoices.length}}题,
-              总分为{{singleTotalScore+multTotalScore+uncertaionTotalScore+determineTotalScore}}分,及格<br>
-              分为60分,请在{{testPaperContent.limitedTime}}分钟内作答。
+              总分为{{singleTotalScore+multTotalScore+uncertaionTotalScore+determineTotalScore}}分<p *ngIf="testPaperContent.limitedTime>0">
+                ,请在{{testPaperContent.limitedTime}}分钟内作答。</p>
             </ng-template>
             <div class="exam-card">
               <div  *ngIf="!isEmpty(singleChoices)">
@@ -210,11 +212,11 @@
         </div>
       </div>
     </div>
-    <div class="footer"><a class="help-info" nz-popover [nzPopoverContent]="helptTmpl" nzPopoverPlacement="top"><i
+    <div class="footer" *ngIf="testPaperContent.finishType=='score'"><a class="help-info" nz-popover [nzPopoverContent]="helptTmpl" nzPopoverPlacement="top"><i
           nz-icon nzType="question-circle" nzTheme="fill"></i>任务完成条件</a></div>
   </div>
   <ng-template #helptTmpl>
     满足以下条件:<br>
-    考试分数达到60分
+    考试分数达到{{testPaperContent.finishScore}}分
   </ng-template>
 </div>

@@ -5,6 +5,7 @@ import { LoginModalComponent } from "../core/modal/login-modal/login-modal.compo
 import { RegisterModalComponent } from "../core/modal/register-modal/register-modal.component";
 import { AuthService } from "./auth/auth.service";
 import { WebsitesAnnouncementService } from '../service/websites-announcement/websites-announcement.service';
+import { LoginExpiredService } from '../service/login-expired/login-expired.service';
 
 @Component({
   selector: "app-front-desk",
@@ -14,7 +15,6 @@ import { WebsitesAnnouncementService } from '../service/websites-announcement/we
 export class FrontDeskComponent implements OnInit {
   isLogin: boolean = typeof window.localStorage.getItem("id") == "string";
   isCollapsed: boolean = true;
-  userId: string = '1';
 
   // 搜索框输入值
   keyword: string;
@@ -23,13 +23,15 @@ export class FrontDeskComponent implements OnInit {
 
   isHide: boolean = true;
   isShow: boolean = false;
+  isLoginComponentShow: boolean = false;
 
   constructor(
     private router: Router,
     private _modalService: NzModalService,
     private msg: NzMessageService,
     private authService: AuthService,
-    private websiteAnnoucementService$: WebsitesAnnouncementService
+    private websiteAnnoucementService$: WebsitesAnnouncementService,
+    private loginExpiredService: LoginExpiredService
   ) { }
 
   ngOnInit() {
@@ -37,13 +39,12 @@ export class FrontDeskComponent implements OnInit {
       this.checkLoginStatus();
     }
     this.getNewAnnouncement();
+    this.loginExpiredService.loginExpired = () => {this.isLogin = false}
+    this.loginExpiredService.reLogin = () => {this.login()}
   }
 
   checkLoginStatus() {
-    const expireTime =
-      (parseInt(window.localStorage.getItem("exp")) +
-        parseInt(window.localStorage.getItem("expires_in"))) *
-      1000;
+    const expireTime = parseInt(window.localStorage.getItem("exp")) * 1000;
     const expireDate = new Date(expireTime);
     const now = new Date();
 
@@ -58,14 +59,20 @@ export class FrontDeskComponent implements OnInit {
   }
 
   login() {
-    const modal = this._modalService.create({
-      nzTitle: "登录",
-      nzContent: LoginModalComponent,
-      nzFooter: null,
-      nzOnOk: () => {
-        this.isLogin = typeof window.localStorage.getItem("id") == "string";
-      },
-    });
+    if(!this.isLoginComponentShow){
+      this.isLoginComponentShow = true
+      const modal = this._modalService.create({
+        nzTitle: "登录",
+        nzContent: LoginModalComponent,
+        nzFooter: null,
+        nzOnOk: () => {
+          this.isLogin = typeof window.localStorage.getItem("id") == "string";
+        },
+        nzOnCancel: () => {
+          this.isLoginComponentShow = false
+        }
+      });
+    }
   }
 
   register() {

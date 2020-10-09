@@ -4,9 +4,9 @@
       <img class="header-image" [src]="imgUrl">
       <div class="header-info">
         <div>{{title}}<nz-tag [nzColor]="'#87d068'">{{status === 'published'? '已发布': '未发布'}}</nz-tag>
-          <div></div>教师:<span *ngFor="let name of teachersName" style="margin-right: 5px;">{{name}}</span>
+          <div></div>教师:<span *ngFor="let name of teachersName" style="margin-right: 5px;">{{name.nickname}}</span>
         </div>
-        <button nzSize="small" nz-button nzType="primary">返回课程主页</button>
+        <button nzSize="small" nz-button nzType="primary" (click)="navigateByUrl('/client/courseinf/' + courseId)">返回课程主页</button>
       </div>
     </div>
   </nz-header>

@@ -6,7 +6,7 @@ import { CourseInfService } from 'src/app/service/courseinf-frontend/courseinf-f
   selector: 'app-courseinf-notes',
   templateUrl: './courseinf-notes.component.html',
   styleUrls: ['./courseinf-notes.component.less'],
-  inputs: ["notes","courseid","teachplanId"],
+  inputs: ["notes","courseid","teachplanId","total_notes_page"],
 })
 export class CourseinfNotesComponent implements OnInit {
   courseid = "0";
@@ -57,18 +57,6 @@ export class CourseinfNotesComponent implements OnInit {
   setCoursesNotes(res: any) {
     this.notes = res.data;
     //this.total_notes_page = res.data.total;
-
-    for (let i = 0; i < this.notes.length; i++) {
-      if (this.notes[i].userSmallAvatar == undefined) {
-        this.notes[i].userSmallAvatar = "../../../../assets/img/timg2.jpg";
-      } else if (this.notes[i].userSmallAvatar == "") {
-        this.notes[i].userSmallAvatar = "../../../../assets/img/timg2.jpg";
-      } else if (this.notes[i].userSmallAvatar.substr(0, 6) == "public") {
-        this.notes[i].userSmallAvatar = "../../../../assets/img/timg2.jpg";
-      } else if (this.notes[i].userSmallAvatar.substr(7, 7) == "edusoho") {
-        this.notes[i].userSmallAvatar = "../../../../assets/img/timg2.jpg";
-      }
-    }
   }
 
 }

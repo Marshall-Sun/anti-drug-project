@@ -67,7 +67,7 @@
                 <nz-avatar [nzSize]="64" [nzText]="recentitem.postNum + '\n' + '回复'" [nzShape]="'square'"></nz-avatar>
             </ng-template>
             <ng-template #nzDescription>
-            <span ><nz-avatar nzSize="small" nzIcon="user"
+            <span ><nz-avatar nzSize="small" [nzSrc]="recentitem.smallAvatar"
                               (mouseenter)="getUserDetail(recentitem.userId)"
                               nz-popover
                               [nzPopoverTitle]="tem"
@@ -99,7 +99,7 @@
         </div>
        </ng-template>
       <ng-template #avatarTemplate>
-        <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+        <nz-avatar [nzSrc]="detail?.mediumAvatar? detail.mediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"></nz-avatar>
       </ng-template>
       <ng-template #actionEdit>
         <a>{{detail?.followedNum}}</a>

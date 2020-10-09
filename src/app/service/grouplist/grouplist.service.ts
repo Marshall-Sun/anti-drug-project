@@ -94,4 +94,17 @@ export class GrouplistService {
   getGroupMembers(groupId:string):Observable<any>{
     return this._http.get(`/groupGate/showGroupMembers?groupID=${groupId}`)
   }
+
+  // 加入小组
+  joinInGroup(groupId: string, role: string, userId: string): Observable<any> {
+    return this._http.post(`/groupGate/addNewGroupMember`, {
+      groupId: groupId,
+      role: role,
+      userId: userId
+    })
+  }
+
+  isJoinInGroup(groupId: string, userId: string): Observable<any> {
+    return this._http.get(`/groupGate/isJoinGroup?groupId=${groupId}&userId=${userId}`)
+  }
 }

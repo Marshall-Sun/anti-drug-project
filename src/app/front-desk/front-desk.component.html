@@ -113,9 +113,9 @@
           <li nz-submenu *ngIf="isLogin" nzTitle="管理后台" class="menu-item">
             <ul>
               <li nz-menu-item (click)="navigateByUrl('/admin')"
-                [style.display]="checkIdentity('SUPER_ADMIN') ? '' : 'none'">我的后台</li>
+                [style.display]="checkIdentity('ADMIN') ? '' : 'none'">我的后台</li>
               <li nz-menu-item (click)="navigateByUrl('/client/mine/teachingcourse')"
-                [style.display]="checkIdentity('ROLE_TEACHER') ? '' : 'none'">我的教学</li>
+                [style.display]="checkIdentity('TEACHER') ? '' : 'none'">我的教学</li>
               <li nz-menu-item (click)="navigateByUrl('/client/mine/mycourse')">我的学习</li>
             </ul>
           </li>

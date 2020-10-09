@@ -110,6 +110,11 @@ import {HomeworkExamComponent} from "../client/homework-exam/homework-exam.compo
 import { MineHomeworkMarkingComponent } from '../client/mine-management/homework-marking/homework-marking.component';
 import { ClasspaperComponent } from '../client/mine-management/homework-marking/classpaper/classpaper.component';
 import { CoursepaperComponent } from '../client/mine-management/homework-marking/coursepaper/coursepaper.component';
+import {ClassManagementHomeworkMarkingComponent} from '../class-management/homework-marking/homework-marking.component';
+import {HomeworkMarkingComponent} from '../course-management/homework-marking/homework-marking.component';
+import {TaskpreviewComponent} from '../client/taskpreview/taskpreview.component';
+import {PreviewTestpaperComponent} from '../client/preview-testpaper/preview-testpaper.component';
+import {PreviewHomeworkComponent} from '../client/preview-homework/preview-homework.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -146,6 +151,7 @@ const routes: Routes = [
       { path: 'courselist', component: CourselistComponent},
       { path: 'courseinf/:id', component: CourseinfComponent, canActivate: [AuthGuard]},
       { path: 'courseinf/:id/teachplan/:pid', component: CourseinfComponent, canActivate: [AuthGuard] },
+      { path: 'courseinf/:id/teachplan/:pid/previewtask/:taskId', component: TaskpreviewComponent, canActivate: [AuthGuard] },
       { path: 'courseinf/:id/teachplan/:pid/task/:taskId', component: CoursevideoComponent, canActivate: [AuthGuard] },
       { path: 'course_test/:courseId/task/:taskId/test/:testId',component:CourseExamComponent, canActivate: [AuthGuard]},
       {path : 'courseId/:courseId/taskId/:taskId/testId/:testId/homework-exam',component:HomeworkExamComponent, canActivate: [AuthGuard]},
@@ -192,10 +198,14 @@ const routes: Routes = [
           { path: 'studentsetting', component: StudentSettingComponent },
           { path: 'coversetting', component: CoverSettingComponent },
           { path: 'testpaper', component: ClassPaperMarkingComponent},
-          { path: 'homeworkmarking',component:ClasspaperComponent},
+          { path: 'homeworkmarking',component:ClassManagementHomeworkMarkingComponent},
          // { path: 'testpaper/:paperid/resulttable', component: ResultTableComponent }
         ]},
       { path: 'testpaper/:paperid/result/:studentid', component: PaperResultDetailComponent, canActivate: [AuthGuard] },
+      {path:'courseId/:courseId/taskId/:taskId/preview_homework',component:PreviewHomeworkComponent},
+      {path:'testId/:testId/preview_homework',component:PreviewHomeworkComponent},
+      {path:'courseId/:courseId/taskId/:taskId/preview_testpaper',component:PreviewTestpaperComponent},
+      {path:'testId/:testId/preview_testpaper',component:PreviewTestpaperComponent},
       { path: 'tidings', component:TidingsComponent, canActivate: [AuthGuard], children: [
           { path: '', redirectTo: 'messages', pathMatch: 'full' },
           { path: 'messages', component: MessagesComponent },
@@ -249,7 +259,7 @@ const routes: Routes = [
         { path: 'studentsetting', component: StudentManagementComponent },
         { path: 'teachersetting', component: TeacherManagementComponent },
         { path: 'papers', component: PaperMarkingComponent },
-        { path: 'homeworkmarking',component:CoursepaperComponent},
+        { path: 'homeworkmarking',component:HomeworkMarkingComponent},
         { path: 'papers/:paperid/resulttable', component: TestResultTableComponent },
       ] },
       { path: 'course/:courseid/analysis/:courseTaskId', component: PaperResultAnalysisComponent, canActivate: [AuthGuard]},

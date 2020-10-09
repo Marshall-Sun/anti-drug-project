@@ -9,7 +9,7 @@
       <div *ngIf="tutorList.length !== 0" class="drag-list" cdkDropList  (cdkDropListDropped)="drop($event)">
         <div *ngFor="let item of tutorList" class="drag-box" cdkDrag>
           <div class="list-info">
-            <img class="avatar" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+            <img class="avatar" [src]="item.largeAvatar.startsWith('/iamge')? item.largeAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
             <span>{{item.nickname}}</span>
           </div>
           <i style="cursor: pointer;" (click)="deleteTutor(item.id)" nz-icon nzType="close"></i>

@@ -6,11 +6,11 @@ import { ResultTableComponent } from 'src/app/class-management/testpaper-listing
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-classpaper',
+  selector: 'app-class-management-classpaper',
   templateUrl: './classpaper.component.html',
   styleUrls: ['./classpaper.component.less']
 })
-export class ClasspaperComponent implements OnInit {
+export class ClassManagementClasspaperComponent implements OnInit {
 
 
   //试卷批阅：试卷的id，名字，课程，计划，时间;
@@ -27,7 +27,7 @@ export class ClasspaperComponent implements OnInit {
   pageNum:number=1;
   pageSize:number=10;
   //userid:number=1;
-  userID:string='1';
+  userID;
   //满足搜索条件的试卷
   paperListAfterSearch=[];
   //搜索试卷的名字
@@ -59,8 +59,8 @@ export class ClasspaperComponent implements OnInit {
    }
 
   ngOnInit() {
-    //this.classid = location.pathname.split('/')[3];  ///----------------------------这
-    //this.userID=window.localStorage.getItem("id");
+    this.classid = location.pathname.split('/')[3];  ///----------------------------这
+    this.userID=window.localStorage.getItem("id");
     //获取试卷批阅列表
     this.paperMarkingService.getClassHomeworkCheckList(this.classid).subscribe(result=>{
       this.paperMarkList=result.data;

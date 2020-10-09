@@ -38,7 +38,7 @@ export class QuestionCreateService {
     return this._http.put(api, config)
   }
 
-  deleteQuestion(questionId: number) {
+  deleteQuestion(questionId: number): Observable<any> {
     const api = `/course/deleteQuestion?questionId=${questionId}`
     return this._http.delete(api);
   }

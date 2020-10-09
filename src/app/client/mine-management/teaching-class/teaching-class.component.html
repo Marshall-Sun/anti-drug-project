@@ -3,7 +3,7 @@
     <h2>所教班级</h2>
   </div>
   <nz-divider></nz-divider>
-  <div class="page-content">
+  <div *ngIf="classroomList.length > 0" class="page-content">
     <div class="drag-list"  >
       <div *ngFor="let data of classroomList" class="drag-box" >
         <div class="list-info">
@@ -37,5 +37,8 @@
       </div>
     </div>
     <nz-divider></nz-divider>
+  </div>
+  <div *ngIf="classroomList.length == 0">
+    <nz-empty></nz-empty>
   </div>
 </div>

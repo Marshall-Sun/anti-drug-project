@@ -1,0 +1,34 @@
+<nz-content style="padding-top: 15px" nzType="flex" nzJustify="center" nz-row>
+    <div nz-col nzSpan="16">
+      <nz-breadcrumb style="margin-bottom: 20px;">
+        <a style="margin-right: 10px;padding-top: 8px;" class="labelClick"
+          (click)="navigateByUrl('client/course/'+courseId+'/teaching_plan_page/'+teachplanId+'/tasks')">
+          <i nz-icon nzType="left" style="margin-right: 5px;padding-top: 8px;"></i>教学计划页面
+        </a>
+        <label style="border-left: 1px solid;border-color: darkgray; padding-left: 15px;color: darkgrey;">
+          {{ title }}
+        </label>
+      </nz-breadcrumb>
+
+
+      <div *ngIf="taskType=='video'" class="video-content">
+        <app-video-player (videoFinish)="setVideoLearingStatus($event)" [url]="videoUrl" [teachplanId]="teachplanId" [taskId]="taskId"></app-video-player>
+      </div>
+  
+      <div *ngIf="taskType=='text'" class="text-content">
+        <h1 style="text-align: center;">{{currentactivity.title}}</h1>
+        <div style="background-color: #E0EEEE;min-height: 200px;margin-bottom: 50px;padding: 20px;"><span class="text-image" [innerHTML]="currentactivity.content"></span></div>
+      </div>
+  
+      <div *ngIf="taskType=='download'" class="text-content">
+        <h1 style="text-align: center;">下载资料</h1>
+        <div style="background-color: #E0EEEE;min-height: 200px;margin-bottom: 50px;padding: 20px;">还没开始下载? <button nz-button nzSize="size" nzType="default"
+            class="cardButton" (click)="downloadMaterial()">
+            点此下载
+          </button>
+        <!-- <a [href]="'http://172.16.10.94:9013' + currentTask.CourseMaterialV8s[0].fileuri" [download]="currentTask.CourseMaterialV8s[0].title">点此下载</a> -->
+        </div>
+      </div>
+    </div>
+  </nz-content>
+  

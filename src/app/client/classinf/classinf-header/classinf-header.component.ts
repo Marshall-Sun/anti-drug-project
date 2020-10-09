@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import {Component, OnInit, EventEmitter, Input} from '@angular/core';
 import { ClassInfService } from 'src/app/service/classinf-frontend/classinf-frontend.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import {TestuserService} from '../../../service/teacher-frontend/teacher-frontend.service';
@@ -6,12 +6,16 @@ import {TestuserService} from '../../../service/teacher-frontend/teacher-fronten
   selector: 'app-classinf-header',
   templateUrl: './classinf-header.component.html',
   styleUrls: ['./classinf-header.component.less'],
-  inputs: ["userId","classid","joinINf"],
+  // inputs: ["userId","classid","joinINf"],
   outputs:["joinClass","exitClass"]
 })
 export class ClassinfHeaderComponent implements OnInit {
-  classid = "0"
+  @Input()
+  classid: any;
+  @Input()
   userId: any;
+  @Input()
+  joinINf: any;
   currentclass =
     {
       //二维吗
@@ -22,7 +26,7 @@ export class ClassinfHeaderComponent implements OnInit {
       commitmentservice: [false, false, false, false, false, false],
 
       classroomCategory: "高中班级",
-      coursenum: 1,
+      courseNum: 1,
       id: 10,
       postNum: 2,
       recommended: 0,
@@ -32,7 +36,7 @@ export class ClassinfHeaderComponent implements OnInit {
       //service: "["event","liveAnswer","teacherAnswer","testpaperReview","homeworkReview"]",
       smallpicture: "../../../../assets/img/timg.jpg",
       status: "published",
-      studentnum: 56,
+      studentNum: 56,
       title: "沈阳市广全学校禁毒教学活动",
       totalNum: 1,
       ratingnum:1,

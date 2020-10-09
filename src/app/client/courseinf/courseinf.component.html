@@ -3,7 +3,7 @@
         <nz-layout>
             <nz-header class="nz-header_inner">
                 <!--courseinf-mainheadpage-->
-                <app-courseinf-header #header [joinINf] = "joinINf" [courseid]="courseid" [userId]="userId"  [teachplanId]="teachplanId"
+                <app-courseinf-header #header [joinINf] = "joinINf" [courseid]="courseid" [userId]="userId"  [teachplanId]="teachplanId" [studentNum]="studentNum"
                  (joinCourse)="updataload()" (exitCourse)="updataload()" (changePlan)="changeteachplan($event)"></app-courseinf-header>
             </nz-header>
             <nz-layout>
@@ -29,17 +29,17 @@
                                     <app-courseinf-courses [courses] = "courses"  [courseid]="courseid" [teachplanId]="teachplanId" [joinINf] = "joinINf"></app-courseinf-courses>
                                 </nz-tab>
                                 <nz-tab *ngIf="joinINf!=null&&joinINf?.join==true" nzTitle="话题">                           
-                                        <app-courseinf-topic [userId]="userId" [topics]="topics" [courseid]="courseid" [teachplanId]="teachplanId">
+                                        <app-courseinf-topic [userId]="userId" [topics]="topics" [courseid]="courseid" [teachplanId]="teachplanId" [total_course_top_page]="total_course_top_page">
                                         </app-courseinf-topic>                       
                                 </nz-tab>
                                 <nz-tab nzTitle="笔记">
-                                    <app-courseinf-notes [notes] = "notes" [courseid]="courseid" [teachplanId]="teachplanId"></app-courseinf-notes>
+                                    <app-courseinf-notes [notes] = "notes" [courseid]="courseid" [teachplanId]="teachplanId" [total_notes_page]="total_notes_page"></app-courseinf-notes>
                                 </nz-tab>
                                 <nz-tab *ngIf="joinINf!=null&&joinINf?.join==true" nzTitle="资料区">
-                                    <app-courseinf-material [courseid]="courseid" [teachplanId]="teachplanId" [materials]="materials"></app-courseinf-material>
+                                    <app-courseinf-material [courseid]="courseid" [teachplanId]="teachplanId" [materials]="materials" [total_material_pages]="total_material_pages"></app-courseinf-material>
                                 </nz-tab>
                                 <nz-tab nzTitle="评价">
-                                    <app-courseinf-comment [courseid]="courseid" [teachplanId]="teachplanId" [comments]="comments" [userId]="userId"></app-courseinf-comment>   
+                                    <app-courseinf-comment [courseid]="courseid" [teachplanId]="teachplanId" [comments]="comments" [userId]="userId" [total_comment_pages]="total_comment_pages"></app-courseinf-comment>   
                                 </nz-tab>
                             </nz-tabset>
                         </nz-content>

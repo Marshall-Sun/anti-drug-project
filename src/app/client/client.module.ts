@@ -163,6 +163,10 @@ import { MineHomeworkMarkingComponent } from './mine-management/homework-marking
 import { HomeworkExamComponent } from './homework-exam/homework-exam.component';
 import { MinePaperMarkingComponent } from './mine-management/paper-marking/paper-marking.component';
 import {CourseManagementHaveMarkedCoursepaperComponent} from '../course-management/paper-marking/have-marked-coursepaper/have-marked-coursepaper.component';
+import {TaskpreviewComponent} from './taskpreview/taskpreview.component';
+import { AllGroupComponent } from './mine-management/my-group/all-group/all-group.component';
+import {PreviewHomeworkComponent} from './preview-homework/preview-homework.component';
+import {PreviewTestpaperComponent} from './preview-testpaper/preview-testpaper.component';
 
 
 
@@ -231,7 +235,8 @@ import {CourseManagementHaveMarkedCoursepaperComponent} from '../course-manageme
     DashboardMenuComponent, DashboardListComponent, DashboardListCourseComponent, DashboardListOpenresourceComponent, DashboardListStudentComponent, DashboardListTeacherComponent, 
     PageNotFoundComponent,HaveMarkedClasspaperComponent,HaveMarkedCoursepaperComponent,NotMarkedClasspaperComponent,
     NotMarkedCoursepaperComponent,CourseExamComponent,SearchclassComponent, SearchopensorComponent, SearchgroupComponent, SearchnewsComponent, SearchcourseComponent,
-    ClasspaperComponent,CoursepaperComponent,HomeworkExamComponent,MineHomeworkMarkingComponent,MinePaperMarkingComponent,
+    ClasspaperComponent,CoursepaperComponent,HomeworkExamComponent,MineHomeworkMarkingComponent,MinePaperMarkingComponent,TaskpreviewComponent, AllGroupComponent,
+    PreviewHomeworkComponent, PreviewTestpaperComponent
 
   ],
   imports: [

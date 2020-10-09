@@ -58,7 +58,7 @@ export class CourseManagementHaveMarkedCoursepaperComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.courseid = location.pathname.split('/')[3];
+    this.courseid = location.pathname.split('/')[5];
     this.userID=window.localStorage.getItem("id");
     //获取试卷批阅列表
     this.paperMarkingService.getTestCheckList(this.courseid).subscribe(result=>{

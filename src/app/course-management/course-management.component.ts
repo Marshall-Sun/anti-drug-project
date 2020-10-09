@@ -17,7 +17,6 @@ export class CourseManagementComponent implements OnInit {
   teachersName = [];
   imgUrl: string = '';
 
-  api: string = 'http://202.199.13.114:9013';
 
   constructor(
     private router: Router,
@@ -43,7 +42,7 @@ export class CourseManagementComponent implements OnInit {
     this._courseBaseInfoEditService.getCourseInfo(this.courseId).subscribe(res => {
       this.title = res.data.baseData.title;
       this.status = res.data.baseData.status;
-      this.imgUrl = res.data.baseData.cover;
+      this.imgUrl = res.data.baseData.cover? res.data.baseData.cover: '../assets/img/timg.jpg';
       this.teachersName = res.data.teachersName;
     })
   }

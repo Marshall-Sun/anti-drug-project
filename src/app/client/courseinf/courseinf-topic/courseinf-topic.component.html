@@ -6,7 +6,8 @@
             <label nz-radio-button nzValue="Question" (click)="changeType_Topic('question')">问答</label>
             <label nz-radio-button nzValue="Boutique" (click)="changeType_Topic('elite')">精华</label>
         </nz-radio-group>
-        <button nz-button nz-dropdown [nzDropdownMenu]="order_menu" [nzPlacement]="'bottomLeft'" style="margin: 5px;" >排序</button>
+        <button nz-button nz-dropdown [nzDropdownMenu]="order_menu" [nzPlacement]="'bottomLeft'"
+            style="margin: 5px;">排序</button>
         <nz-dropdown-menu #order_menu="nzDropdownMenu">
             <ul nz-menu nzSelectable>
                 <li nz-menu-item (click)="changeOrder_Topic('created')">
@@ -17,9 +18,10 @@
                 </li>
             </ul>
         </nz-dropdown-menu>
-        
+
         <div style="position: relative;float: right;">
-            <button nz-button nz-dropdown [nzDropdownMenu]="topic_menu" [nzPlacement]="'bottomLeft'" ><span>发话题/提问题</span></button>
+            <button nz-button nz-dropdown [nzDropdownMenu]="topic_menu"
+                [nzPlacement]="'bottomLeft'"><span>发话题/提问题</span></button>
             <nz-dropdown-menu #topic_menu="nzDropdownMenu">
                 <ul nz-menu>
                     <li nz-menu-item>
@@ -36,17 +38,21 @@
     <nz-list [nzDataSource]="topics" [nzRenderItem]="topicitem" [nzItemLayout]="'horizontal'">
         <ng-template #topicitem let-topicitem>
             <nz-list-item [nzActions]="[editAction, moreAction]">
-                <ng-template #editAction><a (click)="write_response(topicitem.id)">回复<!-- {{topicitem.postNum}}--></a></ng-template>
+                <ng-template #editAction><a (click)="write_response(topicitem.id)">回复
+                        <!-- {{topicitem.postNum}}--></a></ng-template>
                 <!--<ng-template #moreAction>浏览 {{topicitem.hitNum}}</ng-template>-->
-                <nz-list-item-meta [nzTitle]="nzTitle"
-                    nzAvatar="{{topicitem.largeAvatar}}"
+                <nz-list-item-meta [nzTitle]="nzTitle" nzAvatar="{{topicitem.logo}}"
                     nzDescription="发起人 {{topicitem.createdUserName}} 时间 {{topicitem.createdTime* 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}">
                     <ng-template #nzTitle>
                         <nz-tag *ngIf="topicitem.isStick=='1'" [nzColor]="'orange'">置顶</nz-tag>
                         <nz-tag *ngIf="topicitem.isElite=='1'" [nzColor]="'red'">精华</nz-tag>
-                        <nz-tag *ngIf="topicitem.type=='question'" [nzColor]="'blue'">{{getTopicType(topicitem.type)}}</nz-tag>
-                        <nz-tag *ngIf="topicitem.type!='question'" [nzColor]="'#87d068'">{{getTopicType(topicitem.type)}}</nz-tag>
+                        <nz-tag *ngIf="topicitem.type=='question'" [nzColor]="'blue'">{{getTopicType(topicitem.type)}}
+                        </nz-tag>
+                        <nz-tag *ngIf="topicitem.type!='question'" [nzColor]="'#87d068'">
+                            {{getTopicType(topicitem.type)}}</nz-tag>
+                        <!--({{topicitem.type}})-->
                         <b>{{topicitem.title}}</b>
+                        <div [innerHTML]="topicitem.content"></div>
                         <!--  ({{topicitem.type}})   <a href="https://ng.ant.design">{{ topicitem.title }}</a>-->
                     </ng-template>
                 </nz-list-item-meta>
@@ -55,7 +61,7 @@
     </nz-list>
     <nz-divider></nz-divider>
     <div class="pagination">
-        <nz-pagination [(nzPageIndex)]="currenttopicpage" [nzTotal]="total_course_top_page" [nzPageSize]="5"
+        <nz-pagination [(nzPageIndex)]="currenttopicpage" [nzTotal]="total_course_top_page" nzPageSize="20"
             (nzPageIndexChange)="onPageChange_topic($event)"></nz-pagination>
     </div>
 </ng-template>
@@ -100,14 +106,14 @@
     <nz-list [nzDataSource]="currentresponse" [nzRenderItem]="reponseitem" [nzItemLayout]="'horizontal'">
         <ng-template #reponseitem let-reponseitem>
             <nz-list-item>
-                <nz-list-item-meta [nzTitle]="nzTitle"
-                    nzAvatar="{{reponseitem.smallAvatar}}"
+                <nz-list-item-meta [nzTitle]="nzTitle" nzAvatar="{{reponseitem.smallAvatar}}"
                     [nzDescription]="nzDescription">
                     <ng-template #nzTitle>
-                        <b> {{reponseitem.nickName}}· {{reponseitem.createdTime* 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</b>
+                        <b> {{reponseitem.nickName}} 回复于
+                            {{reponseitem.createdTime* 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</b>
                     </ng-template>
                     <ng-template #nzDescription>
-                            <div [innerHTML]="reponseitem.content"></div>
+                        <div [innerHTML]="reponseitem.content"></div>
                     </ng-template>
                 </nz-list-item-meta>
             </nz-list-item>
@@ -121,7 +127,7 @@
 
     <div class="editarea">
         <button nz-button style="margin: 5px;min-width:120px;float: right;" nzType="primary"
-        (click)="response_submit()">提交</button>
+            (click)="response_submit()">提交</button>
         <button nz-button style="margin: 5px;min-width:120px;float: right;" nzType="default"
             (click)="return_response()">返回</button>
     </div>

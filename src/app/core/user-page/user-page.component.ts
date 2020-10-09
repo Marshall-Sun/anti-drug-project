@@ -58,7 +58,7 @@ export class UserPageComponent implements OnInit {
     .subscribe(res => this. teachClasses = res.data);
     this.classmanagementService.getMyClasses(this.pageIndex,this.classes.length,this.userID)
     .subscribe(res => this.classes = res.data);
-    this.coursemanagementService.getMyStars(this.pageIndex,this.stars.length,this.userID)
+    this.coursemanagementService.getMyStars(this.userID)
     .subscribe(res => this.stars = res.data);
     this.groupmanagementService.getGroupList(this.userID)
     .subscribe(res => this.groups = res.data);

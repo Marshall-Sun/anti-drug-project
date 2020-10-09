@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImagesUploadingService {
+
+  changeStatus: Subject<number> = new BehaviorSubject<number>(1);
 
 
   constructor(private _http: HttpClient) { }

@@ -13,7 +13,7 @@ export class GroupJoinComponent implements OnInit {
 
   MyGroupList:[];
   dataList:[];
-  userId:number=1;
+  userId:number= parseInt(window.localStorage.getItem('id'));
   loading:boolean;
 
   constructor(

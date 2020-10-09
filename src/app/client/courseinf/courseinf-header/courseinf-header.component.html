@@ -20,18 +20,18 @@
         </ng-template>--> 
         <div style="float: right;">
             <i nz-icon nzType="user" class="header_icon"
-                nzTheme="outline"></i><span>&nbsp;<b>{{currentcourse?.studentnum}}人</b>
+                nzTheme="outline"></i><span>&nbsp;<b>{{studentNum}}人</b>
             </span>
             <i *ngIf="joinINf==null||joinINf.collection==false" nz-icon nzType="star" class="header_icon" nzTheme="outline" (click)="collect_submit()"></i>
             <i *ngIf="joinINf!=null&&joinINf.collection==true" nz-icon nzType="star" class="header_icon" nzTheme="fill" (click)="uncollect_submit()"></i>
-            <i nz-icon nzType="share-alt" class="header_icon" nzTheme="outline" nz-popover
+            <!-- <i nz-icon nzType="share-alt" class="header_icon" nzTheme="outline" nz-popover
                 [nzContent]="sharecontent" nzTrigger="click"></i>
             <ng-template #sharecontent>
                 <i nz-icon nzType="qq" style="margin-left: -3px;" class="header_icon"
                     nzTheme="outline"></i>
                 <i nz-icon nzType="wechat" class="header_icon" nzTheme="outline"></i>
                 <i nz-icon nzType="weibo" class="header_icon" nzTheme="outline"></i>
-            </ng-template>
+            </ng-template> -->
             <i *ngIf="joinINf!=null&&joinINf?.join==true" nz-icon nzType="right-square" class="header_icon" nzTheme="outline"
                 (click)="showExitCoursefirm()"></i>
             <nz-modal [(nzVisible)]="CourseExitVisible" nzTitle="要退出学习吗"
@@ -59,7 +59,9 @@
         <nz-content class="headerback">
             <div class="headeritem">
                 <p>教学计划:
-                        <nz-tag *ngFor="let item of teacherplans" class="teachingplan" [nzColor]="item.color" (click)="changeteachplan(item.id)">{{item.title}}</nz-tag>
+                    <span *ngFor="let item of teacherplans">
+                        <nz-tag *ngIf="item.status=='published'"  class="teachingplan" [nzColor]="item.color" (click)="changeteachplan(item.id)">{{item.title}}</nz-tag>
+                    </span>  
                 </p><!--{{currentcourse.teachingplan}}-->
                 <p>学习有效期：永久有效</p><!--{{currentcourse.term}}-->
                 <p>承诺服务：
@@ -87,7 +89,7 @@
                     <div class="header_tilt">
                         <i nz-icon nzType="check-square" nzTheme="fill"></i>
                         <span>已完成</span>
-                        <p>{{joinINf.taskProportion}} &nbsp;&nbsp; 任务</p>
+                        <p>{{joinINf.hasLearned}} &nbsp;&nbsp; /&nbsp;&nbsp; {{joinINf.taskNum}}</p>
                     </div>
                     <div class="header_tilt">
                         <i nz-icon nzType="carry-out" nzTheme="fill"></i>

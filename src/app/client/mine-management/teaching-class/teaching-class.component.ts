@@ -28,6 +28,8 @@ export class TeachingClassComponent implements OnInit {
   dataList = [];
   totalPage: number;
 
+  teacherId = window.localStorage.getItem('id');
+
   constructor(
     private _modal: NzModalService,
     private routerInfo: ActivatedRoute,
@@ -44,7 +46,7 @@ export class TeachingClassComponent implements OnInit {
   searchData() {
     this.loading = true;
     this.classroomList = [];
-    this.MyteachingService$.getClassList(1, 10,"1" ).subscribe(result => {
+    this.MyteachingService$.getClassList(1, 10, this.teacherId).subscribe(result => {
         this.loading = false;
         this.dataList = result.data;
         this.classroomList = this.dataList;

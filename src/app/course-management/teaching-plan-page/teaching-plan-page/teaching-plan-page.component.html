@@ -4,7 +4,7 @@
         <img class="header-image" [src]="imgUrl">
         <div class="header-info">
           <div>{{title}}<nz-tag [nzColor]="'#87d068'">{{status === 'published'? '已发布': '未发布'}}</nz-tag>
-            <div></div>教师:<span *ngFor="let name of teachersName" style="margin-right: 5px;">{{name}}</span>
+            <div></div>教师:<span *ngFor="let name of teachersName" style="margin-right: 5px;">{{name.nickname}}</span>
           </div>
           <h1>{{teachplanInf?.title}}</h1>
         </div>
@@ -33,4 +33,3 @@
       </div>
     </nz-content>
   </nz-layout>
-  

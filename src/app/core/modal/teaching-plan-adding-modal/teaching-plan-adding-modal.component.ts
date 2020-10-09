@@ -12,6 +12,10 @@ export class TeachingPlanAddingModalComponent implements OnInit {
   @Input()
   courseId: string;
 
+  
+  @Input()
+  courseSetTitle: string;
+
   userId: string = '1';
   editForm: FormGroup;
 
@@ -27,6 +31,7 @@ export class TeachingPlanAddingModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userId = window.localStorage.getItem("id");
     this.editForm = this.fb.group({
       name: ['', Validators.required],
       mode: ['freeMode'],
@@ -67,7 +72,8 @@ export class TeachingPlanAddingModalComponent implements OnInit {
         courseSetId: this.courseId,
         creator: this.userId,
         learnMode: this.editForm.controls.mode.value,
-        courseSetTitle: this.editForm.controls.name.value,
+        title:this.editForm.controls.name.value,
+        courseSetTitle: this.courseSetTitle,
         expiryMode: this.editForm.controls.expireTime.value,
         expiryDays: expireTime,
         expiryEndDate: Math.floor(expiryEndDate / 1000),

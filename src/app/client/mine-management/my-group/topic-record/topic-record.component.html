@@ -17,7 +17,7 @@
           </ng-template>
           <ng-template #nzDes>
             <div >
-              <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              <nz-avatar [nzSrc]="item?.smallAvatar? item?.smallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"
                          nz-popover
                          [nzPopoverTitle]="tem"
                          [nzPopoverContent]="content"
@@ -40,7 +40,7 @@
                     <a>{{detail?.job}}</a>
                   </ng-template>
                   <ng-template #avatarTemplate>
-                    <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+                    <nz-avatar [nzSrc]="item?.smallAvatar? item?.smallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"></nz-avatar>
                   </ng-template>
                   <ng-template #actionEdit>
                     <a>{{detail?.followedNum}}</a>

@@ -51,8 +51,8 @@
         (nzCheckedChange)="refreshStatus()"
       ></td>
       <td>
-        <span>{{data.content}}</span><br/>
-        <span *ngIf="data.classroomTitle !== ''"><span (click)="navigateTo(data.classroomId)" style="color: #6dd2ee; cursor: pointer; font-size: 14px;">{{data.classroomTitle}}</span><span style="font-size: 12px;"></span></span>
+        <div [innerHTML]="data.content"></div>
+        <span *ngIf="data.classroomTitle !== ''"><span (click)="navigateTo('/client/classinf/' + data.classroomId)" style="color: #6dd2ee; cursor: pointer; font-size: 14px;">{{data.classroomTitle}}</span><span style="font-size: 12px;"></span></span>
       </td>
       <td>{{data.rating}}星</td>
       <td>

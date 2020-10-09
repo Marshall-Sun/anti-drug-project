@@ -24,7 +24,7 @@
         <div *ngIf="NewMemberList">
           <div style="display: inline-block" *ngFor="let userSmallAvatar of NewMemberList">
             <nz-avatar
-              [nzSrc]="userSmallAvatar.userSmallAvatar.startsWith('/image')? userSmallAvatar.userSmallAvatar: ''"
+              [nzSrc]="userSmallAvatar.userSmallAvatar.startsWith('/image')? userSmallAvatar.userSmallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"
               nz-popover
               [nzPopoverTitle]="tem"
               [nzPopoverContent]="content"
@@ -59,7 +59,7 @@
 
                 </ng-template>
                 <ng-template #avatarTemplate>
-                  <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+                  <nz-avatar [nzSrc]="detail.mediumAvatar.startsWith('/image')? detail.mediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"></nz-avatar>
                 </ng-template>
                 <ng-template #actionEdit>
                   <a>{{detail?.followedNum}}</a>

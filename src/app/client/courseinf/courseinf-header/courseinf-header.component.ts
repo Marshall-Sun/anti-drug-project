@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   selector: 'app-courseinf-header',
   templateUrl: './courseinf-header.component.html',
   styleUrls: ['./courseinf-header.component.less'],
-  inputs: ["courseid", "userId", "teachplanId", "joinINf"],
+  inputs: ["courseid", "userId", "teachplanId", "joinINf","studentNum"],
   outputs: ["joinCourse", "exitCourse", "changePlan"]
 })
 export class CourseinfHeaderComponent implements OnInit {
@@ -44,6 +44,7 @@ export class CourseinfHeaderComponent implements OnInit {
   };
   user: any;
   joinINf: any;
+  studentNum = 0;
   currentplan: any;
 
   iscollect = true;//之后放在user里
@@ -63,8 +64,6 @@ export class CourseinfHeaderComponent implements OnInit {
   joinCourse: EventEmitter<any>;
   exitCourse: EventEmitter<any>;
   changePlan: EventEmitter<number>;
-
-
   //临时计划
   teacherplans: any;
 
@@ -245,9 +244,15 @@ export class CourseinfHeaderComponent implements OnInit {
   }
 
   initteachplan(id: string) {
+    console.log(id)
     if (id == "0" || id == undefined) {
-      this.teacherplans[0].color = '#458B74';
-      this.currentplan = this.teacherplans[0];
+      for(let ind = 0;ind<this.teacherplans.length;ind++){
+        if(this.teacherplans[ind].status=='published'){
+          this.teacherplans[ind].color = '#458B74';
+          this.currentplan = this.teacherplans[ind];
+          break;
+        }
+      }
     } else {
       for (let temp of this.teacherplans) {
         if (temp.id == id) {

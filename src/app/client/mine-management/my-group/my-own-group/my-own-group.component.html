@@ -16,11 +16,12 @@
               <span>{{item.threadNumber}}</span>
             </div>
           </div>
+          <ng-template #avatarTemplate>
+            <nz-avatar nzIcon="user" [nzSrc]="item?.groupLogo? item?.groupLogo: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"></nz-avatar>
+          </ng-template>
         </nz-card>
       </ng-template>
     </nz-list-item>
   </ng-template>
 </nz-list>
-<ng-template #avatarTemplate>
-  <nz-avatar nzIcon="user" [nzSrc]="'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"></nz-avatar>
-</ng-template>
+

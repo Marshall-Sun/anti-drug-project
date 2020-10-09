@@ -24,7 +24,7 @@
                 <div nz-col nzSpan="20">
                     <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="nzDescription">
                         <ng-template #nzTitle >
-                            <div style="font-size: 15px;">{{ paper.number }}  {{paper.title}}</div>
+                            <div style="font-size: 15px;">{{ paper.testpaperName}}</div>
                         </ng-template>
                         <ng-template #nzDescription>
                             <!--
@@ -33,15 +33,15 @@
                             </div>
                             
                             <div>总分：{{paper.score}} · 创建时间：{{paper.createdTime}}</div>-->
-                            <div>总分：{{paper.score}} · 创建时间：{{paper.createdTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+                            <div>总分：{{paper.testpaperScore}} · 创建时间：{{paper.testpaperCreatedTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
                         </ng-template>
                     </nz-list-item-meta>
                 </div>
         
-                <div nz-col nzSpan="4" style="text-align: center;"><button nz-button (click)="clickShowButton(paper.testId)">显示</button></div>
+                <div nz-col nzSpan="4" style="text-align: center;"><button nz-button (click)="clickShowButton(paper.testpaperId)">显示</button></div>
             </div>
             <!--显示学生答题情况-->
-            <div nz-row *ngIf="showStudentOrNot(paper.testId)">
+            <div nz-row *ngIf="showStudentOrNot(paper.testpaperId)">
                 <!--<div>点击次数{{clickCount}}</div>-->
                 <p></p>
                 <div>
@@ -50,18 +50,16 @@
                             <tr>
                                 <th>学生姓名</th>
                                 <th>交卷时间</th>
-                                <th>状态</th>
                                 <th>得分</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let st of paperSt.data">
-                                <td>{{st.userName}}</td>
+                            <tr *ngFor="let st of paper.userList">
+                                <td>{{st.nickName}}</td>
                                 <td>{{st.endTime* 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                                <td>{{st.status}}</td>
-                                <td><span style="cursor: pointer; color: #108ee9">{{st.actualScore}}</span>/{{st.score}}</td>
-                                <td><span style="cursor: pointer; color: #108ee9" (click)="navigatTo('client/testpaper/'+ paper.testId +'/result/'+st.userId)">查看</span></td>
+                                <td><span style="cursor: pointer; color: #108ee9">{{st.score}}</span>/{{paper.testpaperScore}}</td>
+                                <td><span style="cursor: pointer; color: #108ee9" (click)="navigatTo('client/testpaper/'+ paper.testpaperId +'/result/'+st.userId)">查看</span></td>
                             </tr>
                         </tbody>
                     </nz-table>

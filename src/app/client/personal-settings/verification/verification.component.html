@@ -1,9 +1,10 @@
 <h1>实名认证</h1>
 <nz-divider></nz-divider>
-<nz-alert nzType={{verificationStatus.nzType}} nzMessage={{verificationStatus.nzMessage}} nzDescription={{verificationStatus.nzDescription}} nzShowIcon nzCloseable>
+<nz-alert nzType={{verificationStatus.nzType}} nzMessage={{verificationStatus.nzMessage}}
+          nzDescription={{verificationStatus.nzDescription}} nzShowIcon nzCloseable>
 </nz-alert>
 <!--<form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm()">-->
-<form nz-form [nzLayout]="'inline'" [formGroup]="validateForm">
+<form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" *ngIf="verificationStatus.nzDescription != '认证中'">
   <div nz-row>
     <div nz-col [nzSpan]="12">
       <nz-form-item>
@@ -56,7 +57,7 @@
                 <i [nzType]="'idcard'" nz-icon class="card-icon"></i>
                 <p>上传身份证正面照</p>
               </ng-container>
-              <img *ngIf="faceimg" [src]="faceimg" class="avatar" />
+              <img *ngIf="faceimg" [src]="faceimg" class="avatar" width="320px"/>
             </div>
             <input type="hidden" formControlName="faceimg">
           </nz-upload>
@@ -75,7 +76,7 @@
                 <i [nzType]="'idcard'" nz-icon class="card-icon"></i>
                 <p>上传身份证反面照</p>
               </ng-container>
-              <img *ngIf="backimg" [src]="backimg" class="avatar" />
+              <img *ngIf="backimg" [src]="backimg" class="avatar" width="320px"/>
             </div>
             <input type="hidden" formControlName="backimg">
           </nz-upload>
@@ -97,8 +98,22 @@
   <div style="margin: 20px 0px">
     <nz-form-item>
       <nz-form-control>
-        <button nz-button nzType="primary"(click)="submitForm()">提交</button>
+        <button nz-button nzType="primary"(click)="submitForm()" [disabled]="nameNonEditable">提交</button>
       </nz-form-control>
     </nz-form-item>
   </div>
 </form>
+<div nz-row style="background-color: #e9f3fe" *ngIf="verificationStatus.nzDescription == '认证中'">
+  <div nz-col nzSpan="8" nzOffset="8">
+    <br>
+    <p style="text-align: center;">
+      <i nz-icon nzType="info-circle" nzTheme="outline" style="font-size: 50px;"></i>
+    </p>
+    <br>
+    <h1 align="center">审核中</h1>
+    <p>申请已提交，请耐心等待审核结果</p>
+    <br>
+    <p>真实姓名：{{verifiedName}}</p>
+    <p>身份证号：{{identityCardNumber}}</p>
+  </div>
+</div>

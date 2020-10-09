@@ -59,7 +59,7 @@
                   <nz-tag [nzColor]="'#87d068'" *ngIf="item.status=='published'">已发布</nz-tag>
                 </ng-template>
               <ng-template #coverTemplate>
-                <img style="padding:10px;vertical-align: middle" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
+                <img style="padding:10px;vertical-align: middle" [src]="item.cover !== ''? item.cover: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'" />
                 <!-- <img style="padding:10px;vertical-align: middle" src="{{item.cover}}" /> -->
               </ng-template>
 
@@ -75,7 +75,7 @@
           <ng-template #item01 let-item>
             <nz-list-item [nzContent]="nzContent">
               <ng-template #nzContent>
-                <nz-card [nzCover]="coverTemplate" nzHoverable (click)="navigate('/client/classroom/' + item.id)">
+                <nz-card [nzCover]="coverTemplate" nzHoverable (click)="navigate('/client/classinf/' + item.id)">
                   <nz-card-meta [nzTitle]="titleTemplate" [nzDescription]="descriptionTemplate"></nz-card-meta>
                 </nz-card>
                 <ng-template #titleTemplate>
@@ -88,7 +88,7 @@
                 </ng-template>
               <ng-template #coverTemplate>
                 <!-- <img src="{{item.largePicture}}" /> -->
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
+                <img  [src]="item.smallpicture !== ''? item.smallpicture: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'" />
               </ng-template>
 
               </ng-template>
@@ -113,7 +113,7 @@
                 </ng-template>
               <ng-template #coverTemplate>
                 <!-- <img style="padding:10px;vertical-align: middle" src="{{item.cover}}" /> -->
-                <img style="padding:10px;vertical-align: middle" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
+                <img style="padding:10px;vertical-align: middle" [src]="item.cover !== ''? item.cover: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'" />
               </ng-template>
               <ng-template #descriptTemplate>
                 <p>学习时长{{item.learnTime}}分钟</p>
@@ -129,7 +129,7 @@
           <ng-template #item1 let-item>
             <nz-list-item [nzContent]="nzContent">
               <ng-template #nzContent>
-                <nz-card [nzCover]="coverTemplate" nzHoverable (click)="navigate('/client/classroom/' + item.id)">
+                <nz-card [nzCover]="coverTemplate" nzHoverable (click)="navigate('/client/classinf/' + item.id)">
                   <nz-card-meta [nzTitle]="titleTemplate" [nzDescription]="descriptionTemplate"></nz-card-meta>
                 </nz-card>
                 <ng-template #titleTemplate>
@@ -142,7 +142,7 @@
                 </ng-template>
               <ng-template #coverTemplate>
                 <!-- <img src="{{item.largePicture}}" /> -->
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
+                <img [src]="item.smallPicture !== ''? item.smallPicture: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'" />
               </ng-template>
 
               </ng-template>
@@ -180,7 +180,7 @@
                 </ng-template>
               <ng-template #coverTemplate>
                  <!-- <img style="padding:10px;vertical-align: middle" src="{{item.cover}}" /> -->
-                <img style="padding:10px;vertical-align: middle" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
+                <img style="padding:10px;vertical-align: middle" [src]="item.cover !== ''? item.cover: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'"/>
               </ng-template>
 
               </ng-template>
@@ -210,7 +210,7 @@
                 </ng-template>
               <ng-template #coverTemplate>
                 <!-- <img src="{{item.groupLogo}}"/> -->
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />
+                <img [src]="item.groupLogo !== ''? item.groupLogo: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'" />
               </ng-template>
 
               </ng-template>

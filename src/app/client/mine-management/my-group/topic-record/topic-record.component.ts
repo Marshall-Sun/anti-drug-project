@@ -14,9 +14,9 @@ export class TopicRecordComponent implements OnInit {
 
   MyTopicList:[];
   dataList:[];
-  userId:number=1;
+  userId:number= parseInt(window.localStorage.getItem('id'));
   loading:boolean;
-  detail:[];
+  detail:any;
 
   constructor(
     private http: HttpClient,

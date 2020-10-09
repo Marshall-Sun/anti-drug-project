@@ -215,7 +215,7 @@ export class CourseInfService {
         classroomId: classroomid,
         deadline: 0,
         remark: 0,
-        userId: "1",
+        userId: userid,
       });
   }
 
@@ -224,7 +224,7 @@ export class CourseInfService {
     const uri = `/classroom/management/delete_student/${classroomid}`;
     const params = new HttpParams()
       .set('id', classroomid)
-      .set('studentId', "1")
+      .set('studentId', userid)
     return this.http.delete(uri, { params })
   }
 

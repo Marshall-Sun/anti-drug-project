@@ -8,8 +8,8 @@
     <div class="drag-list" cdkDropList (cdkDropListDropped)="drop($event)">
       <div *ngFor="let item of courseList" class="drag-box" cdkDrag>
         <div class="list-info">
-          <img class="img-info" [src]="item?.smallpicture? item?.smallpicture: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
-          <div class="text-info">
+          <img class="img-info" [src]="item?.cover? item?.cover: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
+          <div style="margin-left: 2%" class="text-info">
             <div class="info-header">
               <div class="course-title" nz-tooltip [nzTitle]="item?.courseSetTitle + '（教学计划：'+ item?.title +'）'">{{item?.courseSetTitle + ' '}}(教学计划：{{item?.title}}`)</div>
               <nz-tag [nzColor]="'#87d068'">{{item.serializeMode == 'serialized'? '已完结': '更新中'}}</nz-tag>
@@ -20,7 +20,7 @@
             <div class="empty-space"></div>
             <div class="info-footer">
               <div class="teacher-info">
-                <img class="avatar" [src]="!(item?.smallAvatar == null)? item?.smallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
+                <img class="avatar" [src]="!(item?.teacherSmallAvatar == null)? item?.teacherSmallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
                 <div style="display: flex; flex-direction: column; justify-content: space-between">
                   <span>{{item?.nickName}}</span>
                   <span>{{item?.teacherTitle}}</span>

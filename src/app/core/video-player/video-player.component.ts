@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy, ElementRef, Renderer2,Output,Event
 import { DomSanitizer } from '@angular/platform-browser'; // 引入DomSanitizer服务
 import { HttpClient } from '@angular/common/http';
 import { HttpParams } from "@angular/common/http";
-// import videojs from 'video.js'
+import videojs from 'video.js'
 import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-video-player',
@@ -72,8 +72,8 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
   }
   onload() {
     var that = this;
-    // that.player = videojs('my-video', that.options, function onPlayerReady() {
-    //   this.play();// 播放器内部监控
+    that.player = videojs('my-video', that.options, function onPlayerReady() {
+      this.play();// 播放器内部监控
 
       // this.on('ended', function () {
       //   that.changeLearnStatus(that.allogId, 'finish', parseInt(that.player.duration())); // 如果学习完了，学习位置设置为0还总长度
@@ -92,7 +92,7 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
       //       that.maxTime = currentTime;
       //     }
       // });
-    // });
+    });
   }
 
 

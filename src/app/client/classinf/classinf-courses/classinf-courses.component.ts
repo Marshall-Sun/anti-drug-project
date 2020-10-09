@@ -19,7 +19,7 @@ export class ClassinfCoursesComponent implements OnInit {
   constructor(private classinfservice: ClassInfService,private notification: NzNotificationService,private route: Router) { }
 
   ngOnInit() {
-    this.classinfservice.getclassCourses(this.classid,this.coursepage_number).subscribe((res: any) => {
+    this.classinfservice.getclassCourses(this.classid,this.coursepage_number,6).subscribe((res: any) => {
       this.setclassCourses(res);
     }, error => {
       this.notification.create(
@@ -30,7 +30,7 @@ export class ClassinfCoursesComponent implements OnInit {
   }
 
   onPageChange_course(event?: any) {
-    this.classinfservice.getclassCourses(this.classid,this.coursepage_number).subscribe((res: any) => {
+    this.classinfservice.getclassCourses(this.classid,this.coursepage_number,6).subscribe((res: any) => {
       this.setclassCourses(res);
     }, error => {
       this.notification.create(

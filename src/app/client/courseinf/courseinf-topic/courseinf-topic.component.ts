@@ -6,7 +6,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   selector: 'app-courseinf-topic',
   templateUrl: './courseinf-topic.component.html',
   styleUrls: ['./courseinf-topic.component.less'],
-  inputs: ["userId","topics","courseid", "teachplanId"],
+  inputs: ["userId","topics","courseid", "teachplanId","total_course_top_page"],
   outputs: ["responseClick"]
 })
 export class CourseinfTopicComponent implements OnInit {
@@ -55,20 +55,6 @@ export class CourseinfTopicComponent implements OnInit {
   setCoursesTopic(res: any) {
     this.topics = res.data;
     //this.total_course_top_page = res.data.total;
-    if (this.topics != undefined) {
-      for (var i = 0; i < this.topics.length; i++) {
-        if (this.topics[i].largeAvatar == undefined) {
-          this.topics[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-        } else if (this.topics[i].largeAvatar == "") {
-          this.topics[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-        } else if (this.topics[i].largeAvatar.substr(0, 6) == "public") {
-          this.topics[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-        } else if (this.topics[i].largeAvatar.substr(7, 7) == "edusoho") {
-          this.topics[i].largeAvatar = "../../../../assets/img/timg2.jpg";
-        }
-      }
-    }
-
   }
 
   setTopicResponses(res: any) {
@@ -76,19 +62,6 @@ export class CourseinfTopicComponent implements OnInit {
       this.currentresponse = [];
     } else {
       this.currentresponse = res.data.data[0].threadPostDTOList;
-      if (this.currentresponse != null) {
-        for (var i = 0; i < this.currentresponse.length; i++) {
-          if (this.currentresponse[i].smallAvatar == undefined) {
-            this.currentresponse[i].smallAvatar = "../../../../assets/img/timg2.jpg";
-          } else if (this.currentresponse[i].smallAvatar == "") {
-            this.currentresponse[i].smallAvatar = "../../../../assets/img/timg2.jpg";
-          } else if (this.currentresponse[i].smallAvatar.substr(0, 6) == "public") {
-            this.currentresponse[i].smallAvatar = "../../../../assets/img/timg2.jpg";
-          } else if (this.currentresponse[i].smallAvatar.substr(7, 7) == "edusoho") {
-            this.currentresponse[i].smallAvatar = "../../../../assets/img/timg2.jpg";
-          }
-        }
-      }
     }
   }
 

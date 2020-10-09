@@ -31,8 +31,8 @@
                 </p>
                 <p >标签：<span style="color:dodgerblue;cursor: pointer;margin-right: 6px;" *ngFor="let tag of tagList" (click)="navigateByUrl('/client/newstag/'+tag?.id)">{{tag.name}}</span></p>
                 <p class="content-link">
-                  <i *ngIf="isLike==false" nz-icon style="cursor: pointer;" [nzType]="'heart'" (click)="getHeart1()"></i>
-                  <i *ngIf="isLike==true" nz-icon style="cursor: pointer;color:red;" [nzType]="'heart'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#eb1f13'" (click)="getHeart0()"></i>
+                  <i nz-icon [nzType]="'heart'" *ngIf="!isLike" style="cursor: pointer;" (click)="getHeart1()"></i>
+                  <i *ngIf="isLike" nz-icon style="cursor: pointer;" [nzType]="'heart'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#eb1f13'" (click)="getHeart0()"></i>
                   <!-- <i nz-icon style="cursor: pointer;" [nzType]="'share-alt'" nz-popover  [nzPopoverContent]="contentTemplate" nzPopoverTrigger="click"></i>
                   <ng-template #contentTemplate>
                     <div>
@@ -75,7 +75,6 @@
                 <nz-pagination [nzHideOnSinglePage]="true" [(nzPageIndex)]="pageIndex" [nzTotal]="total" [nzPageSize]="pageSize" (nzPageIndexChange)="getComments()"></nz-pagination>
                 <nz-divider></nz-divider>
                 <nz-comment id="reply">
-                  <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
                   <nz-comment-content>
                     <nz-form-item>
                       <textarea [(ngModel)]="commentValue" nz-input rows="4"></textarea>

@@ -64,6 +64,9 @@ export class TeacherManagementComponent implements OnInit {
   addTeacher(data: any) {
     this.courseManagement$.addTeacherIntoCourse(this.courseId, this.teachplanId, data).subscribe(result => {
       this.getTeacherList(this.teachplanId);
+      let i;
+      this.courseManagement$.addingStatus.subscribe(value => i = value);
+      this.courseManagement$.addingStatus.next(i + 1);
       this._notification.success(
         '添加教师成功！',
         ''
@@ -87,6 +90,9 @@ export class TeacherManagementComponent implements OnInit {
       nzOnOk: () => {
         this.courseManagement$.deleteTeacher(this.teachplanId, id).subscribe(result => {
           this.getTeacherList(this.teachplanId);
+          let i;
+          this.courseManagement$.addingStatus.subscribe(value => i = value);
+          this.courseManagement$.addingStatus.next(i + 1);
           this._notification.success(
             '删除成功！',
             ''

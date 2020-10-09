@@ -17,19 +17,19 @@ export class AdminTopicCourseService {
   }
 
   setCourseThreadTop(id: string): Observable<any> {
-    return this._http.put(`/course/setCourseThreadElite?id=${id}`, {})
-  }
-
-  cancelCourseThreadTop(id: string): Observable<any> {
-    return this._http.put(`/course/cancelCourseThreadElite?id=${id}`, {})
-  }
-
-  setCourseThreadElite(id: string): Observable<any> {
     return this._http.put(`/course/setCourseThreadStick?id=${id}`, {})
   }
 
-  cancelCourseThreadElite(id: string): Observable<any> {
+  cancelCourseThreadTop(id: string): Observable<any> {
     return this._http.put(`/course/cancelCourseThreadStick?id=${id}`, {})
+  }
+
+  setCourseThreadElite(id: string): Observable<any> {
+    return this._http.put(`/course/setCourseThreadElite?id=${id}`, {})
+  }
+
+  cancelCourseThreadElite(id: string): Observable<any> {
+    return this._http.put(`/course/cancelCourseThreadElite?id=${id}`, {})
   }
 
   deleteCourseThread(id: string): Observable<any> {

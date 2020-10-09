@@ -151,7 +151,7 @@ export class IndefiniteChoiceComponent implements OnInit {
         categoryId: 1,
         difficulty: 'normal',
         targetID: null,
-        courseSetId: 105,
+        courseSetId: location.pathname.split('/')[3],
         courseId: 105,
       })
     } else if (check && command == "back") {

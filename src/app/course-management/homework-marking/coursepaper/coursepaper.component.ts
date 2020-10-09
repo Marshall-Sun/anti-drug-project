@@ -58,8 +58,8 @@ export class CoursepaperComponent implements OnInit {
    }
 
   ngOnInit() {
-    //this.courseId = location.pathname.split('/')[3];  ///----------------------------这
-    //this.userID=window.localStorage.getItem("id");
+    this.courseid = location.pathname.split('/')[5];  ///----------------------------这
+    this.userID=window.localStorage.getItem("id");
     //获取试卷批阅列表
     this.paperMarkingService.getHomeworkCheckList(this.courseid).subscribe(result=>{
       this.paperMarkList=result.data;

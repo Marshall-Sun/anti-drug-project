@@ -19,7 +19,7 @@ export class DashboardListOpenresourceComponent implements OnInit {
   ngOnInit() {
     this.openService$.getOpenCourseList().subscribe(result => {
       this.displayData = result;
-      this.displayData.splice(4, 16);
+      this.displayData.splice(0, 4);
     }, error1 => {
       this._notification.create(
         'error',

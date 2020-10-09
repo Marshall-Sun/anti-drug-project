@@ -11,9 +11,9 @@
           <nz-list-item>
             <nz-list-item-meta
               [nzTitle]="nzTitle"
-              nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
+              [nzAvatar]="item.smallavatar.startsWith('/image')? item.smallavatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'">
               <ng-template #nzTitle>
-                <a href="https://ng.ant.design">{{ item.nickname }}</a>
+                <a>{{ item.nickname }}</a>
               </ng-template>
             </nz-list-item-meta>
           </nz-list-item>

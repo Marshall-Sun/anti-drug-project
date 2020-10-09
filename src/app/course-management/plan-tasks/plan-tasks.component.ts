@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CourseManagementBackHalfService } from 'src/app/service/course-management-back-half/course-management-back-half.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService, NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import { QuestionCreateService } from 'src/app/service/question-create/question-create.service';
 import { MaterialService } from 'src/app/service/material/material.service';
@@ -72,6 +72,9 @@ export class PlanTasksComponent implements OnInit {
 
   vi_Form: FormGroup;
   ma_Form: FormGroup;
+
+  material_from:"mymaterial";
+
   //考试类型
   testForm: FormGroup;
   testpaper: any;
@@ -105,6 +108,7 @@ export class PlanTasksComponent implements OnInit {
     private modalService: NzModalService,
     private materialservice: MaterialService,
     private _courseFileService: CourseFileService,
+    private router: Router,
   ) {
 
   }
@@ -612,13 +616,13 @@ export class PlanTasksComponent implements OnInit {
         return false;
       }
     } else if (this.addtssk_currenttype == "homework") {
-      if(this.isCreateTask){
+      if (this.isCreateTask) {
         if (this.homeWorkForm.controls['title'].valid && this.homeWorkForm.controls['content'].valid && this.selectedQuestions.length > 0) {
           return true;
         } else {
           return false;
         }
-      }else{
+      } else {
         if (this.homeWorkForm.controls['title'].valid && this.homeWorkForm.controls['content'].valid) {
           return true;
         } else {
@@ -711,7 +715,7 @@ export class PlanTasksComponent implements OnInit {
   confirmDelete(questionId: number = 1) {
     this.modalService.confirm({
       nzTitle: '真的要删除该题目吗?',
-      nzContent: '<b style="color: red;">此题目将不会出现在本课程中</b>',
+      nzContent: '<b style="color: red;">此题目将不会出现在本作业中</b>',
       nzOkText: '确定',
       nzOkType: 'danger',
       nzOnOk: () => {
@@ -731,7 +735,7 @@ export class PlanTasksComponent implements OnInit {
   confirmDeleteList() {
     this.modalService.confirm({
       nzTitle: '真的要删除这些题目吗?',
-      nzContent: '<b style="color: red;">此题目将不会出现在本课程中</b>',
+      nzContent: '<b style="color: red;">此题目将不会出现在本作业中</b>',
       nzOkText: '确定',
       nzOkType: 'danger',
       nzOnOk: () => {
@@ -748,6 +752,7 @@ export class PlanTasksComponent implements OnInit {
               isdelete = true;
               break;
             }
+            j++;
           }
           if (isdelete == false) {
             i++;
@@ -760,26 +765,91 @@ export class PlanTasksComponent implements OnInit {
   }
 
   getMaterials() {
-    var matype = this.addtssk_currenttype == "video" ? "video" : "";
-    this.materialservice.getMyMaterials(
-      this.userid.toString(),
-      this.soursepage.toString(),
-      matype,
-      "",
-      "",
-      "",
-      this.searchKeyword,
-      "",
-      ""
-    ).subscribe((res: any) => {
-      this.soursedata = res.data.data;
-      this.sourcetotalpage = res.data.total;
-    }, error => {
-      this.notification.create(
-        'error',
-        '发生错误！',
-        `${error.error}`)
-    });
+    if(this.material_from =="mymaterial"){
+      var matype = this.addtssk_currenttype == "video" ? "video" : "";
+      this.materialservice.getMyMaterials(
+        this.userid.toString(),
+        this.soursepage.toString(),
+        matype,
+        "",
+        "",
+        "",
+        this.searchKeyword,
+        "",
+        ""
+      ).subscribe((res: any) => {
+        this.soursedata = res.data.data;
+        this.sourcetotalpage = res.data.total;
+      }, error => {
+        this.notification.create(
+          'error',
+          '发生错误！',
+          `${error.error}`)
+      });
+    }else if(this.material_from =="upload"){
+      var matype = this.addtssk_currenttype == "video" ? "video" : "";
+      this.materialservice.getCollectedMaterials(
+        this.userid.toString(),
+        this.soursepage.toString(),
+        matype,
+        "",
+        "",
+        "",
+        this.searchKeyword,
+        "",
+        ""
+      ).subscribe((res: any) => {
+        this.soursedata = res.data.data;
+        this.sourcetotalpage = res.data.total;
+      }, error => {
+        this.notification.create(
+          'error',
+          '发生错误！',
+          `${error.error}`)
+      });
+    }else if(this.material_from == "share"){
+      var matype = this.addtssk_currenttype == "video" ? "video" : "";
+      this.materialservice.getShareTeachingMaterials(
+        this.userid.toString(),
+        this.soursepage.toString(),
+        matype,
+        "",
+        "",
+        "",
+        this.searchKeyword,
+        "",
+        ""
+      ).subscribe((res: any) => {
+        this.soursedata = res.data.data;
+        this.sourcetotalpage = res.data.total;
+      }, error => {
+        this.notification.create(
+          'error',
+          '发生错误！',
+          `${error.error}`)
+      });
+    }else if(this.material_from == "public"){
+      var matype = this.addtssk_currenttype == "video" ? "video" : "";
+      this.materialservice.getOpenTeachingMaterials(
+        this.userid.toString(),
+        this.soursepage.toString(),
+        matype,
+        "",
+        "",
+        "",
+        this.searchKeyword,
+        "",
+        ""
+      ).subscribe((res: any) => {
+        this.soursedata = res.data.data;
+        this.sourcetotalpage = res.data.total;
+      }, error => {
+        this.notification.create(
+          'error',
+          '发生错误！',
+          `${error.error}`)
+      });
+    }
   }
 
   searchMaterials() {
@@ -838,7 +908,7 @@ export class PlanTasksComponent implements OnInit {
 
   editTask(task: any, mode: string) {
     this.initform_addtask();
-    this.courseManagement$.getTaskDetail(this.teachplanId,task.taskId,this.userid).subscribe((res: any) => {
+    this.courseManagement$.getTaskContent(this.teachplanId, task.taskId, this.userid).subscribe((res: any) => {
       this.currentEditTask = task;
       let curretntask = res.data;
       this.isCreateTask = false;
@@ -912,7 +982,7 @@ export class PlanTasksComponent implements OnInit {
     this.material_title = task.Activity.title;
     let faleName = task.ActivityVideo.mediauri.split("/")
     let file = {
-      filename: faleName[faleName.length-1],
+      filename: faleName[faleName.length - 1],
       fileID: task.ActivityVideo.mediaid
     }
     this.current_select_material = file;
@@ -935,17 +1005,17 @@ export class PlanTasksComponent implements OnInit {
       this.iselective = true;
     }
     this.ma_Form.patchValue({
-      fileIds: task.ActivityDownload.fileids,
+      fileIds: task.CourseMaterialV8s[0].fileid,
       fromCourseId: task.CourseTask.courseid,
       fromCourseSetId: task.CourseTask.fromcoursesetid,
       isOptional: task.CourseTask.isoptional,
-      title:  task.Activity.title
+      title: task.Activity.title
     })
     this.material_title = task.Activity.title;
     let faleName = task.CourseMaterialV8s[0].title
     let file = {
       filename: faleName,
-      fileID: task.ActivityDownload.fileids
+      fileID: task.CourseMaterialV8s[0].fileid
     }
     this.current_select_material = file;
   }
@@ -955,7 +1025,7 @@ export class PlanTasksComponent implements OnInit {
       this.iselective = true;
     }
     this.testForm.patchValue({
-      doTimes:task.ActivityTestpaper.dotimes,
+      doTimes: task.ActivityTestpaper.dotimes,
       finishScore: task.ActivityTestpaper.finishcondition.finishScore,
       finishType: task.ActivityTestpaper.finishcondition.type,
       isOptional: task.CourseTask.isoptional,
@@ -976,7 +1046,7 @@ export class PlanTasksComponent implements OnInit {
     switch (this.addtssk_currenttype) {
       case "text": {
         this.pt_Form.patchValue({
-          isOptional:optional
+          isOptional: optional
         })
         this.courseManagement$.edit_text(this.currentEditTask.taskId, this.pt_Form.value).subscribe((res: any) => {
           this.notification.create(
@@ -994,7 +1064,7 @@ export class PlanTasksComponent implements OnInit {
       }
       case "homework": {
         this.homeWorkForm.patchValue({
-          isOptional:optional
+          isOptional: optional
         })
         this.courseManagement$.edit_homework(this.currentEditTask.taskId, this.homeWorkForm.value).subscribe((res: any) => {
           this.notification.create(
@@ -1012,7 +1082,7 @@ export class PlanTasksComponent implements OnInit {
       }
       case "video": {
         this.vi_Form.patchValue({
-          isOptional:optional,
+          isOptional: optional,
           title: this.material_title,
           fileId: this.current_select_material.fileID || this.current_select_material.fileId
         })
@@ -1032,7 +1102,7 @@ export class PlanTasksComponent implements OnInit {
       }
       case "download": {
         this.ma_Form.patchValue({
-          isOptional:optional,
+          isOptional: optional,
           title: this.material_title,
           fileIds: [this.current_select_material.fileID || this.current_select_material.fileId]
         })
@@ -1052,7 +1122,9 @@ export class PlanTasksComponent implements OnInit {
       }
       case "testpaper": {
         this.testForm.patchValue({
-          isOptional:optional
+          isOptional: optional,
+          finishScore: this.testfinisheScore,
+          finishType:this.radioTestValue,
         })
         this.courseManagement$.edit_test(this.currentEditTask.taskId, this.testForm.value).subscribe((res: any) => {
           this.notification.create(
@@ -1073,7 +1145,7 @@ export class PlanTasksComponent implements OnInit {
     this.initform_addtask();
   }
 
-  deleteChildTask(){
+  deleteChildTask() {
     this.modalService.confirm({
       nzTitle: '真的要删除该任务吗?',
       nzContent: '该任务将被删除。',
@@ -1091,4 +1163,16 @@ export class PlanTasksComponent implements OnInit {
     });
   }
 
-}
+  navigateByUrl(url: string) {
+    this.router.navigateByUrl(url);
+  }
+
+  getTaskNum(){
+    var tasknum = 0;
+    for(var item in this.tasklist){
+      tasknum +=this.tasklist[item].length;
+    }
+    return tasknum;
+  }
+
+  }

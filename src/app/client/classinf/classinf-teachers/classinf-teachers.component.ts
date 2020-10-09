@@ -25,7 +25,7 @@ export class ClassinfTeachersComponent implements OnInit {
   constructor(private classinfservice: ClassInfService,private notification: NzNotificationService) { }
 
   ngOnInit() {
-    this.classinfservice.getclassTeachers(this.classid,this.current_teachers_page).subscribe((res: any) => {
+    this.classinfservice.getclassTeachers(this.classid,this.current_teachers_page,6).subscribe((res: any) => {
       this.setclassTeachers(res);
     }, error => {
       this.notification.create(
@@ -69,7 +69,7 @@ export class ClassinfTeachersComponent implements OnInit {
   }
 
   onPageChange_teacher(event?: any) {
-    this.classinfservice.getclassTeachers(this.classid,this.current_teachers_page).subscribe((res: any) => {
+    this.classinfservice.getclassTeachers(this.classid,this.current_teachers_page,6).subscribe((res: any) => {
       this.setclassTeachers(res);
     }, error => {
       this.notification.create(

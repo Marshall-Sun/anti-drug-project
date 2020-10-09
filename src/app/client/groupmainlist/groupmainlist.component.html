@@ -34,7 +34,7 @@
         <button class="buttony" nz-button [nzSize]="'small'"  nzType="primary" (click)="tclick()">我的小组</button>
       </ng-template>
       <ng-template #avatarTemplate>
-        <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+        <nz-avatar [nzSrc]="Header?.mediumAvatar? Header?.mediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"
                    nz-popover
                    [nzPopoverTitle]="tem"
                    [nzPopoverContent]="content"
@@ -56,7 +56,7 @@
               <a>{{detail?.job}}</a>
             </ng-template>
             <ng-template #avatarTemplate>
-              <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+              <nz-avatar [nzSrc]="detail?.mediumAvatar? detail?.mediumAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'"></nz-avatar>
             </ng-template>
             <ng-template #actionEdit>
               <a>{{detail?.followedNum}}</a>
@@ -97,7 +97,7 @@
                   <a (click)="navigateByUrl('/client/groupmainlist/' + join.id)">{{ join.groupTitle }} </a>
                 </ng-template>
                 <ng-template #nzAvater>
-                  <nz-avatar [nzShape]="'square'" [nzSize]="64" nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">  </nz-avatar>
+                  <nz-avatar [nzShape]="'square'" [nzSize]="64" [nzSrc]="join?.groupLogo? join?.groupLogo: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'">  </nz-avatar>
                 </ng-template>
                 <ng-template #nzDescription>
                     <span >
@@ -135,7 +135,7 @@
                   <a (click)="navigateByUrl('/client/groupmainlist/' + newitem.groupId)" >{{newitem.groupTitle}} </a>
                 </ng-template>
                 <ng-template #nzAvater>
-                  <nz-avatar [nzSize]="64" nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">  </nz-avatar>
+                  <nz-avatar [nzSize]="64" [nzSrc]="newitem?.groupLogo? newitem.groupLogo: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'">  </nz-avatar>
                 </ng-template>
                 <ng-template #nzDescription>
                     <span >

@@ -13,9 +13,9 @@ export class TopicPostComponent implements OnInit {
 
   MyTopicList:[];
   dataList:[];
-  userId:number=1;
+  userId:number= parseInt(window.localStorage.getItem('id'));
   loading:boolean;
-  detail:[];
+  detail: any;
 
 
   constructor(
@@ -37,7 +37,7 @@ export class TopicPostComponent implements OnInit {
   searchData() {
     this.MyTopicList = [];
     this.loading = true;
-    this.MyteachingService$.getMyGroupThread(this.userId).subscribe(result => {
+    this.MyteachingService$.getMyThreadPost(this.userId).subscribe(result => {
         this.loading = false;
         this.dataList = result.data;
         this.MyTopicList = this.dataList;

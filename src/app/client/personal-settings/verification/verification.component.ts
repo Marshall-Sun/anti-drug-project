@@ -11,9 +11,10 @@ import {PersonInfoEditService} from '../../../service/person-info-edit/person-in
   styleUrls: ['./verification.component.less']
 })
 export class VerificationComponent implements OnInit {
-  userID:string = window.localStorage.getItem("id");
+  userID:string;
   verifiedName: string = "";
-  nameNonEditable: string = "false";
+  identityCardNumber: string = "";
+  nameNonEditable: boolean = false;
   validateForm: FormGroup;
   faceimg: string;
   backimg: string;
@@ -30,10 +31,11 @@ export class VerificationComponent implements OnInit {
     private http: HttpClient) { }
 
   ngOnInit() {
+    this.userID = window.localStorage.getItem('id');
     this.validateForm = this.fb.group({
       trueName: [null, [Validators.required, Validators.pattern(/^[\u4E00-\u9FA5]{1,5}$/)]],
       id: [null, [Validators.required, Validators.pattern(/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/)]],
-      userid: [1, [Validators.nullValidator]],
+      userid: [this.userID, [Validators.nullValidator]],
       backimg: [null, [Validators.required]],
       faceimg: [null, [Validators.required]],
     });
@@ -41,16 +43,20 @@ export class VerificationComponent implements OnInit {
     // this.validateForm.value.userid = '16';//认证成功
     // this.validateForm.value.userid = '2';//认证失败
     this._verificationService.getUserVerificationStatus(this.validateForm.value.userid).subscribe(result => {
-      // console.log(result);
-      if(result.data == "认证中"){
+      console.log(result);
+      if(result.data.状态 == "认证中"){
         this.verificationStatus.nzDescription = '认证中';
+        this.verificationStatus.nzMessage = "申请已提交，请耐心等待审核结果";
+        this.verifiedName = result.data.真实姓名;
+        this.identityCardNumber = result.data.身份证号;
+        this.nameNonEditable = true;
       }
       if(result.data.状态 == "认证成功"){
         this.verificationStatus.nzType = "success";
         this.verificationStatus.nzMessage = "";
         this.verificationStatus.nzDescription = '认证成功';
         this.verifiedName = result.data.真实姓名;
-        this.nameNonEditable = "true";
+        this.nameNonEditable = true;
       }
       if(result.data.状态 == "认证失败"){
         this.verificationStatus.nzType = "error";
@@ -74,6 +80,7 @@ export class VerificationComponent implements OnInit {
       }
     }
     if (check) {
+      this.validateForm.value.userid = this.userID;
       this._verificationService.setUserApproval(
         this.validateForm.value.backimg,
         this.validateForm.value.faceimg,
@@ -81,6 +88,11 @@ export class VerificationComponent implements OnInit {
         this.validateForm.value.trueName,
         this.validateForm.value.userid).subscribe(result => {
         this._nzNotificationService.create('success', '提交成功!', ``);
+        this.verificationStatus.nzDescription = '认证中';
+        this.verificationStatus.nzMessage = "申请已提交，请耐心等待审核结果";
+        this.nameNonEditable = true;
+        this.verifiedName = this.validateForm.value.trueName;
+        this.identityCardNumber = this.validateForm.value.id;
       }, err => {
         this._nzNotificationService.create('error', '提交失败!', ``);
       })

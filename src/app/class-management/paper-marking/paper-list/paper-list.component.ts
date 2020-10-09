@@ -30,7 +30,7 @@ export class PaperListComponent implements OnInit {
   //试卷3
   //PThreeStudents:any[][]=[['刘六','2019-07-30 16:09:14',30,86]];
   //显示的学生答题情况
-  showPStudents:any[]=new Array();
+  showPStudents:any[]= [];
 
   constructor( private router: Router) {
     this.paperListAfterSearch=this.paperList;

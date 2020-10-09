@@ -1,6 +1,6 @@
 <!--courseinf-mainheadpage-->
 <nz-layout>
-    <nz-layout>
+    <nz-layout *ngIf="joinINf==null||joinINf.join==false">
         <nz-sider [nzWidth]="500">
             <img alt="headerimg" class="headerimg" src="{{currentclass.smallpicture}}" />
         </nz-sider>
@@ -32,7 +32,7 @@
                     <p style="height: 10px;margin:0px;margin-top: -30px;text-align: center;">
                         课程({{currentclass.coursenum}})</p>
                 </div>
-                <div style="margin-left:20px;">
+                <!-- <div style="margin-left:20px;">
                     <i nz-icon nzType="share-alt" class="header_icon2 header_icon" nzTheme="outline" nz-popover
                         [nzContent]="sharecontent" nzTrigger="click"></i>
                     <ng-template #sharecontent>
@@ -41,7 +41,7 @@
                         <i nz-icon nzType="weibo" class="header_icon" nzTheme="outline"></i>
                     </ng-template>
                     <p style="height: 10px;margin:0px;margin-top: -30px;text-align: center;">分享</p>
-                </div>
+                </div> -->
             </div>
 
             <span>承诺服务：
@@ -61,7 +61,7 @@
             <button nz-button style="float: right;margin:15px;width: 150px;height: 40px;" nzType="primary" (click)="joinclass_submit()">加入学习</button>
         </nz-content>
     </nz-layout>
-    <nz-layout>
+    <nz-layout *ngIf="joinINf!=null&&joinINf.join==true">
         <nz-sider [nzWidth]="500">
             <img alt="headerimg" class="headerimg" src="{{currentclass.smallpicture}}" />
         </nz-sider>
@@ -93,7 +93,7 @@
                     <p style="height: 10px;margin:0px;margin-top: -30px;text-align: center;">
                         课程({{currentclass.coursenum}})</p>
                 </div>
-                <div style="margin-left:20px;">
+                <!-- <div style="margin-left:20px;">
                     <i nz-icon nzType="share-alt" class="header_icon2 header_icon" nzTheme="outline" nz-popover
                         [nzContent]="sharecontent" nzTrigger="click"></i>
                     <ng-template #sharecontent>
@@ -102,7 +102,7 @@
                         <i nz-icon nzType="weibo" class="header_icon" nzTheme="outline"></i>
                     </ng-template>
                     <p style="height: 10px;margin:0px;margin-top: -30px;text-align: center;">分享</p>
-                </div>
+                </div> -->
             </div>
 
             <span>承诺服务：

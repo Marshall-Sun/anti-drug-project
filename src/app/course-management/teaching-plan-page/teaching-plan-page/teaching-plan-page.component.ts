@@ -18,7 +18,7 @@ export class TeachingPlanPageComponent implements OnInit {
   imgUrl: string = '';
   teachplanInf:any;
 
-  api: string = 'http://202.199.13.114:9013';
+  api: string = 'http://localhost:9013';
 
   constructor(
     private router: Router,
@@ -33,6 +33,9 @@ export class TeachingPlanPageComponent implements OnInit {
     },);
     this._courseBaseInfoEditService.imgChange.subscribe(result => {
       this.getCourseInfo();
+    });
+    this.courseManagement$.addingStatus.subscribe(value => {
+      this.getTeachplanInf();
     })
   }
 
@@ -47,8 +50,8 @@ export class TeachingPlanPageComponent implements OnInit {
     this._courseBaseInfoEditService.getCourseInfo(this.courseId).subscribe(res => {
       this.title = res.data.baseData.title;
       this.status = res.data.baseData.status;
-      this.imgUrl = res.data.baseData.cover;
-      this.teachersName = res.data.teachersName;
+      this.imgUrl = res.data.baseData.cover? res.data.baseData.cover: '../../../assets/img/timg.jpg';
+
     })
     this.getTeachplanInf();
   }
@@ -56,6 +59,7 @@ export class TeachingPlanPageComponent implements OnInit {
   getTeachplanInf(){
     this.courseManagement$.getPlanBasicInfo(this.teachplanId).subscribe(res => {
       this.teachplanInf = res.data;
+      this.teachersName = res.data.teachers;
     })
   }
 }
