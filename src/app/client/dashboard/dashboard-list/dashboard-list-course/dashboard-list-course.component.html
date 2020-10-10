@@ -4,47 +4,35 @@
   <h3>
     针对青少年的不同年龄层次，设计毒品预防教育教学资源包，精选教学资源，满足你的学习兴趣
   </h3>
-  <nz-list
-    [nzDataSource]="courselist"
-    [nzRenderItem]="course"
-    [nzGrid]="{ gutter: 24, xs: 12, sm: 12, md: 12, lg: 8, xl: 6 }"
-  >
+  <nz-list [nzDataSource]="courselist" [nzRenderItem]="course"
+    [nzGrid]="{ gutter: 24, xs: 12, sm: 12, md: 12, lg: 8, xl: 6 }">
     <ng-template #course let-course>
       <nz-list-item>
-        <div *ngIf="course.serializeMode == 'finished'" class="coursestate">
-          <img
-            alt="finish"
-            src="../../../../../assets/img/finish.png"
-            height="70"
-          />
+        <div *ngIf="course.serializeMode=='finished'" class="coursestate"
+          (click)="navigateByUrl('/client/courseinf/'+course.id)">
+          <img alt="finish" src="../../../../assets/img/finish.png" height="70">
         </div>
-        <div *ngIf="course.serializeMode != 'finished'" class="coursestate">
-          <img
-            alt="update"
-            src="../../../../../assets/img/updating.png"
-            height="70"
-          />
+        <div *ngIf="course.serializeMode!='finished'" class="coursestate"
+          (click)="navigateByUrl('/client/courseinf/'+course.id)">
+          <img alt="update" src="../../../../assets/img/updating.png" height="70">
         </div>
-        <nz-card
-          nzHoverable
-          [nzCover]="coverTemplate"
-          (click)="navigateByUrl('/client/courseinf/' + course.id)"
-        >
-          <nz-card-meta nzTitle="{{ course.title }}"> </nz-card-meta>
+        <nz-card nzHoverable [nzCover]="coverTemplate" (click)="navigateByUrl('/client/courseinf/'+course.id)">
+          <nz-card-meta nzTitle="{{course.title}}">
+          </nz-card-meta>
 
           <div class="cardbottom">
             <div class="number">
               <i nz-icon nzType="team" nzTheme="outline"></i>
-              <span>{{ course.studentNum }}</span>
+              <span>{{course.studentNum}}</span>
             </div>
             <div class="discuss">
               <i nz-icon nzType="message" nzTheme="outline"></i>
-              <span>{{ course.discussions }}</span>
+              <span>{{course.discussions}}</span>
             </div>
           </div>
         </nz-card>
         <ng-template #coverTemplate>
-          <img alt="example" [src]="course.picture !== ''? course.picture: '../../../../../assets/img/timg.jpg'" />
+          <img alt="example" [src]="course.picture" height="170" />
         </ng-template>
       </nz-list-item>
     </ng-template>
