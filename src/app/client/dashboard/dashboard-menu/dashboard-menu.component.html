@@ -2,13 +2,12 @@
   <img class="mobile-pic" alt="mobile-pic" src="../../../../assets/img/menu-pic.jpg" />
   <div nz-row class="pc-version">
     <div class="card">
-      <button class="menu-button" nz-button nzType="primary" (click)="navigateByUrl('/client/newsall')">资讯频道<i nz-icon nzType="right"></i></button>
-      <button class="menu-button" nz-button nzType="primary" (click)="navigateByUrl('/client/courselist?orderBy=recommend')">推荐课程<i nz-icon nzType="right"></i></button>
-      <button class="menu-button" nz-button nzType="primary" (click)="navigateByUrl('/client/courselist?type_tag=20')">专题讲座<i nz-icon nzType="right"></i></button>
-      <button class="menu-button" nz-button nzType="primary" (click)="navigateByUrl('/client/courselist?type_tag=26')">教师培训<i nz-icon nzType="right"></i></button>
-      <button class="menu-button" nz-button nzType="primary" (click)="navigateByUrl('/client/courselist?orderBy=hot')">热门课程<i nz-icon nzType="right"></i></button>
-      <button class="menu-button" nz-button nzType="primary" (click)="navigateByUrl('/client/classlist')">禁毒班级<i nz-icon nzType="right"></i></button>
-      <button class="menu-button" nz-button nzType="primary" (click)="navigateByUrl('/client/openresource')">开放资源<i nz-icon nzType="right"></i></button>
+      <button nz-button nzType="primary" (click)="showModal()" id="setting">
+        <i nz-icon nzType="setting" nzTheme="outline"></i>
+      </button>
+
+      <button *ngFor="let buttonItem of userButtonList" class="menu-button" nz-button nzType="primary"
+        (click)="navigateByUrl(buttonItem.url)">{{buttonItem.name}}<i nz-icon nzType="right"></i></button>
     </div>
 
     <div nz-col [nzSpan]="20" nzOffset="4">
@@ -17,33 +16,33 @@
       </div>
       <div nz-row class="right-content">
         <div nz-col [nzSpan]="6">
-          <button class="list-button" nz-button nzBlock  (click)="navigateByUrl('/client/courselist?type_tag=22')">
+          <button class="list-button" nz-button nzBlock (click)="navigateByUrl('/client/courselist?type_tag=22')">
             <div nz-row>
-              <nz-avatar nzText="小学" nzSize="large" [nzShape]="'square'"></nz-avatar>
+              <nz-avatar nzIcon="books-1" nzSrc="../../../../assets/img/books-1.png" nzSize="large" [nzShape]="'square'"></nz-avatar>
             </div>
             <div nz-row>小学课程</div>
           </button>
         </div>
         <div nz-col [nzSpan]="6">
-          <button class="list-button" nz-button nzBlock  (click)="navigateByUrl('/client/courselist?type_tag=23')">
+          <button class="list-button" nz-button nzBlock (click)="navigateByUrl('/client/courselist?type_tag=23')">
             <div nz-row>
-              <nz-avatar nzText="中学" nzSize="large" [nzShape]="'square'"></nz-avatar>
+              <nz-avatar nzIcon="books-2" nzSrc="../../../../assets/img/books-2.png" nzSize="large" [nzShape]="'square'"></nz-avatar>
             </div>
             <div nz-row>中学课程</div>
           </button>
         </div>
         <div nz-col [nzSpan]="6">
-          <button class="list-button" nz-button nzBlock  (click)="navigateByUrl('/client/courselist?type_tag=24')">
+          <button class="list-button" nz-button nzBlock (click)="navigateByUrl('/client/courselist?type_tag=24')">
             <div nz-row>
-              <nz-avatar nzText="高中" nzSize="large" [nzShape]="'square'"></nz-avatar>
+              <nz-avatar nzIcon="books-3" nzSrc="../../../../assets/img/books-3.png" nzSize="large" [nzShape]="'square'"></nz-avatar>
             </div>
             <div nz-row>高中课程</div>
           </button>
         </div>
         <div nz-col [nzSpan]="6">
-          <button class="list-button" nz-button nzBlock  (click)="navigateByUrl('/client/courselist?type_tag=25')">
+          <button class="list-button" nz-button nzBlock (click)="navigateByUrl('/client/courselist?type_tag=25')">
             <div nz-row>
-              <nz-avatar nzText="高阶" nzSize="large" [nzShape]="'square'"></nz-avatar>
+              <nz-avatar nzIcon="books-4" nzSrc="../../../../assets/img/books-4.png" nzSize="large" [nzShape]="'square'"></nz-avatar>
             </div>
             <div nz-row>高阶课程</div>
           </button>
@@ -52,3 +51,10 @@
     </div>
   </div>
 </div>
+
+
+<nz-modal id="transfer-model" [(nzVisible)]="isVisible" nzTitle="标签自定义" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+  [nzOkLoading]="isOkLoading">
+  <nz-transfer id="transfer" [nzDataSource]="transferList" [nzDisabled]="disabled" [nzTitles]="['隐藏的标签', '显示的标签']">
+  </nz-transfer>
+</nz-modal>
