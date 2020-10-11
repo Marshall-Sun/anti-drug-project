@@ -141,6 +141,7 @@ import { HomeworkMarkingTabComponent } from './mine-management/homework-marking/
 import { DashboardMenuComponent } from './dashboard/dashboard-menu/dashboard-menu.component';
 import { DashboardListComponent } from './dashboard/dashboard-list/dashboard-list.component';
 import { DashboardListCourseComponent } from './dashboard/dashboard-list/dashboard-list-course/dashboard-list-course.component';
+import { DashboardListOpenresourceComponent } from './dashboard/dashboard-list/dashboard-list-openresource/dashboard-list-openresource.component';
 import { DashboardListStudentComponent } from './dashboard/dashboard-list/dashboard-list-student/dashboard-list-student.component';
 import { DashboardListTeacherComponent } from './dashboard/dashboard-list/dashboard-list-teacher/dashboard-list-teacher.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -231,7 +232,7 @@ import {PreviewTestpaperComponent} from './preview-testpaper/preview-testpaper.c
     TopicRecordComponent, TopicComponent, GroupJoinComponent, MyGroupJoinComponent,TdClassificationComponent, TdCardComponent, MyNoteDetailComponent, MyCourseComponent,
     TopicPostComponent, MyOwnGroupComponent, CourseTaskComponent, MyClassTopicComponent, MyCourseTopicComponent, GroupsearchComponent, GroupmainsearchComponent, GroupthreadComponent,
     GroupthreadeditComponent, TeachPlanPageComponent,PaperListComponent,HomeworkMarkingTabComponent,
-    DashboardMenuComponent, DashboardListComponent, DashboardListCourseComponent, DashboardListStudentComponent, DashboardListTeacherComponent, 
+    DashboardMenuComponent, DashboardListComponent, DashboardListCourseComponent, DashboardListOpenresourceComponent, DashboardListStudentComponent, DashboardListTeacherComponent, 
     PageNotFoundComponent,HaveMarkedClasspaperComponent,HaveMarkedCoursepaperComponent,NotMarkedClasspaperComponent,
     NotMarkedCoursepaperComponent,CourseExamComponent,SearchclassComponent, SearchopensorComponent, SearchgroupComponent, SearchnewsComponent, SearchcourseComponent,
     ClasspaperComponent,CoursepaperComponent,HomeworkExamComponent,MineHomeworkMarkingComponent,MinePaperMarkingComponent,TaskpreviewComponent, AllGroupComponent,
