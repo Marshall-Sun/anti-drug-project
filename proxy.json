@@ -1,6 +1,6 @@
 {
   "/user": {
-    "target": "http://172.16.10.54:9000/",
+    "target": "http://219.216.65.240:9011/",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
