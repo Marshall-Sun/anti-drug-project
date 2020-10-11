@@ -1,5 +1,13 @@
-<nz-transfer id="transfer" [nzDataSource]="transferList" [nzTitles]="['隐藏的标签', '显示的标签']">
-</nz-transfer>
-<button nz-button [nzType]="'primary'" [nzLoading]="isOkLoading" (click)="handleOk()">
-  确定
-</button>
+<div id="content">
+  <nz-transfer id="transfer" [nzDataSource]="transferList" [nzTitles]="['隐藏的标签', '显示的标签']">
+  </nz-transfer>
+</div>
+<div id="footer">
+  <button nz-button (click)="handleCancel()">
+    取消
+  </button>
+  &nbsp;
+  <button nz-button [nzType]="'primary'" [nzLoading]="isOkLoading" (click)="handleOk()">
+    确定
+  </button>
+</div>

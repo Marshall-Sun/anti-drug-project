@@ -13,7 +13,6 @@ import { DashboardHotspotService } from "src/app/service/dashboard-hotspot/dashb
 export class DashboardMenuComponent implements OnInit {
   constructor(
     private router: Router,
-    private message: NzMessageService,
     private dashboardHotspotService: DashboardHotspotService,
     private modalService: NzModalService
   ) {}
@@ -53,46 +52,35 @@ export class DashboardMenuComponent implements OnInit {
   transferList: TransferItem[] = [];
 
   async ngOnInit() {
-    for (let item of this.buttonList) {
-      this.transferList.push({
-        title: item.name,
-        direction: 'left',
-      });
+    try {
+      let res: any = await this.dashboardHotspotService
+        .getHotspot()
+        .toPromise();
+
+      for (let button of this.buttonList) {
+        this.transferList.push({ title: button.name, direction: "left" });
+        // if (res.data.indexOf(button.name) === -1) {
+        //   this.transferList.push({ title: button.name, direction: "left" });
+        // } else {
+        //   this.transferList.push({ title: button.name, direction: "right" });
+        //   this.userButtonList.push(button);
+        // }
+      }
+    } catch (error) {
+      console.log(error);
+      this.userButtonList = this.buttonList;
     }
     this.userButtonList = this.buttonList;
-    // try {
-    //   let res: any = await this.dashboardHotspotService
-    //     .getHotspot()
-    //     .toPromise();
-    //   for (let [key, value] of Object.entries(res.data)) {
-    //     if (key.slice(-4) === "_pos" && value.toString().length === 4) {
-    //       let buttonIndex = this.buttonList.findIndex(
-    //         (item) => item.name === value
-    //       );
-    //       this.userButtonList.push(this.buttonList[buttonIndex]);
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   this.userButtonList = this.buttonList;
-    // }
   }
 
   showModal(): void {
-    // for (let item of this.transferList) {
-    //   let buttonIndex = this.userButtonList.findIndex(userButton => userButton.name === item.title);
-    //   if (buttonIndex === -1) item.direction = 'left';
-    // }
-    // console.log(this.transferList)
-    // this.isVisible = true;
-
     const modal = this.modalService.create({
-      nzTitle: "标签自定义new",
+      nzTitle: "标签自定义",
       nzContent: HotspotModalComponent,
       nzComponentParams: {
-        transferList: this.transferList
+        transferList: this.transferList,
       },
-      nzFooter: null
+      nzFooter: null,
     });
   }
 
@@ -100,3 +88,5 @@ export class DashboardMenuComponent implements OnInit {
     this.router.navigateByUrl(url);
   }
 }
+
+// ["资讯频道","推荐课程","专题讲座","教师培训","热门课程","禁毒班级"]
