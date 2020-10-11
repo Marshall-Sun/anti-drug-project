@@ -1,6 +1,5 @@
 import { Component, Input } from "@angular/core";
 import {
-  NzModalService,
   NzMessageService,
   NzModalRef,
   TransferItem,
@@ -14,7 +13,6 @@ import { DashboardHotspotService } from "src/app/service/dashboard-hotspot/dashb
 })
 export class HotspotModalComponent {
   constructor(
-    private modalService: NzModalService,
     private message: NzMessageService,
     private dashboardHotspotService: DashboardHotspotService,
     private modal: NzModalRef

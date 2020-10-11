@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { NzMessageService, NzModalService } from "ng-zorro-antd";
+import { NzModalService } from "ng-zorro-antd";
 import { TransferItem } from "ng-zorro-antd/transfer";
 import { HotspotModalComponent } from "src/app/core/modal/hotspot-modal/hotspot-modal.component";
 import { DashboardHotspotService } from "src/app/service/dashboard-hotspot/dashboard-hotspot.service";
@@ -58,19 +58,17 @@ export class DashboardMenuComponent implements OnInit {
         .toPromise();
 
       for (let button of this.buttonList) {
-        this.transferList.push({ title: button.name, direction: "left" });
-        // if (res.data.indexOf(button.name) === -1) {
-        //   this.transferList.push({ title: button.name, direction: "left" });
-        // } else {
-        //   this.transferList.push({ title: button.name, direction: "right" });
-        //   this.userButtonList.push(button);
-        // }
+        if (res.data.indexOf(button.name) === -1) {
+          this.transferList.push({ title: button.name, direction: "left" });
+        } else {
+          this.transferList.push({ title: button.name, direction: "right" });
+          this.userButtonList.push(button);
+        }
       }
     } catch (error) {
       console.log(error);
       this.userButtonList = this.buttonList;
     }
-    this.userButtonList = this.buttonList;
   }
 
   showModal(): void {
@@ -88,5 +86,3 @@ export class DashboardMenuComponent implements OnInit {
     this.router.navigateByUrl(url);
   }
 }
-
-// ["资讯频道","推荐课程","专题讲座","教师培训","热门课程","禁毒班级"]
