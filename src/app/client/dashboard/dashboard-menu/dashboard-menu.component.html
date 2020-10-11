@@ -2,7 +2,7 @@
   <img class="mobile-pic" alt="mobile-pic" src="../../../../assets/img/menu-pic.jpg" />
   <div nz-row class="pc-version">
     <div class="card">
-      <button nz-button nzType="primary" (click)="showModal()" id="setting">
+      <button nz-button nzType="primary" (click)="showModal()" id="setting" *ngIf="isShow()">
         <i nz-icon nzType="setting" nzTheme="outline"></i>
       </button>
 

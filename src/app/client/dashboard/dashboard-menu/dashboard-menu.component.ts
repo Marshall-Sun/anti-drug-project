@@ -3,6 +3,8 @@ import { Router } from "@angular/router";
 import { NzModalService } from "ng-zorro-antd";
 import { TransferItem } from "ng-zorro-antd/transfer";
 import { HotspotModalComponent } from "src/app/core/modal/hotspot-modal/hotspot-modal.component";
+import { AuthGuard } from 'src/app/front-desk/auth/auth.guard';
+import { AuthService } from 'src/app/front-desk/auth/auth.service';
 import { DashboardHotspotService } from "src/app/service/dashboard-hotspot/dashboard-hotspot.service";
 
 @Component({
@@ -14,7 +16,8 @@ export class DashboardMenuComponent implements OnInit {
   constructor(
     private router: Router,
     private dashboardHotspotService: DashboardHotspotService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private authService: AuthService
   ) {}
 
   buttonList = [
@@ -84,5 +87,9 @@ export class DashboardMenuComponent implements OnInit {
 
   navigateByUrl(url: string) {
     this.router.navigateByUrl(url);
+  }
+
+  isShow() {
+    return this.authService.userIdentityChecker('SUPER_ADMIN');
   }
 }
