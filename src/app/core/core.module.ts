@@ -38,10 +38,12 @@ import { FindPasswdModalComponent } from './modal/find-passwd-modal/find-passwd-
 import { SelectQuestionComponent } from './modal/select-question/select-question.component';
 import { VideoPlayerComponent } from './video-player/video-player/video-player.component';
 import { VideoPlayerComponent as ParentVideoPlayerComponet } from './video-player/video-player.component';
+import { HotspotModalComponent } from './modal/hotspot-modal/hotspot-modal.component';
 
 
 @NgModule({
   declarations: [
+    HotspotModalComponent,
     LoginModalComponent,
     UserInfoViewModalComponent,
     UserInfoEditModalComponent,
@@ -83,6 +85,7 @@ import { VideoPlayerComponent as ParentVideoPlayerComponet } from './video-playe
 
   ],
   exports: [
+    HotspotModalComponent,
     LoginModalComponent,
     UserInfoViewModalComponent,
     UserInfoEditModalComponent,

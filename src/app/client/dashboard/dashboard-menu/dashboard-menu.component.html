@@ -51,10 +51,3 @@
     </div>
   </div>
 </div>
-
-
-<nz-modal id="transfer-model" [(nzVisible)]="isVisible" nzTitle="标签自定义" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
-  [nzOkLoading]="isOkLoading">
-  <nz-transfer id="transfer" [nzDataSource]="transferList" [nzDisabled]="disabled" [nzTitles]="['隐藏的标签', '显示的标签']">
-  </nz-transfer>
-</nz-modal>

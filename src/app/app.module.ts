@@ -37,6 +37,7 @@ import { RegisterModalComponent } from './core/modal/register-modal/register-mod
 import { FindPasswdModalComponent } from './core/modal/find-passwd-modal/find-passwd-modal.component';
 import { CommonInterceptor } from './share/common-interceptor.interceptor';
 import { SelectQuestionComponent } from './core/modal/select-question/select-question.component';
+import { HotspotModalComponent } from './core/modal/hotspot-modal/hotspot-modal.component';
 registerLocaleData(zh);
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ registerLocaleData(zh);
     },
   ],
   entryComponents: [
+    HotspotModalComponent,
     LoginModalComponent,
     RegisterModalComponent,
     FindPasswdModalComponent,
