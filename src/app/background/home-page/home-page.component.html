@@ -1,6 +1,6 @@
 <div id="content">
   <div nz-row [nzGutter]="8">
-    <div nz-col [nzXl]="8" [nzMd]="12" [nzXs]="24" class="card">
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="8" nzXl="8" class="card">
       <nz-card nzTitle="用户" [nzExtra]="userExtra">
         <nz-list [nzDataSource]="user" [nzRenderItem]="userItem">
           <ng-template #userItem let-item>
@@ -15,9 +15,37 @@
           <a (click)="navigate('/admin/user')">More</a>
         </ng-template>
       </nz-card>
+      <nz-card nzTitle="班级" [nzExtra]="classExtra">
+        <nz-list [nzDataSource]="class" [nzRenderItem]="classItem">
+          <ng-template #classItem let-item>
+            <nz-list-item [nzContent]="item.title">
+              <nz-list-item-meta [nzDescription]="item.classroomCategory">
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+
+        <ng-template #classExtra>
+          <a (click)="navigate('/admin/course/class')">More</a>
+        </ng-template>
+      </nz-card>
+      <nz-card nzTitle="标签" [nzExtra]="tagExtra">
+        <nz-list [nzDataSource]="tag" [nzRenderItem]="tagItem">
+          <ng-template #tagItem let-item>
+            <nz-list-item [nzContent]="item.name">
+              <nz-list-item-meta [nzDescription]="item.tagGroupName">
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+
+        <ng-template #tagExtra>
+          <a (click)="navigate('/admin/course/tag')">More</a>
+        </ng-template>
+      </nz-card>
     </div>
 
-    <div nz-col [nzXl]="8" [nzMd]="12" [nzXs]="24" class="card">
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="8" nzXl="8" class="card">
       <nz-card nzTitle="私信" [nzExtra]="messageExtra">
         <nz-list [nzDataSource]="message" [nzRenderItem]="messageItem">
           <ng-template #messageItem let-item>
@@ -32,9 +60,37 @@
           <a (click)="navigate('/admin/user/message')">More</a>
         </ng-template>
       </nz-card>
+      <nz-card nzTitle="问答" [nzExtra]="questionExtra">
+        <nz-list [nzDataSource]="question" [nzRenderItem]="questionItem">
+          <ng-template #questionItem let-item>
+            <nz-list-item [nzContent]="item.content">
+              <nz-list-item-meta [nzDescription]="item.title">
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+
+        <ng-template #questionExtra>
+          <a (click)="navigate('/admin/course/reply')">More</a>
+        </ng-template>
+      </nz-card>
+      <nz-card nzTitle="资讯" [nzExtra]="newsExtra">
+        <nz-list [nzDataSource]="news" [nzRenderItem]="newsItem">
+          <ng-template #newsItem let-item>
+            <nz-list-item [nzContent]="item.title">
+              <nz-list-item-meta [nzDescription]="item.categoryname">
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+
+        <ng-template #newsExtra>
+          <a (click)="navigate('/admin/operation/news')">More</a>
+        </ng-template>
+      </nz-card>
     </div>
 
-    <div nz-col [nzXl]="8" [nzMd]="12" [nzXs]="24" class="card">
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="8" nzXl="8" class="card">
       <nz-card nzTitle="课程" [nzExtra]="courseExtra">
         <nz-list [nzDataSource]="course" [nzRenderItem]="courseItem">
           <ng-template #courseItem let-item>
@@ -57,43 +113,6 @@
           <a (click)="navigate('/admin/course')">More</a>
         </ng-template>
       </nz-card>
-    </div>
-
-    <div nz-col [nzXl]="8" [nzMd]="12" [nzXs]="24" class="card">
-      <nz-card nzTitle="班级" [nzExtra]="classExtra">
-        <nz-list [nzDataSource]="class" [nzRenderItem]="classItem">
-          <ng-template #classItem let-item>
-            <nz-list-item [nzContent]="item.title">
-              <nz-list-item-meta [nzDescription]="item.classroomCategory">
-              </nz-list-item-meta>
-            </nz-list-item>
-          </ng-template>
-        </nz-list>
-
-        <ng-template #classExtra>
-          <a (click)="navigate('/admin/course/class')">More</a>
-        </ng-template>
-      </nz-card>
-    </div>
-
-    <div nz-col [nzXl]="8" [nzMd]="12" [nzXs]="24" class="card">
-      <nz-card nzTitle="问答" [nzExtra]="questionExtra">
-        <nz-list [nzDataSource]="question" [nzRenderItem]="questionItem">
-          <ng-template #questionItem let-item>
-            <nz-list-item [nzContent]="item.content">
-              <nz-list-item-meta [nzDescription]="item.title">
-              </nz-list-item-meta>
-            </nz-list-item>
-          </ng-template>
-        </nz-list>
-
-        <ng-template #questionExtra>
-          <a (click)="navigate('/admin/course/reply')">More</a>
-        </ng-template>
-      </nz-card>
-    </div>
-
-    <div nz-col [nzXl]="8" [nzMd]="12" [nzXs]="24" class="card">
       <nz-card nzTitle="评论" [nzExtra]="commentExtra">
         <nz-list [nzDataSource]="comment" [nzRenderItem]="commentItem">
           <ng-template #commentItem let-item>
@@ -108,43 +127,6 @@
           <a (click)="navigate('/admin/course/rating')">More</a>
         </ng-template>
       </nz-card>
-    </div>
-
-    <div nz-col [nzXl]="8" [nzMd]="12" [nzXs]="24" class="card">
-      <nz-card nzTitle="标签" [nzExtra]="tagExtra">
-        <nz-list [nzDataSource]="tag" [nzRenderItem]="tagItem">
-          <ng-template #tagItem let-item>
-            <nz-list-item [nzContent]="item.name">
-              <nz-list-item-meta [nzDescription]="item.tagGroupName">
-              </nz-list-item-meta>
-            </nz-list-item>
-          </ng-template>
-        </nz-list>
-
-        <ng-template #tagExtra>
-          <a (click)="navigate('/admin/course/tag')">More</a>
-        </ng-template>
-      </nz-card>
-    </div>
-
-    <div nz-col [nzXl]="8" [nzMd]="12" [nzXs]="24" class="card">
-      <nz-card nzTitle="资讯" [nzExtra]="newsExtra">
-        <nz-list [nzDataSource]="news" [nzRenderItem]="newsItem">
-          <ng-template #newsItem let-item>
-            <nz-list-item [nzContent]="item.title">
-              <nz-list-item-meta [nzDescription]="item.categoryname">
-              </nz-list-item-meta>
-            </nz-list-item>
-          </ng-template>
-        </nz-list>
-
-        <ng-template #newsExtra>
-          <a (click)="navigate('/admin/operation/news')">More</a>
-        </ng-template>
-      </nz-card>
-    </div>
-
-    <div nz-col [nzXl]="8" [nzMd]="12" [nzXs]="24" class="card">
       <nz-card nzTitle="话题" [nzExtra]="topicExtra">
         <nz-list [nzDataSource]="topic" [nzRenderItem]="topicItem">
           <ng-template #topicItem let-item>
