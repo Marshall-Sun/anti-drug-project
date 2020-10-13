@@ -115,6 +115,7 @@ import {HomeworkMarkingComponent} from '../course-management/homework-marking/ho
 import {TaskpreviewComponent} from '../client/taskpreview/taskpreview.component';
 import {PreviewTestpaperComponent} from '../client/preview-testpaper/preview-testpaper.component';
 import {PreviewHomeworkComponent} from '../client/preview-homework/preview-homework.component';
+import { OpenresourceManagementComponent } from '../openresource-management/openresource-management.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -219,6 +220,10 @@ const routes: Routes = [
           { path: 'information', component: InformationComponent },
           { path: 'verification', component: VerificationComponent },
           { path: 'security', component: SecuritySettingComponent },
+        ]
+      },
+      {
+        path: 'openresource/:id', component: OpenresourceManagementComponent, children: [    
         ]
       },
       {

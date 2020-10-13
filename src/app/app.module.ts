@@ -38,6 +38,7 @@ import { FindPasswdModalComponent } from './core/modal/find-passwd-modal/find-pa
 import { CommonInterceptor } from './share/common-interceptor.interceptor';
 import { SelectQuestionComponent } from './core/modal/select-question/select-question.component';
 import { HotspotModalComponent } from './core/modal/hotspot-modal/hotspot-modal.component';
+import { OpenresourceManagementModule } from './openresource-management/openresource-management.module';
 registerLocaleData(zh);
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ registerLocaleData(zh);
     CoreModule,
     QuillModule.forRoot(),
     ClientModule,
-    CourseManagementModule
+    CourseManagementModule,
+    OpenresourceManagementModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN },

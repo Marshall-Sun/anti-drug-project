@@ -8,6 +8,7 @@ import { ClassManagementModule } from '../class-management/class-management.modu
 import { CourseManagementModule } from '../course-management/course-management.module'
 import { FrontNotificationComponent } from './front-notification/front-notification.component';
 import { FrontAvatarComponent } from './front-avatar/front-avatar.component';
+import { OpenresourceManagementModule } from '../openresource-management/openresource-management.module';
 
 
 
@@ -19,7 +20,8 @@ import { FrontAvatarComponent } from './front-avatar/front-avatar.component';
     ClientModule,
     CoreModule,
     ClassManagementModule,
-    CourseManagementModule
+    CourseManagementModule,
+    OpenresourceManagementModule
   ]
 })
 export class FrontDeskModule { }

@@ -1,0 +1,33 @@
+<nz-layout>
+  <nz-header>
+    <div class="header">
+      <img class="header-image" [src]="imgUrl">
+      <div class="header-info">
+        <div>{{title}}<nz-tag [nzColor]="'#87d068'">{{status === 'published'? '已发布': '未发布'}}</nz-tag>
+          <div></div>教师:<span *ngFor="let name of teachersName" style="margin-right: 5px;">{{name.nickname}}</span>
+        </div>
+        <button nzSize="small" nz-button nzType="primary" (click)="navigateByUrl('/client/courseinf/' + courseId)">返回课程主页</button>
+      </div>
+    </div>
+  </nz-header>
+  <nz-content>
+    <div class="content">
+      <div class="left-content">
+        <ul nz-menu nzMode="inline" class="sider-menu">
+            <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/base')" [nzSelected]="location?.pathname.endsWith('base')">基本信息</li>
+            <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/detail')" [nzSelected]="location?.pathname.endsWith('detail')">详细信息</li>
+            <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/cover')" [nzSelected]="location?.pathname.endsWith('cover')">封面图片</li>
+          <li nz-menu-divider></li>
+            <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/file')" [nzSelected]="location?.pathname.endsWith('file')">课程文件</li>
+            <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/testpaper')" [nzSelected]="location?.pathname.endsWith('testpapter')">试卷管理</li>
+            <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/question')" [nzSelected]="location?.pathname.endsWith('question')">题目管理</li>
+          <li nz-menu-divider></li>
+            <li nz-menu-item (click)="navigateByUrl('/client/course/' +courseId + '/teaching_plan')" [nzSelected]="location?.pathname.endsWith('teaching_plan')">教学计划管理</li>
+        </ul>
+      </div>
+      <div class="right-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </nz-content>
+</nz-layout>
