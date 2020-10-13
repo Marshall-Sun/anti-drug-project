@@ -5,10 +5,12 @@ import { QuillModule } from "ngx-quill";
 import { CoreModule } from "../core/core.module";
 import { NgxEchartsModule } from "ngx-echarts";
 import { OpenresourceManagementComponent } from './openresource-management.component';
+import { OpenresourceBaseInfoComponent } from './base-info/base-info.component';
 
 @NgModule({
   declarations: [
-    OpenresourceManagementComponent
+    OpenresourceManagementComponent,
+    OpenresourceBaseInfoComponent
   ],
   imports: [
     ShareModule,

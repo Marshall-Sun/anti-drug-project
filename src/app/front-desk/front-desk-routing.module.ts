@@ -116,6 +116,7 @@ import {TaskpreviewComponent} from '../client/taskpreview/taskpreview.component'
 import {PreviewTestpaperComponent} from '../client/preview-testpaper/preview-testpaper.component';
 import {PreviewHomeworkComponent} from '../client/preview-homework/preview-homework.component';
 import { OpenresourceManagementComponent } from '../openresource-management/openresource-management.component';
+import { OpenresourceBaseInfoComponent } from '../openresource-management/base-info/base-info.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -223,7 +224,9 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'openresource/:id', component: OpenresourceManagementComponent, children: [    
+        path: 'openresource/:id', component: OpenresourceManagementComponent, children: [
+          { path: '', redirectTo: 'base', pathMatch: 'full' },
+          { path: 'base', component: OpenresourceBaseInfoComponent },
         ]
       },
       {
