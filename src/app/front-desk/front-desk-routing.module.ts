@@ -118,6 +118,7 @@ import {PreviewHomeworkComponent} from '../client/preview-homework/preview-homew
 import { OpenresourceManagementComponent } from '../openresource-management/openresource-management.component';
 import { OpenresourceBaseInfoComponent } from '../openresource-management/base-info/base-info.component';
 import { OpenresourceDetailInfoComponent } from '../openresource-management/detail-info/detail-info.component';
+import { OpenresourceCoverPhotoComponent } from '../openresource-management/cover-photo/cover-photo.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -229,6 +230,7 @@ const routes: Routes = [
           { path: '', redirectTo: 'base', pathMatch: 'full' },
           { path: 'base', component: OpenresourceBaseInfoComponent },
           { path: 'detail', component: OpenresourceDetailInfoComponent },
+          { path: 'cover', component: OpenresourceCoverPhotoComponent },
         ]
       },
       {

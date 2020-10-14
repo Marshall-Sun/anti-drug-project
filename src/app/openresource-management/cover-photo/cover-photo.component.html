@@ -1,0 +1,21 @@
+<div class="cover-page">
+  <h1>封面图片</h1>
+  <nz-divider></nz-divider>
+  <div class="content">
+    <div>
+      <ng-container *ngIf="!coverUrl">
+        <i nz-icon nzType="book" nzTheme="fill" class="picture-icon"></i>
+      </ng-container>
+      <img *ngIf="coverUrl" [src]="coverUrl" style="min-width: 90%;height: 250px;display: block;" />
+    </div>
+    <div style="margin: 5% 0%">
+      <p style="color: #afafb1">请上传jpg, gif, png格式的图片, 建议图片尺寸为 480×270px。<br>
+        建议图片大小不超过<strong>2MB</strong>。</p>
+    </div>
+    <div>
+      <nz-upload [nzAction]="'material/uploadCourseCover?courseId='+courseId+'&userId=1'">
+        <button nz-button nzType="primary"><i nz-icon nzType="upload"></i><span>选择要上传的图片</span></button>
+      </nz-upload>
+    </div>
+  </div>
+</div>

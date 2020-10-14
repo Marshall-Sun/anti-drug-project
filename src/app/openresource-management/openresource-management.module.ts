@@ -7,12 +7,14 @@ import { NgxEchartsModule } from "ngx-echarts";
 import { OpenresourceManagementComponent } from './openresource-management.component';
 import { OpenresourceBaseInfoComponent } from './base-info/base-info.component';
 import { OpenresourceDetailInfoComponent } from './detail-info/detail-info.component';
+import { OpenresourceCoverPhotoComponent } from './cover-photo/cover-photo.component';
 
 @NgModule({
   declarations: [
     OpenresourceManagementComponent,
     OpenresourceBaseInfoComponent,
-    OpenresourceDetailInfoComponent
+    OpenresourceDetailInfoComponent,
+    OpenresourceCoverPhotoComponent
   ],
   imports: [
     ShareModule,
