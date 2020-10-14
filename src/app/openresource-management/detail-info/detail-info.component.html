@@ -1,0 +1,65 @@
+<div class="detail-page">
+  <h1>详细信息</h1>
+  <nz-divider></nz-divider>
+  <nz-alert nzType="success" nzMessage="保存成功" nzShowIcon *ngIf="promptVisable">
+  </nz-alert>
+  <div class="content">
+    <form nz-form [nzLayout]="'vertical'" style="width: 1300px" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-label nzSpan="3">课程简介</nz-form-label>
+        <nz-form-control nzSpan="21">
+          <quill-editor formControlName="summary" placeholder="输入课程简介">
+          </quill-editor>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzSpan="3">课程目标</nz-form-label>
+        <nz-form-control nzSpan="21">
+          <div class="drag-list" cdkDropList (cdkDropListDropped)="drop($event,'goal')" *ngIf="goals">
+            <div *ngFor="let item of goals" class="drag-box" cdkDrag>
+              <div>
+                <span title="可以改变顺序"><i nz-icon nzType="drag" nzTheme="outline"></i>
+                  {{item}}</span>
+              </div>
+              <span class="perform"><i nz-icon nzType="close" (click)="removeItem(item,'goal')"></i></span>
+            </div>
+          </div>
+          <br>
+          <nz-input-group nzSearch [nzAddOnAfter]="addTargetButton">
+            <input type="text" nz-input placeholder="输入课程目标" [(ngModel)]="goal" [ngModelOptions]="{standalone: true}" />
+          </nz-input-group>
+          <ng-template #addTargetButton>
+            <button nz-button nzType="primary" (click)="addItem('goal')" type="button">添加</button>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzSpan="3">适应人群</nz-form-label>
+        <nz-form-control nzSpan="21">
+          <div class="drag-list" cdkDropList (cdkDropListDropped)="drop($event,'audience')" *ngIf="goals">
+            <div *ngFor="let item of audiences" class="drag-box" cdkDrag>
+              <div>
+                <span title="可以改变顺序"><i nz-icon nzType="drag" nzTheme="outline"></i>
+                  {{item}}</span>
+              </div>
+              <span class="perform"><i nz-icon nzType="close" (click)="removeItem(item,'audience')"></i></span>
+            </div>
+          </div>
+          <br>
+          <nz-input-group nzSearch [nzAddOnAfter]="addCrowdButton">
+            <input type="text" nz-input placeholder="输入适应人群" [(ngModel)]="audience"
+              [ngModelOptions]="{standalone: true}">
+          </nz-input-group>
+          <ng-template #addCrowdButton>
+            <button nz-button nzType="primary" (click)="addItem('audience')" type="button">添加</button>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzSpan="21" nzOffset="3">
+          <button nz-button nzType="primary">保存</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+</div>

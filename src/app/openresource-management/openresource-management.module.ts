@@ -6,11 +6,13 @@ import { CoreModule } from "../core/core.module";
 import { NgxEchartsModule } from "ngx-echarts";
 import { OpenresourceManagementComponent } from './openresource-management.component';
 import { OpenresourceBaseInfoComponent } from './base-info/base-info.component';
+import { OpenresourceDetailInfoComponent } from './detail-info/detail-info.component';
 
 @NgModule({
   declarations: [
     OpenresourceManagementComponent,
-    OpenresourceBaseInfoComponent
+    OpenresourceBaseInfoComponent,
+    OpenresourceDetailInfoComponent
   ],
   imports: [
     ShareModule,
