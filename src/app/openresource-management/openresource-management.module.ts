@@ -17,6 +17,7 @@ import { InformalStudentTableComponent } from './student-management/informal-stu
 import { FormalStudentTableComponent } from './student-management/formal-student-table/formal-student-table.component';
 import { OpenresourceTeacherManagementComponent } from './teacher-management/teacher-management.component';
 import { OpenresourceCourseSettingComponent } from './course-setting/course-setting.component';
+import { OpenresourcePlanTasksComponent } from './plan-tasks/plan-tasks.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { OpenresourceCourseSettingComponent } from './course-setting/course-sett
     InformalStudentTableComponent,
     FormalStudentTableComponent,
     OpenresourceTeacherManagementComponent,
-    OpenresourceCourseSettingComponent
+    OpenresourceCourseSettingComponent,
+    OpenresourcePlanTasksComponent
   ],
   imports: [
     ShareModule,

@@ -123,6 +123,7 @@ import { OpenresourceFileComponent } from '../openresource-management/file/file.
 import { OpenresourceStudentManagementComponent } from '../openresource-management/student-management/student-management.component';
 import { OpenresourceTeacherManagementComponent } from '../openresource-management/teacher-management/teacher-management.component';
 import { OpenresourceCourseSettingComponent } from '../openresource-management/course-setting/course-setting.component';
+import { OpenresourcePlanTasksComponent } from '../openresource-management/plan-tasks/plan-tasks.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -239,6 +240,7 @@ const routes: Routes = [
           { path: 'studentsetting', component: OpenresourceStudentManagementComponent },
           { path: 'teachersetting', component: OpenresourceTeacherManagementComponent },
           { path: 'coursesetting', component: OpenresourceCourseSettingComponent },
+          { path: 'tasks', component: OpenresourcePlanTasksComponent },
         ]
       },
       {
