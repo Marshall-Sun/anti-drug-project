@@ -120,6 +120,7 @@ import { OpenresourceBaseInfoComponent } from '../openresource-management/base-i
 import { OpenresourceDetailInfoComponent } from '../openresource-management/detail-info/detail-info.component';
 import { OpenresourceCoverPhotoComponent } from '../openresource-management/cover-photo/cover-photo.component';
 import { OpenresourceFileComponent } from '../openresource-management/file/file.component';
+import { OpenresourceStudentManagementComponent } from '../openresource-management/student-management/student-management.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -233,6 +234,7 @@ const routes: Routes = [
           { path: 'detail', component: OpenresourceDetailInfoComponent },
           { path: 'cover', component: OpenresourceCoverPhotoComponent },
           { path: 'file', component: OpenresourceFileComponent },
+          { path: 'studentsetting', component: OpenresourceStudentManagementComponent },
         ]
       },
       {

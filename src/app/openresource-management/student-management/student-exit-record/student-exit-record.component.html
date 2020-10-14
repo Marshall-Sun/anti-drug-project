@@ -1,0 +1,41 @@
+<div class="table-content">
+  <div class="filter-area">
+    <input class="name-containing-input" nz-input placeholder="请输入用户名" [(ngModel)]="name" />
+    <button (click)="filterStudent()" nz-button nzType="primary" class="search-button"><i nz-icon nzType="search"></i>搜索</button>
+  </div>
+  <nz-divider></nz-divider>
+  <nz-table #recordListTable
+            [nzData]="recordList"
+            [nzTotal]="total"
+            [nzLoading]="loading"
+            [nzPageSize]="8"
+            [(nzPageIndex)]="pageIndex"
+            (nzPageIndexChange)="searchData()">
+    <thead>
+    <tr>
+      <th>学员名称</th>
+      <th>退出日期</th>
+      <th>退出类型</th>
+      <th>退出原因</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of recordListTable.data">
+      <td>
+        <div style="display: flex; flex-direction: row; justify-content: flex-start">
+          <img class="avatar" [src]="data?.imgUrl" />
+          <div style="display: flex; flex-direction: column; justify-content: center">
+            <span style="cursor: pointer; font-size: 14px; color: rgba(0, 0, 0, .75);">
+              {{data.name}}
+            </span>
+          </div>
+        </div>
+      </td>
+      <td>{{data.exitTime}}</td>
+      <td>{{data.exitType}}</td>
+      <td>{{data.exitReason}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+
+</div>

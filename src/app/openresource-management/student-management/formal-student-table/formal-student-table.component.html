@@ -1,0 +1,73 @@
+<div class="table-content">
+  <div class="filter-area">
+    <input class="name-containing-input" nz-input placeholder="请输入用户名" [(ngModel)]="name" />
+    <button (click)="filterStudent()" nz-button nzType="primary" class="search-button"><i nz-icon nzType="search"></i>搜索</button>
+  </div>
+  <nz-divider></nz-divider>
+  <nz-table #studentListTable
+            [nzData]="studentList"
+            [nzFrontPagination]="false"
+            [nzTotal]="total"
+            [nzLoading]="loading"
+            [nzPageSize]="8"
+            [(nzPageIndex)]="pageIndex"
+            (nzPageIndexChange)="searchData()">
+    <thead>
+    <tr>
+      <th>学员</th>
+      <th>学习进度</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of studentListTable.data">
+      <td>
+        <div style="display: flex; flex-direction: row; justify-content: flex-start">
+          <img class="avatar" [src]="(data.smallAvatar.startsWith('public') || data.smallAvatar == '')? 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png': data.smallAvatar" />
+          <div style="display: flex; flex-direction: column; justify-content: space-between">
+            <span style="cursor: pointer; font-size: 14px; color: rgba(0, 0, 0, .75);">
+              {{data.nickName}}
+              <span style="font-size: 12px; color: rgba(0, 0, 0, .55);" *ngIf="data.remark !== ''">({{data.remark}})</span>
+            </span>
+            <span style="font-size: 12px; color: rgba(0, 0, 0, .55);">加入时间{{data.createdTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+          </div>
+        </div>
+      </td>
+      <td>{{ data.progress }}</td>
+      <td><i class="more-operation" nz-popover nzTitle="可执行操作" [nzContent]="operationTemplate" nzTrigger="hover" nz-icon nzType="more" nzTheme="outline" nzPlacement="bottom"></i></td>
+      <ng-template #operationTemplate>
+        <div class="user-management-operation">
+          <div>
+            <span (click)="sendMessage(data.id, messageSendingTemplate)"><i nz-icon nzType="mail" nzTheme="outline"></i>发私信</span>
+          </div>
+          <div><span (click)="checkInfo(data.id)"><i nz-icon nzType="eye" nzTheme="outline"></i>查看资料</span></div>
+          <div>
+            <span (click)="writeComment(data, commentEditingTemplate)"><i nz-icon nzType="form" nzTheme="outline"></i>备注</span>
+          </div>
+          <div><span (click)="deleteStudent(data.id)"><i nz-icon nzType="delete" nzTheme="outline"></i>移除</span></div>
+          <div><span (click)="modifyExpireTime(data.id, expireTimeModifyingTemplate)"><i nz-icon nzType="clock-circle" nzTheme="outline"></i>修改学员有效期</span></div>
+        </div>
+      </ng-template>
+    </tr>
+    </tbody>
+  </nz-table>
+
+  <ng-template #messageSendingTemplate>
+    <label>
+      <textarea nz-input [(ngModel)]="messageContent" [nzAutosize]="{ minRows: 4}"></textarea>
+      <span style="font-size: 12px; color: rgba(0, 0, 0, .45);">私信内容必填</span>
+    </label>
+  </ng-template>
+
+  <ng-template #commentEditingTemplate>
+    <label>
+      <input nz-input [(ngModel)]="commentContent" />
+      <span style="font-size: 12px; color: rgba(0, 0, 0, .45);">备注内容可以为空</span>
+    </label>
+  </ng-template>
+
+  <ng-template #expireTimeModifyingTemplate>
+    <nz-date-picker [nzDisabledDate]="disabledTime" style="width: 100%;" [(ngModel)]="expireTime"></nz-date-picker>
+    <span style="font-size: 12px; color: rgba(0, 0, 0, .45);">设置该值后，学员只能在截止日期前进行课程的学习，系统默认会在截止时间前10天提醒学员。</span>
+  </ng-template>
+</div>
