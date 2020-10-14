@@ -20,7 +20,7 @@
           <li nz-menu-divider></li>
             <li nz-menu-item (click)="navigateByUrl('/client/openresource/' +courseId + '/file')" [nzSelected]="location?.pathname.endsWith('file')">课程文件</li>
             <li nz-menu-item (click)="navigateByUrl('/client/openresource/' +courseId + '/studentsetting')" [nzSelected]="location?.pathname.endsWith('studentsetting')">学生管理</li>
-            <!-- <li nz-menu-item (click)="navigateByUrl('/client/openresource/' +courseId + '/question')" [nzSelected]="location?.pathname.endsWith('question')">题目管理</li> -->
+            <li nz-menu-item (click)="navigateByUrl('/client/openresource/' +courseId + '/teachersetting')" [nzSelected]="location?.pathname.endsWith('teachersetting')">教师设置</li>
           <li nz-menu-divider></li>
             <li nz-menu-item (click)="navigateByUrl('/client/openresource/' +courseId + '/teaching_plan')" [nzSelected]="location?.pathname.endsWith('teaching_plan')">教学计划管理</li>
         </ul>
