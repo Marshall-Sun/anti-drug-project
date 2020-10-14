@@ -122,6 +122,7 @@ import { OpenresourceCoverPhotoComponent } from '../openresource-management/cove
 import { OpenresourceFileComponent } from '../openresource-management/file/file.component';
 import { OpenresourceStudentManagementComponent } from '../openresource-management/student-management/student-management.component';
 import { OpenresourceTeacherManagementComponent } from '../openresource-management/teacher-management/teacher-management.component';
+import { OpenresourceCourseSettingComponent } from '../openresource-management/course-setting/course-setting.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -237,6 +238,7 @@ const routes: Routes = [
           { path: 'file', component: OpenresourceFileComponent },
           { path: 'studentsetting', component: OpenresourceStudentManagementComponent },
           { path: 'teachersetting', component: OpenresourceTeacherManagementComponent },
+          { path: 'coursesetting', component: OpenresourceCourseSettingComponent },
         ]
       },
       {

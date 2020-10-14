@@ -16,6 +16,7 @@ import { StudentExitRecordComponent } from './student-management/student-exit-re
 import { InformalStudentTableComponent } from './student-management/informal-student-table/informal-student-table.component';
 import { FormalStudentTableComponent } from './student-management/formal-student-table/formal-student-table.component';
 import { OpenresourceTeacherManagementComponent } from './teacher-management/teacher-management.component';
+import { OpenresourceCourseSettingComponent } from './course-setting/course-setting.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { OpenresourceTeacherManagementComponent } from './teacher-management/tea
     StudentExitRecordComponent,
     InformalStudentTableComponent,
     FormalStudentTableComponent,
-    OpenresourceTeacherManagementComponent
+    OpenresourceTeacherManagementComponent,
+    OpenresourceCourseSettingComponent
   ],
   imports: [
     ShareModule,

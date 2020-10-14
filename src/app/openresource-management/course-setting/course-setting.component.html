@@ -1,0 +1,45 @@
+<div class="setting-page">
+  <div class="page-header">
+    <h2>课程管理</h2>
+    <button nz-button nzType="primary" (click)="openAddingCourseModal()">添加课程</button>
+  </div>
+  <nz-divider></nz-divider>
+  <div class="page-content">
+    <div class="drag-list" cdkDropList (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let item of courseList" class="drag-box" cdkDrag>
+        <div class="list-info">
+          <img class="img-info" [src]="item?.cover? item?.cover: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
+          <div style="margin-left: 2%" class="text-info">
+            <div class="info-header">
+              <div class="course-title" nz-tooltip [nzTitle]="item?.courseSetTitle + '（教学计划：'+ item?.title +'）'">{{item?.courseSetTitle + ' '}}(教学计划：{{item?.title}}`)</div>
+              <nz-tag [nzColor]="'#87d068'">{{item.serializeMode == 'serialized'? '已完结': '更新中'}}</nz-tag>
+              <span class="empty-space"></span>
+              <i style="cursor: pointer; font-size: 16px; line-height: 24px;" (click)="deleteCourse(item.classroomCourseId)" nz-icon nzType="close"></i>
+            </div>
+            <div class="course-describe"><span>{{item?.descr}}</span></div>
+            <div class="empty-space"></div>
+            <div class="info-footer">
+              <div class="teacher-info">
+                <img class="avatar" [src]="!(item?.teacherSmallAvatar == null)? item?.teacherSmallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
+                <div style="display: flex; flex-direction: column; justify-content: space-between">
+                  <span>{{item?.nickName}}</span>
+                  <span>{{item?.teacherTitle}}</span>
+                </div>
+              </div>
+              <div class="course-data">
+                <div>
+                  <span>{{item?.studentNum}}学员</span>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <span>{{item?.taskNum}}个任务</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nz-divider></nz-divider>
+    <nz-alert nzType="error" nzDescription="若班级课程被移除，则该课程内所有学习数据将被清空。">
+    </nz-alert>
+  </div>
+</div>
