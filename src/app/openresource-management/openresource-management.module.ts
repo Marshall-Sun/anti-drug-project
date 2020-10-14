@@ -8,13 +8,15 @@ import { OpenresourceManagementComponent } from './openresource-management.compo
 import { OpenresourceBaseInfoComponent } from './base-info/base-info.component';
 import { OpenresourceDetailInfoComponent } from './detail-info/detail-info.component';
 import { OpenresourceCoverPhotoComponent } from './cover-photo/cover-photo.component';
+import { OpenresourceFileComponent } from './file/file.component';
 
 @NgModule({
   declarations: [
     OpenresourceManagementComponent,
     OpenresourceBaseInfoComponent,
     OpenresourceDetailInfoComponent,
-    OpenresourceCoverPhotoComponent
+    OpenresourceCoverPhotoComponent,
+    OpenresourceFileComponent
   ],
   imports: [
     ShareModule,

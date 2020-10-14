@@ -119,6 +119,7 @@ import { OpenresourceManagementComponent } from '../openresource-management/open
 import { OpenresourceBaseInfoComponent } from '../openresource-management/base-info/base-info.component';
 import { OpenresourceDetailInfoComponent } from '../openresource-management/detail-info/detail-info.component';
 import { OpenresourceCoverPhotoComponent } from '../openresource-management/cover-photo/cover-photo.component';
+import { OpenresourceFileComponent } from '../openresource-management/file/file.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/client', pathMatch: 'full' },
@@ -231,6 +232,7 @@ const routes: Routes = [
           { path: 'base', component: OpenresourceBaseInfoComponent },
           { path: 'detail', component: OpenresourceDetailInfoComponent },
           { path: 'cover', component: OpenresourceCoverPhotoComponent },
+          { path: 'file', component: OpenresourceFileComponent },
         ]
       },
       {
