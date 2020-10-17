@@ -1,6 +1,6 @@
 {
   "/user": {
-    "target": "http://172.16.10.54:9000/",
+    "target": "http://118.202.11.123:9011/",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
@@ -12,13 +12,13 @@
     "changeOrigin": true
   },
   "/classroom": {
-    "target": "http://172.16.10.54:9000/",
+    "target": "http://118.202.11.123:9010/",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/course": {
-    "target": "http://172.16.10.54:9000/",
+    "target": "http://118.202.11.123:9002/",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

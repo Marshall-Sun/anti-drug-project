@@ -9,6 +9,7 @@ import { ClassManagementService } from "src/app/service/class-management/class-m
 import { TagManagementService } from "src/app/service/tag-management/tag-management.service";
 import { NewsManagementService } from "src/app/service/news-management/news-management.service";
 import { GroupTopicManagementTableService } from "src/app/service/group-topic-management-table/group-topic-management-table.service";
+import { BackgroundHomePageService } from 'src/app/service/background-home-page/background-home-page.service';
 
 @Component({
   selector: 'app-home-page',
@@ -19,18 +20,20 @@ export class HomePageComponent implements OnInit {
   user = [];
   message = [];
   course = [];
-  class = [
-    { title: "1", classroomCategory: "测试班级" },
-    { title: "1", classroomCategory: "测试班级" },
-    { title: "1", classroomCategory: "测试班级" },
-    { title: "1", classroomCategory: "测试班级" },
-    { title: "1", classroomCategory: "测试班级" },
-  ];
+  class = [];
   question = [];
   comment = [];
   tag = [];
   news = [];
   topic = [];
+  todayData = {
+    onlineUser: 10,
+    newUser: 2,
+    allQuestion: 11,
+    noPostQuestion: 5,
+    newCourseStudent: 1,
+    newClassStudent: 1,
+  };
 
   constructor(
     private router: Router,
@@ -42,10 +45,12 @@ export class HomePageComponent implements OnInit {
     private classManagementService: ClassManagementService,
     private tagManagementService: TagManagementService,
     private newsManagementService: NewsManagementService,
-    private groupTopicManagementTableService: GroupTopicManagementTableService
+    private groupTopicManagementTableService: GroupTopicManagementTableService,
+    private backgroundHomePageService: BackgroundHomePageService
   ) {}
 
   ngOnInit(): void {
+    this.initTodayData();
     this.initUser();
     this.initMessage();
     this.initCourse();
@@ -57,6 +62,25 @@ export class HomePageComponent implements OnInit {
     this.initTopic();
   }
 
+  initTodayData() {
+    this.backgroundHomePageService.getOnlineUserNum()
+      .subscribe((res: any) => {
+        this.todayData.onlineUser = res.data.onlineUserNum;
+        this.todayData.newUser = res.data.newUserNum;
+      });
+    this.backgroundHomePageService.getNoPostQuestionNum()
+      .subscribe((res: any) => {
+        this.todayData.noPostQuestion = res.data.NoPostQuestionsNum;
+      });
+    this.backgroundHomePageService.getNewCourseStudentNum()
+      .subscribe((res: any) => {
+        this.todayData.newCourseStudent = res.data.NewAddCourseNum;
+      });
+    this.backgroundHomePageService.getNewClassStudentNum()
+      .subscribe((res: any) => {
+        this.todayData.newClassStudent = res.data.newAddClassStudentNum;
+      });
+  }
 
   initUser() {
     this.userManagementService
@@ -106,9 +130,6 @@ export class HomePageComponent implements OnInit {
     this.classManagementService
       .getClassroomList(1, 5, { className: "" })
       .subscribe((data) => {
-        if (this.class != []) {
-          this.class = [];
-        }
         this.class = this.class.concat(data.data);
       });
   }
