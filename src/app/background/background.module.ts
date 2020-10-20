@@ -82,6 +82,7 @@ import { AdminCategoryManagementComponent } from './back-course/admin-category-m
 import { AdminCategoryManagementTabComponent } from './back-course/admin-category-management/admin-category-management-tab/admin-category-management-tab.component';
 import { AdminCourseCategoryManagementComponent } from './back-course/admin-category-management/admin-course-category-management/admin-course-category-management.component';
 import { AdminClassCategoryManagementComponent } from './back-course/admin-category-management/admin-class-category-management/admin-class-category-management.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
@@ -133,7 +134,8 @@ import { AdminClassCategoryManagementComponent } from './back-course/admin-categ
     ShareModule,
     BackgroundRoutingModule,
     CoreModule,
-    QuillModule
+    QuillModule,
+    NgxEchartsModule
   ]
 })
 

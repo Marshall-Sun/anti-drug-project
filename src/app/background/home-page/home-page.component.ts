@@ -50,7 +50,8 @@ export class HomePageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initTodayData();
+    this.initGraph();
+    // this.initTodayData();
     this.initUser();
     this.initMessage();
     this.initCourse();
@@ -60,6 +61,43 @@ export class HomePageComponent implements OnInit {
     this.initTag();
     this.initNews();
     this.initTopic();
+  }
+
+  options: any;
+  initGraph() {
+    const xAxisData = [];
+    const data = [];
+
+    for (let i = 0; i < 100; i++) {
+      xAxisData.push('category' + i);
+      data.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
+    }
+
+    this.options = {
+      legend: {
+        data: ['bar'],
+        align: 'left',
+      },
+      tooltip: {},
+      xAxis: {
+        data: xAxisData,
+        silent: false,
+        splitLine: {
+          show: false,
+        },
+      },
+      yAxis: {},
+      series: [
+        {
+          name: 'bar',
+          type: 'bar',
+          data: data,
+          animationDelay: (i) => i * 10,
+        }
+      ],
+      animationEasing: 'elasticOut',
+      animationDelayUpdate: (i) => i * 5,
+    };
   }
 
   initTodayData() {

@@ -26,6 +26,17 @@
     </div>
   </div>
   <div nz-row [nzGutter]="8">
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="16" nzXl="16" class="card">
+      <nz-card nzTitle="任务完成数">
+        <div echarts [options]="options" class="demo-chart"></div>
+      </nz-card>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="8" nzXl="8" class="card">
+      <nz-card nzTitle="课程排行榜">
+      </nz-card>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
     <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="8" nzXl="8" class="card">
       <nz-card nzTitle="用户" [nzExtra]="userExtra">
         <nz-list [nzDataSource]="user" [nzRenderItem]="userItem">
