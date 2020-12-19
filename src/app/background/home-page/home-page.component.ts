@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { AdminReviewService } from "src/app/service/admin-review/admin-review.service";
 import { CourseReplyService } from "src/app/service/course-reply/course-reply.service";
@@ -9,12 +9,12 @@ import { ClassManagementService } from "src/app/service/class-management/class-m
 import { TagManagementService } from "src/app/service/tag-management/tag-management.service";
 import { NewsManagementService } from "src/app/service/news-management/news-management.service";
 import { GroupTopicManagementTableService } from "src/app/service/group-topic-management-table/group-topic-management-table.service";
-import { BackgroundHomePageService } from 'src/app/service/background-home-page/background-home-page.service';
+import { BackgroundHomePageService } from "src/app/service/background-home-page/background-home-page.service";
 
 @Component({
-  selector: 'app-home-page',
-  templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.less']
+  selector: "app-home-page",
+  templateUrl: "./home-page.component.html",
+  styleUrls: ["./home-page.component.less"],
 })
 export class HomePageComponent implements OnInit {
   user = [];
@@ -26,6 +26,7 @@ export class HomePageComponent implements OnInit {
   tag = [];
   news = [];
   topic = [];
+  courseRank = [];
   todayData = {
     onlineUser: 10,
     newUser: 2,
@@ -51,7 +52,7 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.initGraph();
-    // this.initTodayData();
+    this.initTodayData();
     this.initUser();
     this.initMessage();
     this.initCourse();
@@ -61,22 +62,27 @@ export class HomePageComponent implements OnInit {
     this.initTag();
     this.initNews();
     this.initTopic();
+    this.initCourseRank();
   }
 
   options: any;
-  initGraph() {
+  async initGraph() {
     const xAxisData = [];
     const data = [];
 
-    for (let i = 0; i < 100; i++) {
-      xAxisData.push('category' + i);
-      data.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
+    let res: any = await this.backgroundHomePageService
+      .getEverydayTaskResultNum()
+      .toPromise();
+
+    for (let index in res.data) {
+      xAxisData.push(index);
+      data.push(res[index]);
     }
 
     this.options = {
       legend: {
-        data: ['bar'],
-        align: 'left',
+        data: ["每日完成任务/件"],
+        align: "left",
       },
       tooltip: {},
       xAxis: {
@@ -89,34 +95,41 @@ export class HomePageComponent implements OnInit {
       yAxis: {},
       series: [
         {
-          name: 'bar',
-          type: 'bar',
+          name: "每日完成任务/件",
+          type: "bar",
           data: data,
           animationDelay: (i) => i * 10,
-        }
+        },
       ],
-      animationEasing: 'elasticOut',
+      animationEasing: "elasticOut",
       animationDelayUpdate: (i) => i * 5,
     };
   }
 
   initTodayData() {
-    this.backgroundHomePageService.getOnlineUserNum()
-      .subscribe((res: any) => {
-        this.todayData.onlineUser = res.data.onlineUserNum;
-        this.todayData.newUser = res.data.newUserNum;
-      });
-    this.backgroundHomePageService.getNoPostQuestionNum()
+    this.backgroundHomePageService.getOnlineUserNum().subscribe((res: any) => {
+      this.todayData.onlineUser = res.data.onlineUserNum;
+      this.todayData.newUser = res.data.newUserNum;
+    });
+    this.backgroundHomePageService
+      .getNoPostQuestionNum()
       .subscribe((res: any) => {
         this.todayData.noPostQuestion = res.data.NoPostQuestionsNum;
       });
-    this.backgroundHomePageService.getNewCourseStudentNum()
+    this.backgroundHomePageService
+      .getNewCourseStudentNum()
       .subscribe((res: any) => {
         this.todayData.newCourseStudent = res.data.NewAddCourseNum;
       });
-    this.backgroundHomePageService.getNewClassStudentNum()
+    this.backgroundHomePageService
+      .getNewClassStudentNum()
       .subscribe((res: any) => {
         this.todayData.newClassStudent = res.data.newAddClassStudentNum;
+      });
+    this.backgroundHomePageService
+      .getAllQuestionsNum()
+      .subscribe((res: any) => {
+        this.todayData.allQuestion = res.data.AllQuestionsNum;
       });
   }
 
@@ -234,6 +247,15 @@ export class HomePageComponent implements OnInit {
         this.topic = this.topic.concat(data.data.data);
       });
   }
+
+  initCourseRank() {
+    this.backgroundHomePageService
+      .getCourseRankings()
+      .subscribe((res: any) => {
+        console.log(res.data)
+        this.courseRank = res.data.courseRankings;
+      });
+  };
 
   navigate(url: string) {
     this.router.navigateByUrl(url);

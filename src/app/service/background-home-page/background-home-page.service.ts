@@ -22,4 +22,16 @@ export class BackgroundHomePageService {
   getNewClassStudentNum() {
     return this.http.get(`/classroom/management/getnewAddClassStudentNum`);
   }
+
+  getAllQuestionsNum() {
+    return this.http.get(`/course/getAllQuestionsNum`);
+  }
+
+  getEverydayTaskResultNum() {
+    return this.http.get(`/course/getEverydayTaskResultNum?days=30`);
+  }
+
+  getCourseRankings() {
+    return this.http.get(`/course/getCourseRankings?days=30`);
+  }
 }

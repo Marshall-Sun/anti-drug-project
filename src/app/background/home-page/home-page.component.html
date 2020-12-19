@@ -1,38 +1,32 @@
 <div id="content">
   <div nz-row [nzGutter]="8">
-    <div nz-col class="card">
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="8" nzXl="8" class="card">
       <nz-card nzTitle="今日数据">
         <nz-row [nzGutter]="16" nzJustify="space-between">
-          <nz-col nzXs="12" nzSm="8" nzMd="8" nzLg="4" nzXl="4">
+          <nz-col nzXs="12" nzSm="12" nzMd="12" nzLg="12" nzXl="12">
             <nz-statistic [nzValue]="todayData.onlineUser" nzTitle="在线用户"></nz-statistic>
           </nz-col>
-          <nz-col nzXs="12" nzSm="8" nzMd="8" nzLg="4" nzXl="4">
+          <nz-col nzXs="12" nzSm="12" nzMd="12" nzLg="12" nzXl="12">
             <nz-statistic [nzValue]="todayData.newUser" nzTitle="新增用户"></nz-statistic>
           </nz-col>
-          <nz-col nzXs="12" nzSm="8" nzMd="8" nzLg="4" nzXl="4">
+          <nz-col nzXs="12" nzSm="12" nzMd="12" nzLg="12" nzXl="12">
             <nz-statistic [nzValue]="todayData.allQuestion" nzTitle="问答总数"></nz-statistic>
           </nz-col> 
-          <nz-col nzXs="12" nzSm="8" nzMd="8" nzLg="4" nzXl="4">
+          <nz-col nzXs="12" nzSm="12" nzMd="12" nzLg="12" nzXl="12">
             <nz-statistic [nzValue]="todayData.noPostQuestion" nzTitle="未回复问题"></nz-statistic>
           </nz-col>
-          <nz-col nzXs="12" nzSm="8" nzMd="8" nzLg="4" nzXl="4">
+          <nz-col nzXs="12" nzSm="12" nzMd="12" nzLg="12" nzXl="12">
             <nz-statistic [nzValue]="todayData.newCourseStudent" nzTitle="课程新增学员"></nz-statistic>
           </nz-col>
-          <nz-col nzXs="12" nzSm="8" nzMd="8" nzLg="4" nzXl="4">
+          <nz-col nzXs="12" nzSm="12" nzMd="12" nzLg="12" nzXl="12">
             <nz-statistic [nzValue]="todayData.newClassStudent" nzTitle="班级新增学员"></nz-statistic>
           </nz-col>
         </nz-row>
       </nz-card>
     </div>
-  </div>
-  <div nz-row [nzGutter]="8">
     <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="16" nzXl="16" class="card">
       <nz-card nzTitle="任务完成数">
         <div echarts [options]="options" class="demo-chart"></div>
-      </nz-card>
-    </div>
-    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="8" nzXl="8" class="card">
-      <nz-card nzTitle="课程排行榜">
       </nz-card>
     </div>
   </div>
@@ -124,6 +118,16 @@
         <ng-template #newsExtra>
           <a (click)="navigate('/admin/operation/news')">More</a>
         </ng-template>
+      </nz-card>
+      <nz-card nzTitle="课程新增人数">
+        <nz-list [nzDataSource]="courseRank" [nzRenderItem]="courseRankItem">
+          <ng-template #courseRankItem let-item>
+            <nz-list-item [nzContent]="item.courseSetTitle">
+              <nz-list-item-meta [nzDescription]="item.courseNewStudentNum">
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
       </nz-card>
     </div>
 
