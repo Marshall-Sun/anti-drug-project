@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CourseBaseInfoEditService} from '../service/course-base-info-edit/course-base-info-edit.service';
+import { OpenresourceManagementService } from '../service/openresource-management/openresource-management.service';
 
 
 @Component({
@@ -9,41 +9,37 @@ import {CourseBaseInfoEditService} from '../service/course-base-info-edit/course
   styleUrls: ['./openresource-management.component.less']
 })
 export class OpenresourceManagementComponent implements OnInit {
-
   courseId: string;
   location: Location;
   title: string;
   status: string;
-  teachersName = [];
-  imgUrl: string = '';
-
+  teachersName: string = "";
+  imgUrl: string = "";
 
   constructor(
     private router: Router,
     private routerInfo: ActivatedRoute,
-    private _courseBaseInfoEditService: CourseBaseInfoEditService) {
+    private openresourceManagementService: OpenresourceManagementService
+  ) {
     this.location = location;
     this.routerInfo.params.subscribe(res => {
       this.courseId = res.id;
     });
-    this._courseBaseInfoEditService.imgChange.subscribe(result => {
-      this.getCourseInfo();
-    })
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    let [courseInfo, courseTeacher]: any[] = await Promise.all([
+      this.openresourceManagementService.getOpenCourseById(this.courseId),
+      this.openresourceManagementService.getOpenCourseTeacherList(this.courseId)
+    ]);
+    this.title = courseInfo.data.title;
+    this.teachersName = courseTeacher.map((item: any) => item.userName).join("，") || "暂无教师";
 
+    // TODO
+    this.status = courseInfo.data.status || true;
+    this.imgUrl = courseInfo.data.cover || '../assets/img/timg.jpg';
   }
   navigateByUrl(url: string) {
     this.router.navigateByUrl(url);
-  }
-
-  getCourseInfo() {
-    this._courseBaseInfoEditService.getCourseInfo(this.courseId).subscribe(res => {
-      this.title = res.data.baseData.title;
-      this.status = res.data.baseData.status;
-      this.imgUrl = res.data.baseData.cover? res.data.baseData.cover: '../assets/img/timg.jpg';
-      this.teachersName = res.data.teachersName;
-    })
   }
 }
