@@ -15,7 +15,6 @@
       <div class="left-content">
         <ul nz-menu nzMode="inline" class="sider-menu">
             <li nz-menu-item (click)="navigateByUrl('/client/openresource/' +courseId + '/base')" [nzSelected]="location?.pathname.endsWith('base')">基本信息</li>
-            <li nz-menu-item (click)="navigateByUrl('/client/openresource/' +courseId + '/detail')" [nzSelected]="location?.pathname.endsWith('detail')">详细信息</li>
             <li nz-menu-item (click)="navigateByUrl('/client/openresource/' +courseId + '/cover')" [nzSelected]="location?.pathname.endsWith('cover')">封面图片</li>
           <li nz-menu-divider></li>
             <li nz-menu-item (click)="navigateByUrl('/client/openresource/' +courseId + '/tasks')" [nzSelected]="location?.pathname.endsWith('tasks')">课时管理</li>

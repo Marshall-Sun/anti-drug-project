@@ -6,7 +6,6 @@ import { CoreModule } from "../core/core.module";
 import { NgxEchartsModule } from "ngx-echarts";
 import { OpenresourceManagementComponent } from './openresource-management.component';
 import { OpenresourceBaseInfoComponent } from './base-info/base-info.component';
-import { OpenresourceDetailInfoComponent } from './detail-info/detail-info.component';
 import { OpenresourceCoverPhotoComponent } from './cover-photo/cover-photo.component';
 import { OpenresourceFileComponent } from './file/file.component';
 import { OpenresourceStudentManagementComponent } from './student-management/student-management.component';
@@ -23,7 +22,6 @@ import { OpenresourcePlanTasksComponent } from './plan-tasks/plan-tasks.componen
   declarations: [
     OpenresourceManagementComponent,
     OpenresourceBaseInfoComponent,
-    OpenresourceDetailInfoComponent,
     OpenresourceCoverPhotoComponent,
     OpenresourceFileComponent,
     OpenresourceStudentManagementComponent,

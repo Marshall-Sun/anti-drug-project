@@ -11,14 +11,10 @@ import { OpenresourceManagementService } from "src/app/service/openresource-mana
 })
 export class OpenresourceBaseInfoComponent implements OnInit {
   isLoading: boolean = false;
-  listOfTag: Object = [
-    { id: 1, name: "互联网" },
-    { id: 2, name: "禁毒" },
-  ];
+  listOfTag: Object = [];
   listOfCategories: any[] = [];
   validateForm: FormGroup;
   courseId: string;
-
   baseInfo: any = {
     title: "",
     subtitle: "",
@@ -41,6 +37,7 @@ export class OpenresourceBaseInfoComponent implements OnInit {
       subtitle: ["", [Validators.nullValidator]],
       tags: [[""], [Validators.nullValidator]],
       categoryId: ["", [Validators.nullValidator]],
+      summary: ["", [Validators.nullValidator]],
     });
 
     try {
@@ -55,6 +52,7 @@ export class OpenresourceBaseInfoComponent implements OnInit {
         subtitle: courseInfo.data.subtitle,
         categoryId: courseInfo.data.categoryId,
         tags: courseInfo.data.tagIdList.map((item: any) => String(item)),
+        summary: courseInfo.data.about,
       });
       this.listOfTag = allTags;
       this.listOfCategories = allCategories.data;
@@ -79,7 +77,7 @@ export class OpenresourceBaseInfoComponent implements OnInit {
           title: baseInfo.title,
           subtitle: baseInfo.subtitle,
           tagIdList: baseInfo.tags.map((item: any) => Number(item)),
-          about: "",
+          about: baseInfo.summary,
         });
         this.msg.success("保存成功");
         location.reload();

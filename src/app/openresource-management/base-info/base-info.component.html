@@ -36,6 +36,13 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
+        <nz-form-label nzSpan="3">课程简介:</nz-form-label>
+        <nz-form-control nzSpan="21">
+          <quill-editor formControlName="summary" placeholder="输入课程简介">
+          </quill-editor>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
         <nz-form-control>
           <button nz-button nzType="primary" style="float: right" [nzLoading]="isLoading">保存</button>
         </nz-form-control>
