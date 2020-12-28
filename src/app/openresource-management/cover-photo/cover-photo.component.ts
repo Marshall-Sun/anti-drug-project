@@ -1,56 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { CourseManagementUtilService } from 'src/app/service/course-management-util/course-management-util.service';
-import { NzMessageService, UploadXHRArgs } from 'ng-zorro-antd';
-import { HttpResponse, HttpRequest, HttpClient, HttpEventType } from '@angular/common/http';
-import { CourseBaseInfoEditService } from 'src/app/service/course-base-info-edit/course-base-info-edit.service';
+import { Component, OnInit } from "@angular/core";
+import { NzMessageService } from "ng-zorro-antd";
+import { OpenresourceManagementService } from "src/app/service/openresource-management/openresource-management.service";
+import { UploadChangeParam } from "ng-zorro-antd/upload";
 
 @Component({
-  selector: 'app-cover-photo',
-  templateUrl: './cover-photo.component.html',
-  styleUrls: ['./cover-photo.component.less']
+  selector: "app-cover-photo",
+  templateUrl: "./cover-photo.component.html",
+  styleUrls: ["./cover-photo.component.less"],
 })
 export class OpenresourceCoverPhotoComponent implements OnInit {
-
   coverUrl: string;
   courseId: any;
 
   constructor(
-    private _courseManagementUtilService: CourseManagementUtilService,
-    private _courseBaseInfoEditService: CourseBaseInfoEditService,
-    private courseManagemetn$: CourseBaseInfoEditService,
     private msg: NzMessageService,
-    private http: HttpClient) { }
-
-  ngOnInit() {
-    this.courseId = this._courseManagementUtilService.setCourseIdFrom(location);
-    this.getCourseInfo();
+    private openresourceManagementService: OpenresourceManagementService
+  ) {
+    this.courseId = location.pathname.split("/")[3];
   }
 
-  getCourseInfo() {
-    this._courseBaseInfoEditService.getCourseInfo(this.courseId).subscribe(res => {
-      this.coverUrl = res.data.baseData.cover
-    })
-  }
-
-  customReq = (item: UploadXHRArgs) => {
-    const formData = new FormData();
-    formData.append('file', item.file as any);
-    return this.http.post(item.action, formData).subscribe(
-      // tslint:disable-next-line no-any
-      (event: any) => {
-
-        if (event.message === 'SUCCESS') {
-          let i;
-          this.courseManagemetn$.imgChange.subscribe(value => i = value);
-          this.courseManagemetn$.imgChange.next(i + 1);
-          item.onSuccess!(event.body, item.file!, event);
-        } else if (event instanceof HttpResponse) {
-        }
-      },
-      err => {
-        item.onError!(err, item.file!);
-      }
+  async ngOnInit() {
+    let courseInfo: any = await this.openresourceManagementService.getOpenCourseById(
+      this.courseId
     );
-  };
+    this.coverUrl = courseInfo.data.cover;
+  }
 
+  uploadUrl() {
+    return `/material/uploadOpenCourseCover?openCourseId=${
+      this.courseId
+    }&userId=${localStorage.getItem("id")}`;
+  }
+
+  handleChange(info: UploadChangeParam): void {
+    if (info.file.status === "done") {
+      this.msg.success(`${info.file.name} 上传成功`);
+      location.reload();
+    } else if (info.file.status === "error") {
+      this.msg.error(`${info.file.name} 上传失败`);
+    }
+  }
 }

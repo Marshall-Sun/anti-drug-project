@@ -3,7 +3,7 @@
     <div class="header">
       <img class="header-image" [src]="imgUrl">
       <div class="header-info">
-        <div>{{title}}<nz-tag [nzColor]="'#87d068'">{{status === 'published'? '已发布': '未发布'}}</nz-tag>
+        <div>{{title}}<nz-tag [nzColor]="'#87d068'">{{status === 'draft'? '未发布': '已发布'}}</nz-tag>
           <div></div>教师：<span>{{teachersName}}</span>
         </div>
         <button nzSize="small" nz-button nzType="primary" (click)="navigateByUrl('/client/courseinf/' + courseId)">返回课程主页</button>

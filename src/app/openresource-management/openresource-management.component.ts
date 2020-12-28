@@ -37,18 +37,16 @@ export class OpenresourceManagementComponent implements OnInit {
         ),
       ]);
       this.title = courseInfo.data.title;
+      this.status = courseInfo.data.status;
+      this.imgUrl = courseInfo.data.cover || "../assets/img/timg.jpg";
       this.teachersName =
         courseTeacher.map((item: any) => item.userName).join("，") ||
         "暂无教师";
-
-      // TODO
-      this.status = courseInfo.data.status || true;
-      this.imgUrl = courseInfo.data.cover || "../assets/img/timg.jpg";
     } catch (e) {
       this.msg.error("信息初始化失败");
     }
   }
-  
+
   navigateByUrl(url: string) {
     this.router.navigateByUrl(url);
   }

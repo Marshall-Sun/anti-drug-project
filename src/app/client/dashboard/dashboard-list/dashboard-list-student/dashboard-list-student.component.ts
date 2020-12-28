@@ -29,7 +29,17 @@ export class DashboardListStudentComponent implements OnInit {
 
   ngOnInit() {
     this.initComment();
-    this.initDynamic();
+    // this.initDynamic();
+    for (let i = 0; i < 5; i++) {
+      let timestamp = new Date().getTime();
+      this.dynamic.push({
+        id: i,
+        name: "小明",
+        course: "测试课程",
+        time: this.calculatePeriod(timestamp - 1000000000),
+        avatar: "../assets/img/timg.jpg",
+      });
+    }
   }
 
   initComment() {

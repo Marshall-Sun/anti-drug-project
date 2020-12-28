@@ -54,7 +54,7 @@
     "changeOrigin": true
   },
   "/material": {
-    "target": "http://202.199.13.177:9013/",
+    "target": "http://172.16.10.54:9013/",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

@@ -13,7 +13,7 @@
         建议图片大小不超过<strong>2MB</strong>。</p>
     </div>
     <div>
-      <nz-upload [nzAction]="'material/uploadCourseCover?courseId='+courseId+'&userId=1'">
+      <nz-upload [nzAction]="uploadUrl()" (nzChange)="handleChange($event)">
         <button nz-button nzType="primary"><i nz-icon nzType="upload"></i><span>选择要上传的图片</span></button>
       </nz-upload>
     </div>
