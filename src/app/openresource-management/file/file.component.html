@@ -2,59 +2,88 @@
   <div class="header">
     <h1>课程文件</h1>
     <div>
-      <button nz-button nzType="primary" (click)="isVisible=true"><i nz-icon nzType="cloud-upload"
-          nzTheme="outline"></i>添加课程文件</button>
+      <button nz-button nzType="primary" (click)="isVisible = true">
+        <i nz-icon nzType="cloud-upload" nzTheme="outline"></i>添加课程文件
+      </button>
     </div>
   </div>
   <nz-divider></nz-divider>
   <div class="content">
-    <nz-table #fileListTable [nzData]="fileUploadedList" [nzTotal]="total" [nzLoading]="loading" [nzPageSize]="10"
-      [(nzPageIndex)]="pageIndex" [nzFrontPagination]="false" (nzPageIndexChange)="getCourseFileList()">
+    <nz-table
+      #fileListTable
+      [nzData]="fileUploadedList"
+      [nzTotal]="total"
+      [nzLoading]="loading"
+      [nzHideOnSinglePage]="true"
+      nzTableLayout="fixed"
+    >
       <thead>
         <tr>
-          <th nzShowCheckbox [(nzChecked)]="isAllChecked" (nzCheckedChange)="checkAll($event)"></th>
-          <th>文件名</th>
+          <th [nzWidth]="'400px'">文件名</th>
           <th>类型</th>
-          <th>大小</th>
           <th>最后更新</th>
-          <th>操作</th>
+          <th>
+            <button
+              nz-button
+              nzType="danger"
+              nzSize="small"
+              (click)="deleteUploadList()"
+            >
+              <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </button>
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of fileListTable.data">
-          <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.fileId]" (nzCheckedChange)="check(data.fileId)"></td>
           <td>{{ data.fileName }}</td>
-          <td>
+          <td nzLeft="true">
             <nz-tag [nzColor]="'#2db7f5'">{{ filetype[data.fileType] }}</nz-tag>
           </td>
-          <td>{{ data.fileSize / 1000 > 1 ? data.fileSize/1000+'KB' : data.fileSize+'B' }}</td>
-          <td>{{ data.createdTime*1000 | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-          <td><a (click)="deleteUpload(data.fileId)">删除</a></td>
+          <td nzRight="true">{{ data.createdTime * 1000 | date: "yyyy-MM-dd HH:mm:ss" }}</td>
+          <td
+            nzShowCheckbox
+            [(nzChecked)]="mapOfCheckedId[data.fileId]"
+            (nzCheckedChange)="check(data.fileId)"
+          ></td>
         </tr>
       </tbody>
     </nz-table>
   </div>
-  <div class="pull-right">
-    <div class="color-grey">共{{total}}题</div>
-  </div>
-  <button nz-button nzType="danger" nzSize="small" (click)="deleteUploadList()"><i nz-icon nzType="delete"
-      nzTheme="outline"></i>删除</button>
 </div>
 
-<nz-modal [(nzVisible)]="isVisible" nzTitle="上传文件" (nzOnCancel)="isVisible=false" (nzOnOk)="isVisible=false">
-  <nz-upload nzType="drag" [nzMultiple]="true" [nzLimit]="5" [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="上传文件"
+  (nzOnCancel)="isVisible = false"
+  (nzOnOk)="isVisible = false"
+>
+  <nz-upload
+    nzType="drag"
+    [nzMultiple]="true"
+    [nzLimit]="5"
+    [(nzFileList)]="fileList"
+    [nzBeforeUpload]="beforeUpload"
+  >
     <p class="ant-upload-drag-icon">
       <i nz-icon nzType="inbox"></i>
     </p>
-    <p class="ant-upload-text">可以通过<span class="warn">点击</span>或<span class="warn">拖拽</span>的方式上传</p>
-    <p class="ant-upload-hint">
-      支持多文件上传(单次最多5个))
+    <p class="ant-upload-text">
+      可以通过<span class="warn">点击</span>或<span class="warn">拖拽</span
+      >的方式上传
     </p>
+    <p class="ant-upload-hint">支持多文件上传(单次最多5个))</p>
   </nz-upload>
   <div class="upload-button">
-    <button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleUpload()"
-      [disabled]="fileList.length == 0" style="margin-top: 16px">
-      {{ uploading ? '上传中' : '开始上传' }}
+    <button
+      nz-button
+      [nzType]="'primary'"
+      [nzLoading]="uploading"
+      (click)="handleUpload()"
+      [disabled]="fileList.length == 0"
+      style="margin-top: 16px"
+    >
+      {{ uploading ? "上传中" : "开始上传" }}
     </button>
   </div>
 </nz-modal>

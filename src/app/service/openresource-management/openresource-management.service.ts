@@ -29,4 +29,10 @@ export class OpenresourceManagementService {
   }) {
     return this.http.put("/course/open/updateOpenCourseById", data).toPromise();
   }
+
+  getOpenCourseFileList(courseId: any) {
+    return this.http
+      .get(`/course/open/getOpenCourseFileList?openCourseId=${courseId}`)
+      .toPromise();
+  }
 }
