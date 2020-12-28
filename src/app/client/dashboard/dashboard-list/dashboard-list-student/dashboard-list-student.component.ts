@@ -1,11 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { CourseService } from "src/app/service/courselist-frontend/courselist-frontend.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { NzNotificationService } from "ng-zorro-antd";
-import { ClassInfService } from "src/app/service/classinf-frontend/classinf-frontend.service";
+import { Router } from "@angular/router";
 import { AdminReviewService } from "src/app/service/admin-review/admin-review.service";
 import { UserManagementService } from "src/app/service/user-management/user-management.service";
-import { AuthService } from 'src/app/front-desk/auth/auth.service';
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: "app-dashboard-list-student",
@@ -17,29 +14,15 @@ export class DashboardListStudentComponent implements OnInit {
   dynamic = [];
 
   constructor(
-    private courseservice: CourseService,
     private router: Router,
-    private route: ActivatedRoute,
-    private _notification: NzNotificationService,
     private adminReviewService: AdminReviewService,
-    private classinfservice: ClassInfService,
-    private userManagementService: UserManagementService,
-    private authService: AuthService,
+    private http: HttpClient,
+    private userManagementService: UserManagementService
   ) {}
 
   ngOnInit() {
     this.initComment();
-    // this.initDynamic();
-    for (let i = 0; i < 5; i++) {
-      let timestamp = new Date().getTime();
-      this.dynamic.push({
-        id: i,
-        name: "小明",
-        course: "测试课程",
-        time: this.calculatePeriod(timestamp - 1000000000),
-        avatar: "../assets/img/timg.jpg",
-      });
-    }
+    this.initDynamic();
   }
 
   initComment() {
@@ -50,10 +33,9 @@ export class DashboardListStudentComponent implements OnInit {
         course: "",
         keyword: "",
       })
-      .subscribe((data) => {
-        let resList = [];
-        for (var item of data.data.backGroundClassroomReviewList) {
-          resList.push({
+      .subscribe((res) => {
+        this.comment = res.data.backGroundClassroomReviewList.map(
+          (item: any) => ({
             classroomId: item.classroomId,
             id: item.userId,
             reviewId: item.reviewId,
@@ -61,43 +43,38 @@ export class DashboardListStudentComponent implements OnInit {
             classroomTitle: item.classroomTitle,
             content: item.content.replace(/\<[^\>]*\>/g, ""),
             createdTime: this.calculatePeriod(
-              new Date(item.createdTime * 1000).getTime()
+              Number(new Date(item.createdTime * 1000))
             ),
             rating: item.rating,
             avatar: "",
-          });
-        }
-        this.comment = this.comment.concat(resList);
+          })
+        );
         this.initAvatar(this.comment);
       });
   }
 
   initDynamic() {
-    this.classinfservice
-      .getclassstdDynamic("6") //测试课程id为6
+    this.http
+      .get("/teachingPlan/getStudentAffair?pageNum=1&pageSize=5")
       .subscribe((data: any) => {
-        let resList = [];
-        for (var item of data.data) {
-          let timestamp = item.updateTime * 1000;
-          resList.push({
-            id: item.userId,
-            name: item.nickname,
-            course: item.courseSetTitle,
-            time: this.calculatePeriod(timestamp),
-            avatar: "",
-          });
-        }
-        this.dynamic = this.dynamic.concat(resList);
-        this.initAvatar(this.dynamic);
+        this.dynamic = data.map((item: any) => ({
+          id: item.userId,
+          name: item.nickname,
+          course: item.learnMediaName,
+          time: this.calculatePeriod(Number(new Date(item.updatedTime * 1000))),
+          avatar: item.avatar,
+          action: item.action,
+        }));
       });
   }
 
   async initAvatar(itemList: any[]) {
     for (var item of itemList) {
       if (item.id) {
-        let res: any = await this.userManagementService.getPersonalDetailById(item.id).toPromise();
-        let avatar = res.data.mediumAvatar.indexOf("public") == -1 ? res.data.mediumAvatar : "";
-        item.avatar = avatar;
+        let res: any = await this.userManagementService
+          .getPersonalDetailById(item.id)
+          .toPromise();
+        item.avatar = res.data.mediumAvatar;
       }
     }
   }

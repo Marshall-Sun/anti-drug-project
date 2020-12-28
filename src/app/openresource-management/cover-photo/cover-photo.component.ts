@@ -20,10 +20,14 @@ export class OpenresourceCoverPhotoComponent implements OnInit {
   }
 
   async ngOnInit() {
-    let courseInfo: any = await this.openresourceManagementService.getOpenCourseById(
-      this.courseId
-    );
-    this.coverUrl = courseInfo.data.cover;
+    try {
+      let courseInfo: any = await this.openresourceManagementService.getOpenCourseById(
+        this.courseId
+      );
+      this.coverUrl = courseInfo.data.cover;
+    } catch (e) {
+      this.msg.error("信息初始化失败");
+    }
   }
 
   uploadUrl() {
