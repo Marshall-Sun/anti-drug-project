@@ -1,39 +1,25 @@
 <div class="table-content">
-  <div class="filter-area">
-    <input class="name-containing-input" nz-input placeholder="请输入用户名" [(ngModel)]="name" />
-    <button (click)="filterStudent()" nz-button nzType="primary" class="search-button"><i nz-icon nzType="search"></i>搜索</button>
-  </div>
-  <nz-divider></nz-divider>
-  <nz-table #studentListTable
-            [nzData]="studentList"
-            [nzTotal]="total"
-            [nzLoading]="loading"
-            [nzPageSize]="8"
-            [(nzPageIndex)]="pageIndex"
-            (nzPageIndexChange)="searchData()">
+  <nz-table
+    #studentListTable
+    [nzData]="studentList"
+    [nzLoading]="loading"
+    [nzHideOnSinglePage]="true"
+  >
     <thead>
-    <tr>
-      <th>学员</th>
-      <th>操作</th>
-    </tr>
+      <tr>
+        <th>学员</th>
+        <th>最近访问时间</th>
+      </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let data of studentListTable.data">
-      <td>
-        <div style="display: flex; flex-direction: row; justify-content: flex-start">
-          <img class="avatar" [src]="data?.imgUrl" />
-          <div style="display: flex; flex-direction: column; justify-content: space-between">
-            <span style="cursor: pointer; font-size: 14px; color: rgba(0, 0, 0, .75);">
-              {{data.name}}
-            </span>
-          </div>
-        </div>
-      </td>
-      <td><i class="more-operation" nz-popover nzTitle="可执行操作" [nzContent]="operationTemplate" nzTrigger="hover" nz-icon nzType="more" nzTheme="outline" nzPlacement="bottom"></i></td>
-      <ng-template #operationTemplate>
-      </ng-template>
-    </tr>
+      <tr *ngFor="let student of studentListTable.data">
+        <td>
+          {{ student.ip }}
+        </td>
+        <td>
+          {{ calculatePeriod(student.lastEnterTime) }}
+        </td>
+      </tr>
     </tbody>
   </nz-table>
-
 </div>
