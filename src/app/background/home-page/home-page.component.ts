@@ -70,13 +70,19 @@ export class HomePageComponent implements OnInit {
     const xAxisData = [];
     const data = [];
 
-    let res: any = await this.backgroundHomePageService
-      .getEverydayTaskResultNum()
-      .toPromise();
-
-    for (let index in res.data) {
-      xAxisData.push(index);
-      data.push(res[index]);
+    try {
+      let res: any = await this.backgroundHomePageService
+        .getEverydayTaskResultNum()
+        .toPromise();
+      for (let index in res.data) {
+        xAxisData.push(index);
+        data.push(res[index]);
+      }
+    } catch (e) {
+      for (let i = 0; i < 10; i++) {
+        xAxisData.push("");
+        data.push(0);
+      }
     }
 
     this.options = {

@@ -6,12 +6,12 @@ import {
 } from "ng-zorro-antd";
 import { UploadFile } from "ng-zorro-antd/upload";
 import { HttpClient } from "@angular/common/http";
-import { CourseFileService } from "src/app/service/course-file/course-file.service";
 import { OpenresourceManagementService } from "src/app/service/openresource-management/openresource-management.service";
 enum FILETYPE {
   image = "图片",
   video = "视频",
-  office = "文档",
+  audio = "音频",
+  ppt = "幻灯片",
   flash = "Flash",
   document = "文档",
   other = "其他",
@@ -52,7 +52,6 @@ export class OpenresourceFileComponent implements OnInit {
 
   constructor(
     private _nzNotificationService: NzNotificationService,
-    private _courseFileService: CourseFileService,
     private nzEmptyService: NzEmptyService,
     private msg: NzMessageService,
     private http: HttpClient,
@@ -71,6 +70,8 @@ export class OpenresourceFileComponent implements OnInit {
       let fileList: any = await this.openresourceManagementService.getOpenCourseFileList(
         this.courseId
       );
+      console.log(fileList);
+      
       this.fileUploadedList = fileList.map((item: any) => ({
         createdTime: item.updatedTime,
         fileId: item.fileId,
