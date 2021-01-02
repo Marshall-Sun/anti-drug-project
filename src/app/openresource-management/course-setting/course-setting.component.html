@@ -11,26 +11,22 @@
           <img class="img-info" [src]="item?.cover? item?.cover: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
           <div style="margin-left: 2%" class="text-info">
             <div class="info-header">
-              <div class="course-title" nz-tooltip [nzTitle]="item?.courseSetTitle + '（教学计划：'+ item?.title +'）'">{{item?.courseSetTitle + ' '}}(教学计划：{{item?.title}}`)</div>
-              <nz-tag [nzColor]="'#87d068'">{{item.serializeMode == 'serialized'? '已完结': '更新中'}}</nz-tag>
+              <div class="course-title" nz-tooltip [nzTitle]="item?.title">{{item?.title}}</div>
               <span class="empty-space"></span>
-              <i style="cursor: pointer; font-size: 16px; line-height: 24px;" (click)="deleteCourse(item.classroomCourseId)" nz-icon nzType="close"></i>
+              <i style="cursor: pointer; font-size: 16px; line-height: 24px;" (click)="deleteCourse(item.recommendId)" nz-icon nzType="close"></i>
             </div>
-            <div class="course-describe"><span>{{item?.descr}}</span></div>
+            <div class="course-describe"><span>{{item?.subtitle}}</span></div>
             <div class="empty-space"></div>
             <div class="info-footer">
               <div class="teacher-info">
-                <img class="avatar" [src]="!(item?.teacherSmallAvatar == null)? item?.teacherSmallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
-                <div style="display: flex; flex-direction: column; justify-content: space-between">
-                  <span>{{item?.nickName}}</span>
-                  <span>{{item?.teacherTitle}}</span>
+                <img class="avatar" [src]="item?.smallAvatar" />
+                <div style="display: flex; flex-direction: column; justify-content: center">
+                  <span>{{item?.nickname}}</span>
                 </div>
               </div>
               <div class="course-data">
                 <div>
                   <span>{{item?.studentNum}}学员</span>
-                  <nz-divider nzType="vertical"></nz-divider>
-                  <span>{{item?.taskNum}}个任务</span>
                 </div>
               </div>
             </div>

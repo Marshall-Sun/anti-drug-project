@@ -35,4 +35,12 @@ export class OpenresourceManagementService {
       .get(`/course/open/getOpenCourseFileList?openCourseId=${courseId}`)
       .toPromise();
   }
+
+  getCourseToRecommend(openCourseId, pageSize = null, pageNum = null, searchStr = "") {
+    let etc = "";
+    if (pageNum) etc += "&pageNum=" + pageNum;
+    if (pageSize) etc += "&pageSize=" + pageSize;
+    if (searchStr) etc += "&searchStr=" + searchStr;
+    return this.http.get(`/course/open/getCourseToRecommend?openCourseId=${openCourseId}${etc}`).toPromise();
+  }
 }

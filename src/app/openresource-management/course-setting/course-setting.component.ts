@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {NzModalService, NzNotificationService} from 'ng-zorro-antd';
-import {AddingCourseModalComponent} from '../../core/modal/adding-course-modal/adding-course-modal.component';
-import {ActivatedRoute} from '@angular/router';
-import {ClientClassManagementService} from '../../service/client-class-management/client-class-management.service';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { HttpClient } from '@angular/common/http';
+import { AddingOpencourseModalComponent } from 'src/app/core/modal/adding-opencourse-modal/adding-opencourse-modal.component';
 
 @Component({
   selector: 'app-course-setting',
@@ -11,69 +10,34 @@ import {ClientClassManagementService} from '../../service/client-class-managemen
   styleUrls: ['./course-setting.component.less']
 })
 export class OpenresourceCourseSettingComponent implements OnInit {
-
   courseList = [];
   classroomId: string;
-
-  userId;
+  userId = localStorage.getItem('id');
 
   constructor(
     private _modal: NzModalService,
-    private routerInfo: ActivatedRoute,
-    private classManagement$: ClientClassManagementService,
-    private _notification: NzNotificationService
+    private msg: NzMessageService,
+    private http: HttpClient,
   ) { }
 
   ngOnInit() {
     this.classroomId = location.pathname.split('/')[3];
-    // this.courseList.push({
-    //   title: '初中第6课 培养好习惯，牢记拒绝方法我要变得很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长(教学计划：默认教学计划)',
-    //   descr: '看清陷阱，远离诱惑',
-    //   teacherName: '李晨',
-    //   occup: '讲师',
-    //   avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    //   stuNum: '5',
-    //   taskNum: '2',
-    //   expireTime: '永久'
-    // },
-    //   {
-    //     title: '初中第3课 培养好习惯，牢记拒绝方法我要变得很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长(教学计划：默认教学计划)',
-    //     descr: '看清陷阱，远离诱惑',
-    //     teacherName: '李晨',
-    //     occup: '讲师',
-    //     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    //     stuNum: '5',
-    //     taskNum: '2',
-    //     expireTime: '永久'
-    //   },
-    //   {
-    //     title: '初中第4课 培养好习惯，牢记拒绝方法我要变得很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长(教学计划：默认教学计划)',
-    //     descr: '看清陷阱，远离诱惑',
-    //     teacherName: '李晨',
-    //     occup: '讲师',
-    //     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    //     stuNum: '5',
-    //     taskNum: '2',
-    //     expireTime: '永久'
-    //   },
-    //   {
-    //     title: '初中第5课 培养好习惯，牢记拒绝方法我要变得很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长(教学计划：默认教学计划)',
-    //     descr: '看清陷阱，远离诱惑',
-    //     teacherName: '李晨',
-    //     occup: '讲师',
-    //     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    //     stuNum: '5',
-    //     taskNum: '2',
-    //     expireTime: '永久'
-    //   });
     this.getCourseList();
-    this.userId = window.localStorage.getItem('id')
+  }
+
+  async getCourseList() {
+    try {
+      let res: any = await this.http.get(`/course/open/getRecommendCourse?openCourseId=${this.classroomId}`).toPromise();
+      this.courseList = res.data;
+    } catch (e) {
+      this.msg.error("信息初始化失败");
+    }
   }
 
   openAddingCourseModal() {
     const modal = this._modal.create({
       nzTitle: '添加课程',
-      nzContent: AddingCourseModalComponent,
+      nzContent: AddingOpencourseModalComponent,
       nzComponentParams: {
         classroomId: this.classroomId
       },
@@ -83,78 +47,45 @@ export class OpenresourceCourseSettingComponent implements OnInit {
       nzOnOk: instance => instance.submit(),
       nzOnCancel: instance => instance.destroy()
     });
-    modal.afterClose.subscribe(result => {
-      if (result && result.length > 0) {
-        this.classManagement$.addCourseIntoClass(this.classroomId, result, this.userId).subscribe(result => {
-          this.getCourseList();
-          this._notification.success(
-            '添加成功！',
-            ''
-          )
-        }, error1 => {
-          this._notification.error(
-            '添加失败！',
-            `${error1.error}`
-          )
-        })
+    modal.afterClose.subscribe(async (result) => {
+      let etc = "";
+      for (let i in result) {
+        if (result[i]) etc += "&courseSetIdList=" + i;
+      }
+      try {
+        await this.http.post(`/course/open/addRecommendCourse?${etc.slice(1)}&openCourseId=${this.classroomId}`, {}).toPromise();
+        this.msg.success("课程添加成功");
+        this.getCourseList();
+      } catch (e) {
+        this.msg.error("课程添加失败");
       }
     })
   }
 
-  deleteCourse(courseId: string) {
+  deleteCourse(id: any) {
     this._modal.confirm({
       nzTitle: '是否删除该课程？',
-      nzOnOk: () => {
-        this.classManagement$.deleteCourse(this.classroomId, courseId).subscribe(result => {
+      nzOnOk: async () => {
+        try {
+          await this.http.delete(`/course/open/deleteRecommendCourse?recommendId=${id}`).toPromise();
+          this.msg.success("课程删除成功");
           this.getCourseList();
-          this._notification.success(
-            '删除成功！',
-            ''
-          )
-        }, error1 => {
-          this._notification.error(
-            '删除失败！',
-            `${error1.error}`
-          )
-        })
+        } catch (e) {
+          this.msg.error("课程删除失败");
+        }
       }
     })
   }
 
-  drop(event: CdkDragDrop<any[]>) {
+  async drop(event: CdkDragDrop<any[]>) {
     moveItemInArray(this.courseList, event.previousIndex, event.currentIndex);
-    let idList = [];
-    this.courseList.forEach((item, index) => {
-      let courseBody = {
-        classroomId: this.classroomId,
-        classroomCourseId: item.classroomCourseId,
-        seq: index + 1
-      };
-      idList.push(courseBody)
-    });
-    console.log(idList);
-    this.classManagement$.sortCourseSeq(idList).subscribe(result => {
+    try {
+      let etc = this.courseList.reduce((str, item) => str + "&recommendIdList=" + item.recommendId, "");
+      await this.http.put(`/course/open/sortRecommendCourse?${etc.slice(1)}`, {}).toPromise();
       this.getCourseList();
-      this._notification.success(
-        '排序成功！',
-        ''
-      )
-    }, error1 => {
-      this._notification.error(
-        '发生错误！',
-        `${error1.error}`
-      )
-    })
-  }
-
-  getCourseList() {
-    return this.classManagement$.getClassCourseList(this.classroomId).subscribe(result => {
-      this.courseList = result.data.list
-    }, error1 => {
-      this._notification.error(
-        '发生错误！',
-        `${error1.error}`
-      )
-    })
+      this.msg.success("排序成功");
+    } catch (e) {
+      this.msg.error("排序失败");
+    }
   }
 }

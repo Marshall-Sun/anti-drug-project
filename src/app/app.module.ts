@@ -39,6 +39,7 @@ import { CommonInterceptor } from './share/common-interceptor.interceptor';
 import { SelectQuestionComponent } from './core/modal/select-question/select-question.component';
 import { HotspotModalComponent } from './core/modal/hotspot-modal/hotspot-modal.component';
 import { OpenresourceManagementModule } from './openresource-management/openresource-management.module';
+import { AddingOpencourseModalComponent } from './core/modal/adding-opencourse-modal/adding-opencourse-modal.component';
 registerLocaleData(zh);
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ registerLocaleData(zh);
     ProgramaEditModalComponent,
     AnnouncementEditModalComponent,
     AddingCourseModalComponent,
+    AddingOpencourseModalComponent,
     PaperScoreStatisticsComponent,
     TeachingPlanAddingModalComponent,
     SelectQuestionComponent

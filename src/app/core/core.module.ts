@@ -39,6 +39,7 @@ import { SelectQuestionComponent } from './modal/select-question/select-question
 import { VideoPlayerComponent } from './video-player/video-player/video-player.component';
 import { VideoPlayerComponent as ParentVideoPlayerComponet } from './video-player/video-player.component';
 import { HotspotModalComponent } from './modal/hotspot-modal/hotspot-modal.component';
+import { AddingOpencourseModalComponent } from './modal/adding-opencourse-modal/adding-opencourse-modal.component';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import { HotspotModalComponent } from './modal/hotspot-modal/hotspot-modal.compo
     UserPageComponent,
     AutocompleteInputComponent,
     AddingCourseModalComponent,
+    AddingOpencourseModalComponent,
     LoginPasswdEditModelComponent,
     SecurityProblemEditModalComponent,
     PaperScoreStatisticsComponent,
@@ -101,6 +103,7 @@ import { HotspotModalComponent } from './modal/hotspot-modal/hotspot-modal.compo
     AnnouncementEditModalComponent,
     AutocompleteInputComponent,
     AddingCourseModalComponent,
+    AddingOpencourseModalComponent,
     LoginPasswdEditModelComponent,
     NewsNewsblockModalComponent,
     NewsClassificationModalComponent,
