@@ -4,25 +4,26 @@
   </div>
   <nz-divider></nz-divider>
   <div class="setting-content">
-    <div class="left-content">
-      <span>设置教师</span>
-    </div>
-    <div class="right-content">
+    <div class="content">
       <div class="drag-list" cdkDropList  (cdkDropListDropped)="drop($event)">
         <div *ngFor="let item of teacherList" class="drag-box" cdkDrag>
           <div class="list-info">
-            <img class="avatar" [src]="item.smallAvatar && item.smallAvatar.startsWith('/image')?item.smallAvatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'" />
-            <span>{{item.nickName}}</span>
+            <img class="avatar" [src]="item.avatar" />
+            <span>{{item.userName}}</span>
           </div>
-          <i style="cursor: pointer" nz-icon nzType="close" (click)="close(item.id)"></i>
+          <i style="cursor: pointer" nz-icon nzType="close" (click)="delete(item.tableId)"></i>
         </div>
       </div>
       <div class="description">
         <span>相关页面中的老师列举将会按照这里设定的顺序显示。<br />教学服务团队成员有权制订学习计划、答疑、批阅作业/试卷、发起活动。</span>
       </div>
-      <app-autocomplete-input (outputEvent)="addTeacher($event)" [searchType]="'teacher'" [searchScene]="'course'" [courseId]="teachplanId"></app-autocomplete-input>
-      <div style="margin-top: 3%;">
-        <button nz-button nzType="primary">保存</button>
+      <div class="adder">
+        <div style="margin-top: 3%;">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="选择要添加的教师" [(ngModel)]="selectedValue">
+            <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </nz-select>
+          <button nz-button nzType="primary" (click)="addTeacher()">添加</button>
+        </div>
       </div>
     </div>
   </div>
