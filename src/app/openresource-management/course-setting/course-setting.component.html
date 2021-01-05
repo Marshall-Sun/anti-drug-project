@@ -1,9 +1,14 @@
 <div class="setting-page">
-  <div class="page-header">
-    <h2>课程管理</h2>
-    <button nz-button nzType="primary" (click)="openAddingCourseModal()">添加课程</button>
-  </div>
+  <h1>推荐课程管理</h1>
   <nz-divider></nz-divider>
+  <!-- <div class="page-header">
+    <button nz-button nzType="primary" (click)="openAddingCourseModal()">添加课程</button>
+  </div> -->
+  <div class="task-list-header">
+    <button nz-button nzType="primary" (click)="openAddingCourseModal()">
+      <i nz-icon nzType="plus" nzTheme="outline"></i>添加课程
+    </button>
+  </div>
   <div class="page-content">
     <div class="drag-list" cdkDropList (cdkDropListDropped)="drop($event)">
       <div *ngFor="let item of courseList" class="drag-box" cdkDrag>

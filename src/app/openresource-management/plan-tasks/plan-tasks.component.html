@@ -1,18 +1,19 @@
 <div class="tasks-page">
+  <h1>课时管理</h1>
+  <nz-divider></nz-divider>
   <div class="content">
     <div class="task-list-header">
-      <div>
-        <button nz-button nzType="primary" (click)="handleOpen_addtask()">
-          <i nz-icon nzType="plus" nzTheme="outline"></i>添加课时
-        </button>
-      </div>
+      <button nz-button nzType="primary" (click)="handleOpen_addtask()">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>添加课时
+      </button>
     </div>
-    <nz-divider></nz-divider>
     <div class="page-content">
       <div class="drag-list">
-        <div *ngIf="openCourse">
-          <h3>{{ openCourse?.title }}</h3>
-          <h3>{{ openCourse?.mediaName }}</h3>
+        <div *ngIf="openCourse" class="drag-list-item">
+          <div>
+            <h3>{{ openCourse?.title }}</h3>
+            <h3>{{ openCourse?.mediaName }}</h3>
+          </div>
           <nz-button-group nzSize="small">
             <button
               *ngIf="openCourse?.status !== 'published'"
