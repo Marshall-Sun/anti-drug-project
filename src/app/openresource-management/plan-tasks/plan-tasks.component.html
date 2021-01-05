@@ -2,59 +2,69 @@
   <div class="content">
     <div class="task-list-header">
       <div>
-        <button nz-button nzType="primary" (click)="handleOpen_addtask(0,'lesson')"><i nz-icon nzType="plus"
-            nzTheme="outline"></i>添加任务</button>
+        <button nz-button nzType="primary" (click)="handleOpen_addtask()">
+          <i nz-icon nzType="plus" nzTheme="outline"></i>添加课时
+        </button>
       </div>
     </div>
-    <div>
-      <nz-divider></nz-divider>
-      <div class="page-content">
-        <div class="drag-list" cdkDropList (cdkDropListDropped)="drop($event)">
-          <div *ngFor="let panel of tasklist" class="drag-box" cdkDrag>
-            <div>
-              <h3>
-              {{getTaskByType(panel,'lesson').title}}
-              </h3>
-              <nz-button-group nzSize='small'>
-                <button nz-button (click)="editTask(getTaskByType(panel,'lesson'),'lesson')"><i nz-icon nzType="edit" nzTheme="outline"></i>编辑</button>
-                <button *ngIf="getTaskByType(panel,'lesson').status!='published'"
-                  (click)="publishTask(getTaskByType(panel,'lesson').taskId)" nz-button><i nz-icon nzType="upload"
-                    nzTheme="outline"></i>发布</button>
-                <button *ngIf="getTaskByType(panel,'lesson').status=='published'"
-                  (click)="unpublishTask(getTaskByType(panel,'lesson').taskId)" nz-button><i nz-icon nzType="upload"
-                    nzTheme="outline"></i>取消发布</button>
-                <button *ngIf="getTaskByType(panel,'lesson').status!='published'"
-                  (click)="deleteTask(getTaskByType(panel,'lesson').taskId)" nz-button><i nz-icon nzType="delete"
-                    nzTheme="outline"></i>删除</button>
-              </nz-button-group>
-            </div>
-          </div>
+    <nz-divider></nz-divider>
+    <div class="page-content">
+      <div class="drag-list">
+        <div *ngIf="openCourse">
+          <h3>{{ openCourse?.title }}</h3>
+          <h3>{{ openCourse?.mediaName }}</h3>
+          <nz-button-group nzSize="small">
+            <button
+              *ngIf="openCourse?.status !== 'published'"
+              (click)="publishTask(openCourse?.lessonId)"
+              nz-button
+            >
+              <i nz-icon nzType="upload" nzTheme="outline"></i>发布
+            </button>
+            <button
+              *ngIf="openCourse?.status === 'published'"
+              (click)="unpublishTask(openCourse?.lessonId)"
+              nz-button
+            >
+              <i nz-icon nzType="upload" nzTheme="outline"></i>取消发布
+            </button>
+            <button
+              *ngIf="openCourse?.status !== 'published'"
+              (click)="deleteTask(openCourse?.lessonId)"
+              nz-button
+            >
+              <i nz-icon nzType="delete" nzTheme="outline"></i>删除
+            </button>
+          </nz-button-group>
         </div>
+        <span *ngIf="!openCourse">当前无课时，请添加课时</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 添加任务 -->
-
-<nz-modal class="taskplane" [(nzVisible)]="addtask_visible" nzTitle="添加任务" [nzFooter]="modalFooter"
-  (nzOnCancel)="handleCancel_addtask()" [nzMaskClosable]="false" nzWidth="730">
-  <nz-divider></nz-divider>
+<nz-modal
+  class="taskplane"
+  [(nzVisible)]="addtask_visible"
+  nzTitle="添加课时"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="handleCancel_addtask()"
+  [nzMaskClosable]="false"
+  nzWidth="730"
+>
   <div>
-    <!-- 资源、视频页 -->
     <div>
-      <div>
-        <span class="formTitle">标题</span>
-        <input nz-input placeholder="请输入标题" [(ngModel)]="material_title" />
-      </div>
-      <p class="formTitle">内容</p>
-      <div *ngIf="current_select_material==undefined">
-        <div style="margin-top:30px;">
+      <div *ngIf="current_select_material == undefined">
+        <div style="margin-bottom: 30px">
           <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
             <nz-tab nzTitle="上传资料">
-              <nz-upload nzType="drag" [nzLimit]="1"
-                [nzAction]="'/material/uploadTaskMaterial?courseId=' + teachplanId+'&userId='+userid"
-                (nzChange)="uploadMaterialChange($event)" [nzCustomRequest]="customReq">
+              <nz-upload
+                nzType="drag"
+                [nzLimit]="1"
+                [nzAction]="'/material/uploadTeachingMaterial?userId=' + userid"
+                (nzChange)="uploadMaterialChange($event)"
+                [nzCustomRequest]="customReq"
+              >
                 <p class="ant-upload-drag-icon">
                   <i nz-icon nzType="picture"></i>
                 </p>
@@ -62,76 +72,143 @@
               </nz-upload>
             </nz-tab>
             <nz-tab nzTitle="从资料库中选择">
-              <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixButtonBase">
-                <input type="text" nz-input placeholder="input search text" [(ngModel)]="searchKeyword" />
-              </nz-input-group>
-              <ng-template #suffixButtonBase>
-                <button nz-button nzType="primary" nzSize="large" (click)="searchMaterials()">Search</button>
-              </ng-template>
-              <nz-radio-group [(ngModel)]="material_from" style="margin: 20px;" (ngModelChange)="searchMaterials()">
+              <nz-radio-group
+                [(ngModel)]="material_from"
+                style="margin: 20px"
+                (ngModelChange)="searchMaterials()"
+              >
                 <label nz-radio nzValue="mymaterial">我的资料</label>
                 <label nz-radio nzValue="upload">来自收藏</label>
                 <label nz-radio nzValue="share">来自分享</label>
                 <label nz-radio nzValue="public">公共资料</label>
               </nz-radio-group>
+              <nz-input-group
+                nzSearch
+                nzSize="large"
+                [nzAddOnAfter]="suffixButtonBase"
+              >
+                <input
+                  type="text"
+                  nz-input
+                  placeholder="输入搜索关键字"
+                  [(ngModel)]="searchKeyword"
+                />
+              </nz-input-group>
+              <ng-template #suffixButtonBase>
+                <button
+                  nz-button
+                  nzType="primary"
+                  nzSize="large"
+                  (click)="searchMaterials()"
+                >
+                  搜索
+                </button>
+              </ng-template>
               <nz-divider></nz-divider>
-              <nz-table #basicTable nzFrontPagination="false" [nzData]="soursedata">
+              <nz-table
+                #basicTable
+                nzFrontPagination="false"
+                [nzData]="soursedata"
+              >
                 <thead>
                   <tr>
                     <th>名称</th>
-                    <th>大小</th>
+                    <th>创建时间</th>
                     <th>选择</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let data of soursedata">
-                    <td>{{data.filename}}</td>
-                    <td>{{data.createdTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td><button (click)="selectMaterial(data)">选择</button></td>
+                    <td>
+                      {{
+                        data.filename.length > 25
+                          ? data.filename.slice(0, 25) + "..."
+                          : data.filename
+                      }}
+                    </td>
+                    <td>
+                      {{
+                        data.createdTime * 1000 | date: "yyyy-MM-dd HH:mm:ss"
+                      }}
+                    </td>
+                    <td>
+                      <button (click)="selectMaterial(data)">选择</button>
+                    </td>
                   </tr>
                 </tbody>
               </nz-table>
-              <nz-pagination nzPageSize="12" [(nzPageIndex)]="soursepage" [nzTotal]="sourcetotalpage"
-                (nzPageIndexChange)="getMaterials()">
+              <nz-pagination
+                nzPageSize="12"
+                [(nzPageIndex)]="soursepage"
+                [nzTotal]="sourcetotalpage"
+                (nzPageIndexChange)="getMaterials()"
+              >
               </nz-pagination>
-
             </nz-tab>
             <nz-tab nzTitle="从课程中选择">
-              <nz-divider></nz-divider>
-              <nz-table #basicTable nzFrontPagination="false" [nzData]="soursedata_course">
+              <nz-table
+                #basicTable
+                nzFrontPagination="false"
+                [nzData]="soursedata_course"
+              >
                 <thead>
                   <tr>
                     <th>名称</th>
-                    <th>大小</th>
+                    <th>创建时间</th>
                     <th>选择</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let data of soursedata_course">
-                    <td>{{data.fileName}}</td>
-                    <td>{{data.createdTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td><button (click)="selectMaterial(data)">选择</button></td>
+                    <td>{{ data.filename }}</td>
+                    <td>
+                      {{
+                        data.createdTime * 1000 | date: "yyyy-MM-dd HH:mm:ss"
+                      }}
+                    </td>
+                    <td>
+                      <button (click)="selectMaterial(data)">选择</button>
+                    </td>
                   </tr>
                 </tbody>
               </nz-table>
-              <nz-pagination nzPageSize="12" [(nzPageIndex)]="soursepage_course" [nzTotal]="sourcetotalpage_course"
-                (nzPageIndexChange)="getCourseFileList()">
-              </nz-pagination>
             </nz-tab>
           </nz-tabset>
         </div>
       </div>
-      <div *ngIf="current_select_material!=undefined">
-        <div style="margin-top:30px;">
-          <span>当前选择{{current_select_material.filename}}</span>
-          <button nz-button nzType="primary" class=".task-list-header " (click)="selectMaterial(undefined)">重新选择
+      <div *ngIf="current_select_material != undefined">
+        <div style="margin-bottom: 30px">
+          <span>当前选择 {{ current_select_material.filename }} </span>
+          <button
+            nz-button
+            nzType="primary"
+            class=".task-list-header"
+            (click)="selectMaterial(undefined)"
+          >
+            重新选择
           </button>
         </div>
+      </div>
+      <div>
+        <input
+          nz-input
+          placeholder="填写资料简介（可选）"
+          [(ngModel)]="material_title"
+        />
       </div>
     </div>
   </div>
   <ng-template #modalFooter>
-    <button nz-button nzType="primary" (click)="handleOk_addtask()">提交</button>
-    <button nz-button nzType="primary" nzDanger (click)="handleCancel_addtask()">取消</button>
+    <button nz-button nzType="primary" (click)="handleOk_addtask()">
+      提交
+    </button>
+    <button
+      nz-button
+      nzType="primary"
+      nzDanger
+      (click)="handleCancel_addtask()"
+    >
+      取消
+    </button>
   </ng-template>
 </nz-modal>

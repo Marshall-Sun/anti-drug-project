@@ -70,8 +70,6 @@ export class OpenresourceFileComponent implements OnInit {
       let fileList: any = await this.openresourceManagementService.getOpenCourseFileList(
         this.courseId
       );
-      console.log(fileList);
-      
       this.fileUploadedList = fileList.map((item: any) => ({
         createdTime: item.updatedTime,
         fileId: item.fileId,
