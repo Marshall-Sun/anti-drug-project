@@ -173,7 +173,7 @@ const routes: Routes = [
       { path: 'classlist', component: ClasslistComponent },
       { path: 'classinf/:id', component: ClassinfComponent, canActivate: [AuthGuard]},
       { path: 'openresource', component: OpenresourceComponent},
-      { path: 'openresourcedetail/:id/:url', component: OpenresourcedetailComponent, canActivate: [AuthGuard] },
+      { path: 'openresourcedetail/:id', component: OpenresourcedetailComponent, canActivate: [AuthGuard] },
       {path: 'groupmainlist', component: GroupmainlistComponent,
       children:[
           {path: '', component: GroupnowComponent},

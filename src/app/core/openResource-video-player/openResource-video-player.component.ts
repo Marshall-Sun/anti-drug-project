@@ -50,7 +50,8 @@ export class OpenRsourceVideoPlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.url = this.url.replace(/_/g,'/')
-    this.url = 'http://video.chinanews.com/tvmining//News/MP4ZXW/CCYVNEWS/2018/01/09/Ls3weyy_1515508088761_yB1n19f_3314.mp4';
+    
+    this.url = '/video/20210106162923-a6b45b50-853e-4fb6-8847-dfb36dc0748d.mp4';
     // 页面刷新监听
     window.onbeforeunload = () => {
       this.endPlay();
