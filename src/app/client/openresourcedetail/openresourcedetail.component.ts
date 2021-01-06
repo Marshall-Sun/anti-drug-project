@@ -1,11 +1,7 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { addDays, differenceInMilliseconds } from "date-fns";
+import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { OpenresourceService } from "../../service/openresource/openresource.service";
-import { NzMessageService, NzNotificationService } from "ng-zorro-antd";
+import { NzMessageService } from "ng-zorro-antd";
 import { OpenresourcedetailService } from "../../service/openresourcedetail/openresourcedetail.service";
-import { FollowManagementService } from "../../service/follow-management/follow-management.service";
-import { TeacherManagementService } from "../../service/teacher-management/teacher-management.service";
 import { UserManagementService } from "src/app/service/user-management/user-management.service";
 @Component({
   selector: "app-openresourcedetail",
@@ -16,27 +12,6 @@ export class OpenresourcedetailComponent implements OnInit {
   userId: number;
   courseId: number;
 
-  displayData: any;
-  movieTitle: any;
-  hitNum: any;
-  postNum: any;
-  likeNum: number;
-  subtitle: string;
-  teacherNickName: string;
-  teacherTitle: string;
-  videoCover: string;
-  teacherId: string;
-  fellowNum: number;
-  attentionNum: number;
-  isCollected: number;
-  teacherAvatar: string;
-  isFollowed: boolean;
-  likeBtnState: number;
-  collectBtnState: number;
-  courseList = [];
-  courseListLoading: boolean = true;
-  videoUrl: string;
-
   basicData = {
     movieTitle: "",
     subtitle: "",
@@ -44,14 +19,13 @@ export class OpenresourcedetailComponent implements OnInit {
     videoCover: "",
     hitNum: 0,
     postNum: 0,
-    likeNum: 0,
-    isCollected: false,
 
-    isFollowed: false,
+    likeNum: 0,
     likeBtnState: 0,
+    isLiked: false,
+
+    isCollected: false,
     collectBtnState: 0,
-    courseList: [],
-    courseListLoading: true,
   };
 
   teacherData = {
@@ -69,28 +43,39 @@ export class OpenresourcedetailComponent implements OnInit {
     url: "",
   };
 
+  recommendCourse = {
+    loading: false,
+    list: [],
+  };
+
   constructor(
     private router: Router,
-    private opendetailService$: OpenresourcedetailService,
-    private openService$: OpenresourceService,
-    private followMngService$: FollowManagementService,
+    private detailService: OpenresourcedetailService,
     private routerInfo: ActivatedRoute,
     private msg: NzMessageService,
-    private userManagementService: UserManagementService,
-    private notification: NzNotificationService
+    private userManagementService: UserManagementService
   ) {}
 
   ngOnInit() {
     this.userId = Number(localStorage.getItem("id"));
     this.courseId = Number(this.routerInfo.snapshot.params["id"]);
+    this.sendUserInfo();
     this.initBasicData();
     this.initTeacherData();
     this.initLesson();
+    this.initRecommendCourse();
+  }
+
+  sendUserInfo() {
+    this.detailService.updateHit(this.courseId);
+    if (!this.userId)
+      this.detailService.joinOpenCourseWithoutLogin(this.courseId);
+    else this.detailService.joinOpenCourseWithLogin(this.courseId, this.userId);
   }
 
   async initBasicData() {
     try {
-      let res: any = await this.opendetailService$.getInfo(
+      let res: any = await this.detailService.getInfo(
         this.courseId,
         this.userId
       );
@@ -109,12 +94,14 @@ export class OpenresourcedetailComponent implements OnInit {
 
   async initTeacherData() {
     try {
-      let res: any = await this.opendetailService$.getOpenCourseOwner(this.courseId);
+      let res: any = await this.detailService.getOpenCourseOwner(this.courseId);
       this.teacherData.id = res.data.userId;
       this.teacherData.nickname = res.data.nickname;
       this.teacherData.title = res.data.title;
       this.teacherData.avatar = res.data.avatar;
-      let userData: any = await this.userManagementService.getPersonalDetailById(String(this.teacherData.id)).toPromise();
+      let userData: any = await this.userManagementService
+        .getPersonalDetailById(String(this.teacherData.id))
+        .toPromise();
       this.teacherData.fansNum = userData.data.fansNum;
       this.teacherData.followNum = userData.data.followedNum;
     } catch (e) {
@@ -124,85 +111,57 @@ export class OpenresourcedetailComponent implements OnInit {
 
   async initLesson() {
     try {
-      let res: any = await this.opendetailService$.getLesson(this.courseId);
+      let res: any = await this.detailService.getLesson(this.courseId);
       this.lessonData.id = res.data.lessonId;
       this.lessonData.title = res.data.title;
-      let urlData: any = await this.opendetailService$.getVideoUrl(this.lessonData.id);
+      let urlData: any = await this.detailService.getVideoUrl(
+        this.lessonData.id
+      );
       this.lessonData.url = urlData.data;
-      console.log(this.lessonData.url);
-      
     } catch (e) {
       this.msg.error("课时信息初始化失败");
     }
   }
 
-  getCourseList() {
-    this.openService$.getOpenCourseList().subscribe((res) => {
-      for (let i = 0; i < res.length; i++)
-        this.courseList.push({
-          courseId: res[i].id,
-          courseTitle: res[i].title,
-        });
-      this.courseListLoading = false;
-    });
+  async initRecommendCourse() {
+    this.recommendCourse.loading = true;
+    try {
+      let res: any = await this.detailService.getRecommendCourse(this.courseId);
+      this.recommendCourse.list = res.data;
+    } catch (e) {
+      this.msg.error("推荐课程初始化失败");
+    }
+    this.recommendCourse.loading = false;
   }
 
-  clickLike() {
-    // 点击点赞
-    this.likeNum += 1;
-    this.opendetailService$.setLikeNum(this.courseId).subscribe();
-  }
-  clickCollect() {
-    // 点击收藏
-    if (this.isCollected == 1) {
-      this.opendetailService$
-        .disCollectCourse(this.userId, this.courseId)
-        .subscribe();
-      this.isCollected = 0;
-    } else {
-      this.opendetailService$
-        .collectCourse(this.userId, this.courseId)
-        .subscribe();
-      this.isCollected = 1;
+  async clickLike() {
+    if (this.basicData.isLiked) {
+      this.msg.info("已经点过赞了");
+      return;
+    }
+    try {
+      await this.detailService.setLikeNum(this.courseId);
+      this.basicData.likeNum++;
+      this.basicData.isLiked = true;
+    } catch (e) {
+      this.msg.error("点赞失败");
     }
   }
+
+  clickCollect() {
+    try {
+      if (this.basicData.isCollected) {
+        this.detailService.disCollectCourse(this.courseId, this.userId);
+      } else {
+        this.detailService.collectCourse(this.courseId, this.userId);
+      }
+      this.basicData.isCollected = !this.basicData.isCollected;
+    } catch (e) {
+      this.msg.error("操作失败");
+    }
+  }
+
   navigateByUrl(url) {
     this.router.navigateByUrl(url);
-  }
-  getIsFollowed() {
-    this.followMngService$.isFollowed(this.userId, this.teacherId).subscribe(
-      (res) => {
-        this.isFollowed = res.data;
-      },
-      (error) => {
-        this.notification.create("error", "获取是否关注失败", `${error.error}`);
-      }
-    );
-  }
-  follow_submit(item_id: any) {
-    if (item_id != this.userId) {
-      this.isFollowed = !this.isFollowed;
-      this.followMngService$.followUser(this.userId, item_id).subscribe(
-        () => {
-          this.notification.create("success", "提交成功！", `提交成功`);
-        },
-        (error) => {
-          this.notification.create("error", "发生错误！", `${error.error}`);
-        }
-      );
-    } else {
-      this.notification.create("error", "发生错误！", `不能自己关注自己`);
-    }
-  }
-  del_follow_submit(item_id: any) {
-    this.isFollowed = !this.isFollowed;
-    this.followMngService$.defollow(this.userId, item_id).subscribe(
-      () => {
-        this.notification.create("success", "提交成功！", `提交成功`);
-      },
-      (error) => {
-        this.notification.create("error", "发生错误！", `${error.error}`);
-      }
-    );
   }
 }

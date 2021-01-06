@@ -1,12 +1,23 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OpenresourcedetailService {
-
   constructor(private http: HttpClient) { }
+
+  updateHit(courseId) {
+    return this.http.post(`/course/open/hit?openCourseId=${courseId}`, {}).toPromise();
+  }
+
+  joinOpenCourseWithLogin(courseId, userId) {
+    return this.http.post(`/course/open/joinOpenCourseWithLogin?openCourseId=${courseId}&userId=${userId}`, {}).toPromise();
+  }
+
+  joinOpenCourseWithoutLogin(courseId) {
+    return this.http.post(`/course/open/joinOpenCourseWithLogin?openCourseId=${courseId}`, {}).toPromise();
+  }
 
   getInfo(courseId, userId) {
     return this.http.get(`/course/open/Info?openCourseID=${courseId}&userId=${userId}`).toPromise();
@@ -24,14 +35,19 @@ export class OpenresourcedetailService {
     return this.http.get(`/course/open/getVideoUrl?openCourseLessonId=${lessonId}`).toPromise();
   }
 
+  getRecommendCourse(courseId) {
+    return this.http.get(`/course/open/getRecommendCourse?openCourseId=${courseId}`).toPromise();
+  }
+
+  setLikeNum(courseId) {
+    return this.http.put(`/course/open/like?openCourseId=${courseId}`, {}).toPromise();
+  }
   
-  setLikeNum(courseId:number){
-    return this.http.put(`/course/open/like?openCourseId=${courseId}`,{});
+  collectCourse(courseId, userId) {
+    return this.http.post(`/course/open/favourite?openCourseId=${courseId}&userId=${userId}`,{}).toPromise();
   }
-  collectCourse(userId, openCourseId){
-    return this.http.post(`/course/open/favourite?openCourseID=${openCourseId}&userId=${userId}`,{})
-  }
-  disCollectCourse(userId, openCourseId){
-    return this.http.delete(`/course/open/unfavourite?openCourseID=${openCourseId}&userId=${userId}`)
+
+  disCollectCourse(courseId, userId) {
+    return this.http.post(`/course/open/favourite?openCourseId=${courseId}&userId=${userId}`,{}).toPromise();
   }
 }

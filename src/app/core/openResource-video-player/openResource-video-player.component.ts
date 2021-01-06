@@ -1,30 +1,36 @@
-import { Component, OnInit, Input, OnDestroy, ElementRef, Renderer2,Output,EventEmitter } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser'; // 引入DomSanitizer服务
-import { HttpClient } from '@angular/common/http';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  ElementRef,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 import { HttpParams } from "@angular/common/http";
-// import videojs from 'video.js'
-import { NzModalService } from 'ng-zorro-antd/modal';
+import videojs from "video.js";
+import { NzModalService } from "ng-zorro-antd/modal";
 @Component({
-  selector: 'app-openResource-video-player',
-  templateUrl: './openResource-video-player.component.html',
-  styleUrls: ['./openResource-video-player.component.less']
+  selector: "app-openResource-video-player",
+  templateUrl: "./openResource-video-player.component.html",
+  styleUrls: ["./openResource-video-player.component.less"],
 })
 export class OpenRsourceVideoPlayerComponent implements OnInit, OnDestroy {
-  @Input()
-  userID: string;  //必须拿到
+  userID: string = localStorage.getItem("id");
+
   //在线视频源
   @Input()
-  url:string;
+  url: string = "";
+
   result: any;
   event: any; // 学习任务状态
-  lastPosition: number = 0;  //上次时间
+  lastPosition: number = 0; //上次时间
   lengthOfVideo: number = 0; // 视频长度
   maxTime: number = 0; //目前最新观看位置，快进大于这个值则后退
   isMousedown: boolean = false;
-  @Input()
-  courseTaskId: any;
   allogId: any; //学习任务ID
-  @Output() private outer=new EventEmitter<string>();
+
   options = {
     bigPlayButton: true,
     textTrackDisplay: true,
@@ -34,87 +40,86 @@ export class OpenRsourceVideoPlayerComponent implements OnInit, OnDestroy {
     controlBar: {
       customControlSpacer: true,
     },
-    fluid: true,   // 添加自适应
+    fluid: true, // 添加自适应
   };
 
+  @ViewChild("target", { static: true }) target: ElementRef;
 
-  player: any = {
-    currentTime() { }
-  };
+  player: videojs.Player;
 
-
-  //,public videoService:VideoService
-  constructor(private sanitizer: DomSanitizer, public http: HttpClient, private modalService: NzModalService, private el: ElementRef,
-    private renderer2: Renderer2) {
-  }
+  constructor(
+    public http: HttpClient,
+    private modalService: NzModalService,
+    private el: ElementRef,
+    private renderer2: Renderer2
+  ) {}
 
   ngOnInit() {
-    // this.url = this.url.replace(/_/g,'/')
-    
-    this.url = '/video/20210106162923-a6b45b50-853e-4fb6-8847-dfb36dc0748d.mp4';
     // 页面刷新监听
     window.onbeforeunload = () => {
       this.endPlay();
     };
-    this.getVideoLearnLog(this.userID, this.courseTaskId);  //初始化
   }
 
-  ngAfterViewInit() {
-    // this.onload();
+  ngOnChanges() {
+    if (this.url) {
+      this.onload();
+      this.player.src(this.url);
+    }
   }
 
   ngOnDestroy() {
     this.endPlay();
-    // this.player.dispose();
+    this.player.dispose();
   }
   success(): void {
     this.modalService.success({
-      nzTitle: '视频学习完成',
+      nzTitle: "视频学习完成",
     });
   }
   onload() {
     let that = this;
-    // that.player = videojs('my-video', this.options, function onPlayerReady() {  // 播放器内部监控
+    this.player = videojs(
+      this.target.nativeElement,
+      this.options,
+      function onPlayerReady() {
+        this.on("ended", function () {
+          that.changeLearnStatus(
+            that.allogId,
+            "finish",
+            parseInt(that.player.duration())
+          ); // 如果学习完了，学习位置设置为0还总长度
+          that.success();
+        });
 
-    //   this.on('ended', function () {
-    //     that.changeLearnStatus(that.allogId, 'finish', parseInt(that.player.duration())); // 如果学习完了，学习位置设置为0还总长度
-    //     that.success();
-    //   });
-
-    //   that.renderer2.listen(that.el.nativeElement.querySelector('.vjs-progress-control'), 'mouseup',
-    //     () => {
-    //       if (parseInt(that.player.currentTime()) > that.maxTime) {
-    //         that.onJump(that.maxTime)
-    //       }
-    //     });
-    //   this.on('timeupdate', function () {
-    //       let currentTime:number=parseInt(that.player.currentTime())
-    //       if ((currentTime - that.maxTime) <= 1) {
-    //         that.maxTime = currentTime;
-    //       }
-    //   });
-    // });
-  }
-
-
-  // 获得该学习记录的状态和上次的位置
-  getVideoLearnLog(userId: any, coursetaskid: any) {
-    this.http.get(`/course/video/getVideoLearnLog?coursetaskid=${coursetaskid}&userId=${userId}`).subscribe((response) => {
-      this.result = response;
-      this.event = this.result.data.event; // 直接使用response会报错
-      this.outer.emit(this.event)//向父组件传递学习状态
-      this.maxTime = this.lastPosition = this.result.data.learnedtime;
-      this.allogId = this.result.data.id;
-      this.startPlay();
-    });
+        that.renderer2.listen(
+          that.el.nativeElement.querySelector(".vjs-progress-control"),
+          "mouseup",
+          () => {
+            if (parseInt(that.player.currentTime()) > that.maxTime) {
+              that.onJump(that.maxTime);
+            }
+          }
+        );
+        this.on("timeupdate", function () {
+          let currentTime: number = parseInt(that.player.currentTime());
+          if (currentTime - that.maxTime <= 1) {
+            that.maxTime = currentTime;
+          }
+        });
+      }
+    );
   }
 
   // 改变该学习记录的状态和位置
   changeLearnStatus(allogId: any, event: any, learnedtime: any) {
-    let params = new HttpParams().set('allogId', allogId).set('event', event).set('learnedtime', learnedtime);
-    this.http.get('/course/video/changeLearnStatus', { params: params }).subscribe(
-      () => {}
-    )
+    let params = new HttpParams()
+      .set("allogId", allogId)
+      .set("event", event)
+      .set("learnedtime", learnedtime);
+    this.http
+      .get("/course/video/changeLearnStatus", { params: params })
+      .subscribe(() => {});
   }
 
   // 跳转到指定位置
@@ -122,26 +127,27 @@ export class OpenRsourceVideoPlayerComponent implements OnInit, OnDestroy {
     this.player.currentTime(position);
   };
 
-
   startPlay = function (): void {
     // 如果状态(event)为 finish，则设置当前位置为 0
-    if ('finish' == this.event) {
-      this.onJump(0);  // 只要学完了，下次进来就不再会进行跳转
-    }// 如果状态(event)为 doing，则设置当前位置为  learnedTime的值,即默认
+    if ("finish" == this.event) {
+      this.onJump(0); // 只要学完了，下次进来就不再会进行跳转
+    } // 如果状态(event)为 doing，则设置当前位置为  learnedTime的值,即默认
     this.onJump(this.lastPosition);
   };
-
 
   endPlay = function (): void {
     // 判断状态，如果为 finish 则return (表示已学习完成，重复播放,不需要请求后端)
     // 如果状态为 doing, 判断当前时间是否和总时长一致，调用changeLearnStatus，若一致，则改变 event，若不一致则改变 learnedtime
-    this.lengthOfVideo = parseInt(this.player.duration());//可以放在初始化时就设置视频总时间
+    this.lengthOfVideo = parseInt(this.player.duration()); //可以放在初始化时就设置视频总时间
     let currentPosition = parseInt(this.player.currentTime());
-    if ('doing' == this.event) {  // 说明事件
-      if (this.lengthOfVideo != currentPosition&& currentPosition>=this.maxTime) {
-        this.changeLearnStatus(this.allogId, 'doing', currentPosition);
+    if ("doing" == this.event) {
+      // 说明事件
+      if (
+        this.lengthOfVideo != currentPosition &&
+        currentPosition >= this.maxTime
+      ) {
+        this.changeLearnStatus(this.allogId, "doing", currentPosition);
       }
     }
   };
-
 }
