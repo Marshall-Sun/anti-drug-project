@@ -170,6 +170,19 @@ export class AuthGuard implements CanActivate {
       }
     }
 
+    // 页面：公开课管理，限管理员、教师访问
+    if (url.indexOf("/openresource") != -1 && (
+      url.indexOf("/base") != -1 ||
+      url.indexOf("/cover") != -1 ||
+      url.indexOf("/file") != -1 ||
+      url.indexOf("/studentsetting") != -1 ||
+      url.indexOf("/teachersetting") != -1 ||
+      url.indexOf("/coursesetting") != -1 ||
+      url.indexOf("/tasks") != -1)
+    ) {
+      canActivate = this.checkIdentity("ROLE_TEACHER");
+    }
+
     // 页面：班级详情，判断关闭状态
     if (url.indexOf("/classinf") != -1) {
       let targetId = url.split("/")[3];

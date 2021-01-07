@@ -230,7 +230,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'openresource/:id', component: OpenresourceManagementComponent, children: [
+        path: 'openresource/:id', component: OpenresourceManagementComponent, canActivate: [AuthGuard], children: [
           { path: '', redirectTo: 'base', pathMatch: 'full' },
           { path: 'base', component: OpenresourceBaseInfoComponent },
           { path: 'cover', component: OpenresourceCoverPhotoComponent },
