@@ -31,31 +31,34 @@
         </nz-list>
       </div>
     </div>
-    <div class="inner-layout">
-      <div class="logo">
-        <img [src]="basicData.videoCover" width="130" height="100" />
-        <div class="video-info">
-          <div
-            style="
-              font-size: 18px;
-              font-weight: 500;
-              margin: 10px 20px 40px 20px;
-            "
-          >
-            {{ basicData.movieTitle }}
-          </div>
-          <div class="statistics">
-            <nz-statistic
-              [nzValue]="basicData.hitNum | number"
-              [nzPrefix]="prefixTpl1"
-              [nzValueStyle]="{ fontSize: '13px' }"
-            ></nz-statistic>
-            <ng-template #prefixTpl1><i nz-icon nzType="eye"></i></ng-template>
+
+    <div class="info">
+      <div class="inner-layout">
+        <div class="logo">
+          <img [src]="basicData.videoCover" width="130" height="100" />
+          <div class="titles">
+            <h1>{{ basicData.movieTitle }}</h1>
+            <h3>{{ basicData.subtitle }}</h3>
+            <h6>{{ basicData.introduction }}</h6>
           </div>
         </div>
-      </div>
-      <div class="operation">
-        <div class="detail-operation">
+        <div class="operation">
+          <span>
+            <nz-statistic
+              [nzValue]="basicData.hitNum | number"
+              [nzPrefix]="hit"
+              [nzValueStyle]="{ fontSize: '18px' }"
+            ></nz-statistic>
+            <ng-template #hit>
+              <nz-avatar
+                [nzIcon]="'eye'"
+                [nzShape]="'circle'"
+                [nzSize]="40"
+              ></nz-avatar>
+              <span style="margin-left: 10px">观看</span>
+            </ng-template>
+          </span>
+          <nz-divider nzType="vertical"></nz-divider>
           <span>
             <nz-statistic
               [nzValue]="basicData.likeNum | number"
@@ -78,55 +81,50 @@
               <span style="margin-left: 10px">点赞</span>
             </ng-template>
           </span>
+          <nz-divider nzType="vertical"></nz-divider>
           <span>
-            <nz-avatar
-              [nzIcon]="'save'"
-              [nzShape]="'circle'"
-              [nzSize]="40"
-              style="cursor: pointer"
-              (click)="clickCollect()"
-              (mouseover)="collectBtnState = 1"
-              (mouseleave)="collectBtnState = 0"
-              [ngClass]="{ collect: collectBtnState == 1 }"
-            ></nz-avatar>
-            <span
-              *ngIf="!basicData.isCollected"
-              style="font-size: 18px; margin-left: 10px"
-              >收藏</span
-            >
-            <span
-              *ngIf="basicData.isCollected"
-              style="font-size: 18px; margin-left: 10px"
-              >已收藏</span
-            >
+            <nz-statistic
+              [nzValue]="''"
+              [nzPrefix]="collect"
+              [nzValueStyle]="{ fontSize: '18px' }"
+            ></nz-statistic>
+            <ng-template #collect>
+              <nz-avatar
+                [nzIcon]="'save'"
+                [nzShape]="'circle'"
+                [nzSize]="40"
+                style="cursor: pointer"
+                (click)="clickCollect()"
+                (mouseover)="collectBtnState = 1"
+                (mouseleave)="collectBtnState = 0"
+                [ngClass]="{ collect: collectBtnState == 1 }"
+              ></nz-avatar>
+              <span
+                *ngIf="!basicData.isCollected"
+                style="margin-left: 10px">收藏</span
+              >
+              <span
+                *ngIf="basicData.isCollected"
+                style="margin-left: 10px">已收藏</span
+              >
+            </ng-template>
           </span>
         </div>
       </div>
-    </div>
-    <div class="content2">
-      <!--  左侧部分-->
-      <div class="left-content">
-        <div class="teacher-card" style="background-color: #ffffff">
-          <h2 class="sidertitle">课程教师</h2>
-          <nz-divider></nz-divider>
-          <div
-            style="display: flex; cursor: pointer"
-            (click)="navigateByUrl('/client/userpage/' + teacherData.id)"
-          >
-            <nz-avatar
-              [nzSize]="100"
-              nzIcon="user"
-              [nzSrc]="teacherData.avatar"
-            ></nz-avatar>
-            <span style="font-weight: 400; margin-left: 30px">
-              <h3>
-                <a class="specialLink">
-                  {{ teacherData.nickname }}
-                </a>
-              </h3>
-              <p>{{ teacherData.title }}</p>
-            </span>
-          </div>
+      <div class="teacher-card" style="background-color: #ffffff">
+        <span class="sidertitle">主讲</span>
+        <nz-divider></nz-divider>
+        <div
+          class="teacher-content"
+          (click)="navigateByUrl('/client/userpage/' + teacherData.id)"
+        >
+          <nz-avatar
+            [nzSize]="100"
+            nzIcon="user"
+            [nzSrc]="teacherData.avatar"
+          ></nz-avatar>
+          <span class="teacher-name">{{ teacherData.nickname }}</span>
+          <span>{{ teacherData.title }}</span>
         </div>
       </div>
     </div>

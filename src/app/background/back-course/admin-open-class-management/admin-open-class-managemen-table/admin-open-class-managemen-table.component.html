@@ -49,7 +49,7 @@
       <td><i class="more-operation" nz-popover nzTitle="可执行操作" [nzContent]="operationTemplate" nzTrigger="hover" nz-icon nzType="more" nzTheme="outline" nzPlacement="bottom"></i></td>
       <ng-template #operationTemplate>
         <div class="user-management-operation">
-          <div><span (click)="navigateTo('/client/course/' + data.id)"><i nz-icon nzType="book" nzTheme="outline"></i>管理课程</span></div>
+          <div><span (click)="navigateTo('/client/openresource/' + data.id)"><i nz-icon nzType="book" nzTheme="outline"></i>管理课程</span></div>
           <div>
             <span *ngIf="data.recommended==0" (click)="showRecommendCourseModal(data.id)"><i nz-icon nzType="up-square" nzTheme="outline"></i>推荐课程</span>
             <span *ngIf="data.recommended==1" (click)="cancelRecommendCourse(data.id)"><i nz-icon nzType="down-square" nzTheme="outline"></i>取消推荐</span>

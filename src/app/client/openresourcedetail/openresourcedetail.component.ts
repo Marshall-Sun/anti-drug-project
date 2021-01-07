@@ -81,7 +81,7 @@ export class OpenresourcedetailComponent implements OnInit {
       );
       this.basicData.movieTitle = res.title;
       this.basicData.subtitle = res.subtitle;
-      this.basicData.introduction = res.introduction;
+      this.basicData.introduction = res.introduction.replace(/<\/?.+?\/?>/g, "");
       this.basicData.videoCover = res.openCourseCover;
       this.basicData.hitNum = res.hitNum;
       this.basicData.postNum = res.postNum;

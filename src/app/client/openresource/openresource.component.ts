@@ -58,11 +58,4 @@ export class OpenresourceComponent implements OnInit {
     }
     window.scrollTo(0, 160);
   }
-  videoUrl:string;
-  getVideoUrl(courseId){
-    this.openService$.getOpenCourseDetailUrl(courseId).subscribe(res=>{
-      this.videoUrl = res.data
-      this.videoUrl = this.videoUrl.replace(/\//g,'_')
-    })
-  }
 }

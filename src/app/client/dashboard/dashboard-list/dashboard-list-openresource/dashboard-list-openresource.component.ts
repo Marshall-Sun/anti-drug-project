@@ -18,8 +18,7 @@ export class DashboardListOpenresourceComponent implements OnInit {
 
   ngOnInit() {
     this.openService$.getOpenCourseList().subscribe(result => {
-      this.displayData = result;
-      this.displayData.splice(0, 4);
+      this.displayData = result.slice(0, 4);
     }, error1 => {
       this._notification.create(
         'error',
@@ -31,12 +30,5 @@ export class DashboardListOpenresourceComponent implements OnInit {
 
   navigateByUrl(url) {
     this.router.navigateByUrl(url);
-  }
-
-  videoUrl:string;
-  getVideoUrl(courseId){
-    this.openService$.getOpenCourseDetailUrl(courseId).subscribe(res=>{
-      this.videoUrl = res.data.replace(/\//g,'_');
-    })
   }
 }

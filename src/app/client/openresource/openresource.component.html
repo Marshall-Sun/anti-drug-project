@@ -16,8 +16,7 @@
               <ng-template #content>
                 <nz-card style="cursor: pointer; margin-left: 10px"
                          [nzCover]="coverTemplate" nzHoverable
-                         (mouseover)="getVideoUrl(item.id)"
-                         (click)="navigateByUrl('/client/openresourcedetail/'+item.id+'/'+videoUrl)">
+                         (click)="navigateByUrl('/client/openresourcedetail/'+item.id)">
                   <nz-row [nzGutter]="4">
                     <nz-col [nzSpan]="14">
                       <nz-card-meta [title]="item.title"
