@@ -74,9 +74,11 @@ export class HomePageComponent implements OnInit {
       let res: any = await this.backgroundHomePageService
         .getEverydayTaskResultNum()
         .toPromise();
-      for (let index in res.data) {
+      let timeIndex = Object.keys(res.data);
+      timeIndex.sort((a, b) => Number(new Date(a)) - Number(new Date(b)));
+      for (let index of timeIndex) {
         xAxisData.push(index);
-        data.push(res[index]);
+        data.push(res.data[index]);
       }
     } catch (e) {
       for (let i = 0; i < 10; i++) {
@@ -258,7 +260,6 @@ export class HomePageComponent implements OnInit {
     this.backgroundHomePageService
       .getCourseRankings()
       .subscribe((res: any) => {
-        console.log(res.data)
         this.courseRank = res.data.courseRankings;
       });
   };
